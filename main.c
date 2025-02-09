@@ -15,7 +15,7 @@ typedef struct s_map
 typedef struct s_game
 {
 	t_map *map;
-	char *textures[4];
+	char *textures[5];
 	int floor_color[3];
 	int ceiling_color[3];
 	int flag_n;
@@ -450,6 +450,44 @@ int	check_player(char **grid)
 	return (0);
 }
 
+int	my_isspace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
+}
+
+void	trim_spaces(char *str)
+{
+	char	*end;
+	
+	while (my_isspace((unsigned char)*str))
+		str++;
+	if (*str == 0)
+		return ;
+	end = str + ft_strlen(str) - 1;
+	while (end > str && my_isspace((unsigned char)*end))
+		end--;
+	*(end + 1) = '\0';
+}
+
+int	edit_paths(char **textures)
+{
+	int	i;
+	int	len;
+	
+	i = 0;
+	if (!textures)
+		return (0);
+	while (textures[i])
+	{
+		trim_spaces(textures[i]);
+		len = ft_strlen(textures[i]);
+		if (len < 5 || textures[i][len - 1] != 'm' || textures[i][len - 2] != 'p' || textures[i][len - 3] != 'x' || textures[i][len - 4] != '.')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	valid_map(char *argv, t_game *game)
 {
 	int		fd;
@@ -471,6 +509,7 @@ int	valid_map(char *argv, t_game *game)
 	game->map = map;
 	flag_init(game);
 	map_flag = 0;
+	game->textures[4] = NULL;
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		offset = skip_whitespace(line);
@@ -551,6 +590,8 @@ int	valid_map(char *argv, t_game *game)
 	if (!check_player(map->grid))
 		return (0);
 	if (!check_walls(map->grid, map->height))
+		return (0);
+	if (!edit_paths(game->textures))
 		return (0);
 	print_textures(game);
 	printf("\n");
