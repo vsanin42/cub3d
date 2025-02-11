@@ -6,7 +6,6 @@ SRC_FILES = \
 	main.c \
 	c.c \
 	colors.c \
-	ft_atoi.c \
 	map_check.c \
 	map_check2.c \
 	print.c \
