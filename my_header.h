@@ -19,13 +19,10 @@
 # include <unistd.h>
 # include "get_next_line/get_next_line.h"
 # include "libft/libft.h"
+# include "minilibx-linux/mlx.h"
 
-typedef struct s_map_data
-{
-	char	**map;
-	int		rows;
-	int		**visited;
-}	t_map_data;
+# define WIN_WIDTH 640
+# define WIN_HEIGHT 480
 
 typedef struct s_map
 {
@@ -47,6 +44,24 @@ typedef struct s_game
 	int		flag_c;
 }	t_game;
 
+typedef struct s_win_params
+{
+	void	*mlx;
+	void	*win;
+	t_game	*game;
+}	t_win_params;
+
+typedef struct s_map_data
+{
+	char	**map;
+	int		rows;
+	int		**visited;
+}	t_map_data;
+
+void		err_exit(char *err_msg, t_game *game);
+int			close_window(t_win_params *wind);
+int			key_press(int keycode, t_win_params *wind);
+void		start_game(t_game *game);
 int			if_direction_p2(char *line, t_game *game, int offset);
 int			if_direction_p1(char *line, t_game *game, int offset);
 int			if_line_1(char *line, t_game *game, int *map_flag);

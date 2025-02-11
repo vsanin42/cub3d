@@ -13,43 +13,45 @@ SRC_FILES = \
 	string_funct2.c \
 	valid_map.c \
 	get_next_line/get_next_line.c \
+	start_game.c \
 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 HEADER = my_header.h
 GNL_PATH = get_next_line/
 GNL_HEADER = $(GNL_PATH)get_next_line.h
 
-# Path to libft directory and object files
 LIBFT_PATH = libft
 LIBFT_OBJ = $(LIBFT_PATH)/libft.a
 
-# All files needed to build
-OBJ_FILES += $(LIBFT_OBJ)  # Add libft.a to object files for linking
+MLX_PATH =  minilibx-linux
+MLX_LIB = $(MLX_PATH)/libmlx.a
 
-# All compilation and linking
+MLX_FLAGS = -L$(MLX_PATH) -lmlx -lX11 -lXext -lm
+
 all: $(NAME)
 
-$(NAME): $(OBJ_FILES)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_FILES)
+$(NAME): $(OBJ_FILES) $(LIBFT_OBJ) $(MLX_LIB)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_FILES) $(LIBFT_OBJ) $(MLX_FLAGS)
 
-# Rule for compiling .o files
 %.o: %.c $(HEADER) $(GNL_HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Rule for compiling libft.a (only if needed)
 $(LIBFT_OBJ):
-	$(MAKE) -C $(LIBFT_PATH)
+	@if [ ! -f "$(LIBFT_OBJ)" ]; then $(MAKE) -C $(LIBFT_PATH); fi
 
-# Clean up object files
+$(MLX_LIB):
+	@if [ ! -f "$(MLX_LIB)" ]; then $(MAKE) -C $(MLX_PATH); fi
+
 clean:
 	rm -f $(OBJ_FILES)
+	$(MAKE) -C $(LIBFT_PATH) clean
+	$(MAKE) -C $(MLX_PATH) clean
 
-# Clean everything (including libft)
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(LIBFT_PATH)/libft.a
+	@if [ -f "$(LIBFT_OBJ)" ]; then $(MAKE) -C $(LIBFT_PATH) fclean; fi
+	@if [ -f "$(MLX_LIB)" ]; then $(MAKE) -C $(MLX_PATH) clean; fi
 
-# Rebuild everything
 re: fclean all
 
 .PHONY: all clean fclean re

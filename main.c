@@ -103,6 +103,7 @@ int	main(int argc, char **argv)
 			free_game(&game);
 			return (err("Error: Not a valid map!:("));
 		}
+		start_game(&game);
 		free_game(&game);
 	}
 	else
