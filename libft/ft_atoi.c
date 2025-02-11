@@ -6,14 +6,11 @@
 /*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 12:28:08 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/09 19:07:28 by olomova          ###   ########.fr       */
+/*   Updated: 2024/02/18 12:28:12 by olomova          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stddef.h>
-#include "my_header.h"
 
-int	ft_atoi(const char *str);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+#include "libft.h"
 
 static int	check(char c)
 {

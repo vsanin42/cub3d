@@ -16,12 +16,16 @@ int	if_direction_p2(char *line, t_game *game, int offset)
 {
 	if (ft_strncmp(line + offset, "WE", 2) == 0 && line[offset + 2] == ' ')
 	{
+		if (game->flag_w > 0)
+			return (0);
 		game->textures[2] = ft_strdup(line + 3 + offset);
 		game->flag_w++;
 		return (1);
 	}
 	else if (ft_strncmp(line + offset, "EA", 2) == 0 && line[offset + 2] == ' ')
 	{
+		if (game->flag_e > 0)
+			return (0);
 		game->textures[3] = ft_strdup(line + 3 + offset);
 		game->flag_e++;
 		return (1);
@@ -33,12 +37,16 @@ int	if_direction_p1(char *line, t_game *game, int offset)
 {
 	if (ft_strncmp(line + offset, "NO", 2) == 0 && line[offset + 2] == ' ')
 	{
+		if (game->flag_n > 0)
+			return (0);
 		game->textures[0] = ft_strdup(line + 3 + offset);
 		game->flag_n++;
 		return (1);
 	}
 	else if (ft_strncmp(line + offset, "SO", 2) == 0 && line[offset + 2] == ' ')
 	{
+		if (game->flag_s > 0)
+			return (0);
 		game->textures[1] = ft_strdup(line + 3 + offset);
 		game->flag_s++;
 		return (1);

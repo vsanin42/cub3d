@@ -1,3 +1,0 @@
-# cub3d
-
-oaoaoao

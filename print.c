@@ -39,7 +39,7 @@ void	print_map(t_game *game)
 	while (i < game->map->height)
 	{
 		j = 0;
-		while (j < ft_strlen(game->map->grid[i]))
+		while (j < (int)ft_strlen(game->map->grid[i]))
 		{
 			printf("%c", game->map->grid[i][j]);
 			j++;

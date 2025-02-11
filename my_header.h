@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include "get_next_line/get_next_line.h"
+# include "libft/libft.h"
 
 typedef struct s_map_data
 {
@@ -56,14 +57,9 @@ void		parse_color_component_floor(t_game *game,
 void		parse_color_component(t_game *game, int *j, int *i, char *line);
 int			save_color_floor(char *line, t_game *game, int counter, int j);
 int			save_color(char *line, t_game *game, int counter, int j);
-int			ft_atoi(const char *str);
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
-void		*ft_memcpy(void *dest, const void *src, size_t n);
-void		*ft_calloc(size_t count, size_t size);
-void		ft_bzero(void *s, size_t n);
-void		*ft_memset(void *s, int c, size_t n);
 int			err(char *text_err);
-void		set_array_as_null(char **textures);
+void		set_array_as_null(char **textures, int *floor_color,
+				int *ceiling_color);
 void		free_game(t_game *game);
 void		free_map(t_map *map);
 int			is_out_of_bounds(char **map, int x, int y, int rows);

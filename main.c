@@ -30,7 +30,8 @@ void	free_map(t_map *map)
 		free(map->grid[i]);
 		i++;
 	}
-	free(map->grid);
+	if (map->grid)
+		free(map->grid);
 	free(map);
 }
 
@@ -39,17 +40,25 @@ void	free_game(t_game *game)
 	int	i;
 
 	i = 0;
-	while (i < 5)
+	if (game->textures)
 	{
-		if (game->textures[i])
-			free(game->textures[i]);
-		i++;
+		while (i < 5)
+		{
+			if (game->textures[i])
+				free(game->textures[i]);
+			i++;
+		}
+		free(game->textures);
 	}
+	if (game->floor_color)
+		free(game->floor_color);
+	if (game->ceiling_color)
+		free(game->ceiling_color);
 	if (game->map)
 		free_map(game->map);
 }
 
-void	set_array_as_null(char **textures)
+void	set_array_as_null(char **textures, int *floor_color, int *ceiling_color)
 {
 	int	i;
 
@@ -57,6 +66,18 @@ void	set_array_as_null(char **textures)
 	while (i < 5)
 	{
 		textures[i] = NULL;
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		floor_color[i] = 0;
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		ceiling_color[i] = 0;
 		i++;
 	}
 }
@@ -76,7 +97,7 @@ int	main(int argc, char **argv)
 			free_game(&game);
 			return (err("Error: Memory allocation failed!"));
 		}
-		set_array_as_null(game.textures);
+		set_array_as_null(game.textures, game.floor_color, game.ceiling_color);
 		if (!valid_map(argv[1], &game, 0))
 		{
 			free_game(&game);

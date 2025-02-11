@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/17 16:15:14 by olomova           #+#    #+#             */
-/*   Updated: 2024/05/17 16:20:06 by olomova          ###   ########.fr       */
+/*   Created: 2024/02/16 15:58:27 by olomova           #+#    #+#             */
+/*   Updated: 2024/02/16 16:02:46 by olomova          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
+char	*ft_strdup(const char *str)
+{
+	int		i;
+	int		j;
+	char	*dub;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-char	*get_next_line(int fd);
-
-#endif
+	i = 0;
+	j = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	dub = (char *)malloc((i + 1) * sizeof(char));
+	if (!dub)
+	{
+		return (NULL);
+	}
+	while (j < i)
+	{
+		dub[j] = str[j];
+		j++;
+	}
+	dub[j] = '\0';
+	return (dub);
+}

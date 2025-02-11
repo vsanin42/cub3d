@@ -1,26 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/17 16:15:14 by olomova           #+#    #+#             */
-/*   Updated: 2024/05/17 16:20:06 by olomova          ###   ########.fr       */
+/*   Created: 2024/02/16 14:52:45 by olomova           #+#    #+#             */
+/*   Updated: 2024/02/17 13:46:30 by olomova          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-char	*get_next_line(int fd);
-
-#endif
+	i = 0;
+	if (!s)
+	{
+		return (NULL);
+	}
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char)c)
+		{
+			return ((char *)&s[i]);
+		}
+		i++;
+	}
+	if (s[i] == (char)c)
+	{
+		return ((char *)&s[i]);
+	}
+	return (NULL);
+}
+/*int main()
+{
+	char s[] = "tripouille";
+	ft_strchr(s, 't' + 256);
+}*/

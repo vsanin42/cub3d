@@ -54,6 +54,7 @@ int	valid_map(char *argv, t_game *game, int fd)
 	if (fd == -1 || !check_format(argv) || !alloc_all(game))
 		return (0);
 	line = get_next_line(fd);
+	map_flag = 0;
 	while (line != NULL)
 	{
 		if (!save_and_check(&map_flag, game, line))

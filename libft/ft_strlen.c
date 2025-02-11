@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/17 16:15:14 by olomova           #+#    #+#             */
-/*   Updated: 2024/05/17 16:20:06 by olomova          ###   ########.fr       */
+/*   Created: 2024/01/24 16:32:43 by olomova           #+#    #+#             */
+/*   Updated: 2024/02/16 19:27:14 by olomova          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
+size_t	ft_strlen(const char *s)
+{
+	int	i;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-char	*get_next_line(int fd);
-
-#endif
+	i = 0;
+	while (c[i] != '\0')
+		i++;
+	return (i);
+}

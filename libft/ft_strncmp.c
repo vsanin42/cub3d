@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/17 16:15:14 by olomova           #+#    #+#             */
-/*   Updated: 2024/05/17 16:20:06 by olomova          ###   ########.fr       */
+/*   Created: 2024/02/16 15:04:01 by olomova           #+#    #+#             */
+/*   Updated: 2024/02/17 13:56:22 by olomova          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-char	*get_next_line(int fd);
-
-#endif
+	i = 0;
+	while (s1[i] != '\0' && s2[i] != '\0' && i < n)
+	{
+		if (s1[i] > s2[i])
+			return (1);
+		else if (s1[i] < s2[i])
+			return (-1);
+		i++;
+	}
+	if (n == i)
+		return (0);
+	return (s1[i] - s2[i]);
+}
+/*int main ()
+{
+	printf("%d", ft_strncmp("1234", "1235", 3));
+}*/

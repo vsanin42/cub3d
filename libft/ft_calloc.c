@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/17 16:15:14 by olomova           #+#    #+#             */
-/*   Updated: 2024/05/17 16:20:06 by olomova          ###   ########.fr       */
+/*   Created: 2024/02/16 15:56:15 by olomova           #+#    #+#             */
+/*   Updated: 2024/02/17 18:43:22 by olomova          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
+void	*ft_calloc(size_t num_elements, size_t element_size)
+{
+	void	*p;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-char	*get_next_line(int fd);
-
-#endif
+	if (element_size > 4294967295 && num_elements > 4294967295)
+	{
+		return (NULL);
+	}
+	p = (void *)malloc(num_elements * element_size);
+	if (!p)
+	{
+		return (NULL);
+	}
+	else
+	{
+		ft_memset(p, 0, element_size * num_elements);
+	}
+	return (p);
+}
