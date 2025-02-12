@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 15:27:39 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/16 19:27:50 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/21 14:21:10 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/23 18:22:22 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,27 @@
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	if (little[0] == '\0')
 		return ((char *)big);
-	while (big[i] != '\0' && i < len)
+	while (big[i] != '\0' && len--)
 	{
 		j = 0;
-		if (big[i] == little[0])
+		while (big[i + j] == little[j])
 		{
-			while (little[j] && big[i + j] && i + j < len
-				&& big[i + j] == little [j])
-			{
-				j++;
-			}
-			if (little[j] == '\0')
-			{
+			if (little[j + 1] == '\0' && (size_t)j <= len)
 				return ((char *)big + i);
-			}
+			j++;
 		}
 		i++;
 	}
 	return (NULL);
 }
+
+// int main()
+// {
+// 	printf("%s", ft_strnstr("biba boba biba boba", "boba", 12));
+// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 15:58:27 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/16 16:02:46 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/21 15:34:16 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/23 18:43:02 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,27 @@
 char	*ft_strdup(const char *str)
 {
 	int		i;
-	int		j;
-	char	*dub;
+	char	*copy;
 
 	i = 0;
-	j = 0;
+	while (str[i] != '\0')
+		i++;
+	copy = (char *)malloc(sizeof(char) * (i + 1));
+	i = 0;
+	if (copy == NULL)
+		return (NULL);
 	while (str[i] != '\0')
 	{
+		copy[i] = str[i];
 		i++;
 	}
-	dub = (char *)malloc((i + 1) * sizeof(char));
-	if (!dub)
-	{
-		return (NULL);
-	}
-	while (j < i)
-	{
-		dub[j] = str[j];
-		j++;
-	}
-	dub[j] = '\0';
-	return (dub);
+	copy[i] = '\0';
+	return (copy);
 }
+
+// int	main(void)
+// {
+// 	char	str1[] = "hello world";
+// 	printf("%s", ft_strdup(str1));
+// 	//free(ft_strdup(str1));
+// }

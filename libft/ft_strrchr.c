@@ -3,35 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 14:59:33 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/17 13:45:13 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/21 12:40:19 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/21 19:20:00 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strrchr(const char *str, int c)
 {
 	int	i;
 
-	i = 0;
-	if (!s)
-	{
-		return (NULL);
-	}
-	while (s[i] != '\0')
-	{
-		i++;
-	}
+	i = ft_strlen((char *)str);
+	while (*str != '\0')
+		str += 1;
 	while (i >= 0)
 	{
-		if (s[i] == (char)c)
-		{
-			return ((char *)&s[i]);
-		}
-		i--;
+		if (*str == (char)c)
+			return ((char *)str);
+		str -= 1;
+		i -= 1;
 	}
 	return (NULL);
 }
+
+// int	main() {
+// 	printf("%s", ft_strrchr("tennessee", '\0'));
+// }

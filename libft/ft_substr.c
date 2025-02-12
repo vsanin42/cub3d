@@ -3,48 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/02 15:34:56 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/18 12:59:45 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/22 12:08:24 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/22 18:07:55 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*cut_substr(void)
+static char	*makesub(size_t len)
 {
-	char	*res;
+	char	*sub;
 
-	res = malloc(sizeof(char));
-	if (res == NULL)
-		return (res);
-	res[0] = '\0';
-	return (res);
+	sub = (char *)malloc(sizeof(char) * (len + 1));
+	if (!sub)
+		return (NULL);
+	return (sub);
 }
 
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
+	char	*sub;
 	char	*res;
-	size_t	i;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
-	if (ft_strlen(s) < start)
-	{
-		return (cut_substr());
-	}
-	else
-	{
-		if (start + len > ft_strlen(s))
-			len = ft_strlen(s) - start;
-		res = malloc(sizeof(char) * (len + 1));
-		if (res == NULL)
-			return (NULL);
-		i = 0;
-		while (++i - 1 < len)
-			*(res + i - 1) = *(s + start + i - 1);
-		*(res + i - 1) = '\0';
-		return (res);
-	}
+	if (start > (unsigned int)ft_strlen((char *)s))
+		return (ft_strdup(""));
+	if (start + len > (unsigned int)ft_strlen((char *)s))
+		len = (unsigned int)ft_strlen((char *)s) - start;
+	sub = makesub(len);
+	if (!sub)
+		return (NULL);
+	res = sub;
+	s += start;
+	while (len-- && *s != '\0')
+		*sub++ = *s++;
+	*sub = '\0';
+	return (res);
 }
+
+// int main()
+// {
+// 	printf("%s", ft_substr("", 5, 3));
+// }

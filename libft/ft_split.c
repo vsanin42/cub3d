@@ -3,100 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/21 16:29:29 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/21 16:29:35 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/22 18:04:17 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/23 20:15:56 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_words(char *str, char sep)
+static int	words_len(char *str, char c)
 {
 	int	i;
-	int	words;
+	int	count;
 
-	words = 0;
 	i = 0;
+	count = 0;
 	while (str[i] != '\0')
 	{
-		if ((str[i + 1] == sep || str[i + 1] == '\0')
-			&& !(str[i] == sep || str[i] == '\0'))
-			words++;
-		i++;
-	}
-	return (words);
-}
-
-static void	write_word(char *dest, char *from, char sep)
-{
-	int	i;
-
-	i = 0;
-	while (!(from[i] == sep || from[i] == '\0'))
-	{
-		dest[i] = from[i];
-		i++;
-	}
-	dest[i] = '\0';
-}
-
-static	char	*allocation(char **split, int word, int j)
-{
-	split[word] = (char *)malloc(sizeof(char) * (j + 1));
-	if (split[word] == NULL)
-	{
-		while (word > 0)
-			free(split[--word]);
-		return (NULL);
-	}
-	return (split[word]);
-}
-
-static void	*write_split(char **split, char *str, char sep)
-{
-	int		i;
-	int		j;
-	int		word;
-
-	i = 0;
-	word = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == sep || str[i] == '\0')
+		while (str[i] == c)
 			i++;
-		else
-		{
-			j = 0;
-			while (!(str[i + j] == sep || str[i + j] == '\0'))
-				j++;
-			split[word] = allocation(split, word, j);
-			if (split[word] == NULL)
-				return (NULL);
-			write_word(split[word], str + i, sep);
-			i += j;
-			word++;
-		}
+		if (str[i] != '\0')
+			count++;
+		while (str[i] != '\0' && str[i] != c)
+			i++;
 	}
-	return ((void *)1);
+	return (count);
 }
 
-char	**ft_split(const char *s, char c)
+static char	*ft_strndub(char *src, int n)
 {
-	char	**res;
-	char	*str;
-	int		words;
+	char	*res;
+	int		i;
 
-	if (s == NULL)
+	i = 0;
+	res = (char *)malloc((n + 1) * sizeof(char));
+	if (!res)
 		return (NULL);
-	str = (char *)s;
-	words = count_words(str, c);
-	res = (char **)malloc(sizeof(char *) * (words + 1));
-	if (res == NULL)
-		return (NULL);
-	res[words] = 0;
-	if (write_split(res, str, c) == NULL)
-		return (NULL);
+	while (i < n)
+	{
+		res[i] = src[i];
+		i += 1;
+	}
+	res[i] = '\0';
 	return (res);
 }
+
+char	**ft_split(char const *s, char c)
+{
+	int		i;
+	int		word_len;
+	char	**split;
+	int		current_word;
+
+	if (!s)
+		return (NULL);
+	split = (char **)malloc(sizeof(char *) * (words_len((char *)s, c) + 1));
+	if (!split)
+		return (NULL);
+	current_word = 0;
+	while (*s)
+	{
+		while (*s == c)
+			s++;
+		i = 0;
+		while (s[i] != '\0' && s[i] != c)
+			i++;
+		word_len = i;
+		if (word_len > 0)
+			split[current_word++] = ft_strndub((char *)s, word_len);
+		s += word_len;
+	}
+	split[current_word] = NULL;
+	return (split);
+}
+
+// void	ft_putstr(char *str)
+// {
+// 	int	i;
+// 	i = 0;
+// 	while (str[i] != '\0')
+// 	{
+// 		write(1, &str[i], 1);
+// 		i++;
+// 	}
+// }
+// int	main(void)
+// {
+// 	int	i = 0;
+// 	char *str = "??b";
+// 	char c = '?';
+// 	char **split = ft_split(str, c);
+// 	while (split[i])
+// 	{
+// 		ft_putstr(split[i]);
+// 		//write(1, "\n", 1);
+// 		i++;
+// 	}
+// 	//printf("%d", words_len("?aaa!!!bbb?ccc!", "?!"));
+// }

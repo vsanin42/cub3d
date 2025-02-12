@@ -3,38 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 14:42:47 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/16 14:44:15 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/20 17:53:17 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/22 22:35:40 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t
-	ft_strlcat(char *dst, const char *src, size_t size)
+unsigned int	ft_strlcat(char *dest, char const *src, unsigned int size)
 {
-	size_t	i;
-	size_t	j;
-	size_t	dest_length;
-	size_t	src_length;
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	init_len;
+	unsigned int	src_len;
 
-	src_length = ft_strlen(src);
-	dest_length = ft_strlen(dst);
-	j = dest_length;
 	i = 0;
-	if (dest_length < size - 1 && size > 0)
+	init_len = ft_strlen(dest);
+	src_len = ft_strlen((char *)src);
+	j = init_len;
+	if (size == 0 || size <= init_len)
+		return (size + src_len);
+	while (src[i] != '\0' && i < (size - init_len - 1))
 	{
-		while (src[i] && dest_length + i < size - 1)
-		{
-			dst[j] = src[i];
-			j++;
-			i++;
-		}
-		dst[j] = 0;
+		dest[j] = src[i];
+		i++;
+		j++;
 	}
-	if (dest_length >= size)
-		dest_length = size;
-	return (dest_length + src_length);
+	dest[j] = '\0';
+	return (init_len + src_len);
 }
+
+// int main(void)
+// {
+// 	char str1[20] = "aaa";
+// 	char *str2 = "bbb";
+// 	printf("Length: %d\n", ft_strlcat(str1, str2, 6));
+// 	printf("Result: %s\n", str1);
+// }

@@ -3,56 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 18:58:44 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/16 19:02:49 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/23 13:49:04 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/23 15:11:42 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	leng(const char *s)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
+	char			*str;
 	unsigned int	i;
 
 	i = 0;
-	while (s[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
-}
-
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
-{
-	unsigned int		len;
-	unsigned int		i;
-	char				*p;
-
-	len = leng(s);
-	p = (char *)malloc(sizeof(char) * (len + 1));
-	if (!p)
-	{
+	if (!s || !f)
 		return (NULL);
-	}
-	i = 0;
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!str)
+		return (NULL);
 	while (s[i] != '\0')
 	{
-		p[i] = f(i, s[i]);
-		i++;
+		str[i] = f(i, s[i]);
+		i += 1;
 	}
-	p[i] = '\0';
-	return (p);
+	str[i] = '\0';
+	return (str);
 }
-/*char fun(unsigned int i, char c)
-{
-        c = c + i;
-        return (c);
-}
-int main ()
-{
-	char (*f)(unsigned int, char);
-	f = fun;
-	printf("%s\n", ft_strmapi("ABC", f));
-}*/
+
+// char to_uppercase(unsigned int i, char c) {
+//     (void)i;
+//     if (c >= 'a' && c <= 'z') {
+//         return c - 32;
+//     }
+//     return c;
+// }
+
+// int main() {
+//     char *s = "hello, world!";
+//     char *result = ft_strmapi(s, to_uppercase);
+
+//     if (result) {
+//         printf("Original: %s\n", s);
+//         printf("Modified: %s\n", result);
+//         free(result);
+//     } else {
+//         printf("Memory allocation failed\n");
+//     }
+
+//     return 0;
+// }

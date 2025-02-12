@@ -3,40 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 14:52:45 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/17 13:46:30 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/21 12:10:44 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/21 19:19:35 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *str, int c)
 {
-	int	i;
-
-	i = 0;
-	if (!s)
+	while (*str != '\0')
 	{
-		return (NULL);
+		if (*str == (char)c)
+			return ((char *)str);
+		str++;
 	}
-	while (s[i] != '\0')
-	{
-		if (s[i] == (char)c)
-		{
-			return ((char *)&s[i]);
-		}
-		i++;
-	}
-	if (s[i] == (char)c)
-	{
-		return ((char *)&s[i]);
-	}
+	if (*str == (char)c)
+		return ((char *)str);
 	return (NULL);
 }
-/*int main()
-{
-	char s[] = "tripouille";
-	ft_strchr(s, 't' + 256);
-}*/
+
+// int	main()
+// {
+// 	printf("%s", ft_strchr("xyzxyzxyz", '\0'));
+// }

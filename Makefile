@@ -1,56 +1,66 @@
-NAME = my_program
-CC = gcc
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/02/12 13:46:14 by vsanin            #+#    #+#              #
+#    Updated: 2025/02/12 13:46:14 by vsanin           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME = cub3D
+
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
+RM = rm -f
 
-SRC_FILES = \
-	main.c \
-	c.c \
-	colors.c \
-	map_check.c \
-	map_check2.c \
-	print.c \
-	string_funct.c \
-	string_funct2.c \
-	valid_map.c \
-	get_next_line/get_next_line.c \
-	start_game.c \
+LIBFTDIR = libft
+LIBFT = $(LIBFTDIR)/libft.a
 
-OBJ_FILES = $(SRC_FILES:.c=.o)
-HEADER = my_header.h
-GNL_PATH = get_next_line/
-GNL_HEADER = $(GNL_PATH)get_next_line.h
+MLXDIR = mlx
+MLX = $(MLXDIR)/libmlx_Linux.a
+MLX_FLAGS = -L/usr/lib/X11 -lXext -lX11
 
-LIBFT_PATH = libft
-LIBFT_OBJ = $(LIBFT_PATH)/libft.a
+HEADER = includes/cub3d.h
 
-MLX_PATH =  minilibx-linux
-MLX_LIB = $(MLX_PATH)/libmlx.a
+SRC  = 	srcs/main.c \
+		srcs/c.c \
+		srcs/colors.c \
+		srcs/map_check.c \
+		srcs/map_check2.c \
+		srcs/print.c \
+		srcs/string_funct.c \
+		srcs/string_funct2.c \
+		srcs/valid_map.c \
+		srcs/start_game.c \
 
-MLX_FLAGS = -L$(MLX_PATH) -lmlx -lX11 -lXext -lm
+OBJ = $(SRC:.c=.o)
 
-all: $(NAME)
+all: $(LIBFT) $(MLX) $(NAME)
 
-$(NAME): $(OBJ_FILES) $(LIBFT_OBJ) $(MLX_LIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_FILES) $(LIBFT_OBJ) $(MLX_FLAGS)
+$(LIBFT):
+	$(MAKE) -C $(LIBFTDIR)
 
-%.o: %.c $(HEADER) $(GNL_HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@
+$(MLX):
+	$(MAKE) -C $(MLXDIR)
 
-$(LIBFT_OBJ):
-	@if [ ! -f "$(LIBFT_OBJ)" ]; then $(MAKE) -C $(LIBFT_PATH); fi
+$(NAME): $(OBJ) $(HEADER)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(MLX) $(MLX_FLAGS)
 
-$(MLX_LIB):
-	@if [ ! -f "$(MLX_LIB)" ]; then $(MAKE) -C $(MLX_PATH); fi
+%.o: %.c $(HEADER)
+	$(CC) $(CFLAGS) -c $< -o $@ -I/usr/include -Imlx
 
 clean:
-	rm -f $(OBJ_FILES)
-	$(MAKE) -C $(LIBFT_PATH) clean
-	$(MAKE) -C $(MLX_PATH) clean
+	$(RM) $(OBJ)
+	$(MAKE) -C $(LIBFTDIR) clean
+	$(MAKE) -C $(MLXDIR) clean
 
 fclean: clean
-	rm -f $(NAME)
-	@if [ -f "$(LIBFT_OBJ)" ]; then $(MAKE) -C $(LIBFT_PATH) fclean; fi
-	@if [ -f "$(MLX_LIB)" ]; then $(MAKE) -C $(MLX_PATH) clean; fi
+	$(RM) $(NAME)
+	$(MAKE) -C $(LIBFTDIR) fclean
+	$(MAKE) -C $(MLXDIR) clean
 
 re: fclean all
 

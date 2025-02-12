@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 15:04:01 by olomova           #+#    #+#             */
-/*   Updated: 2024/02/17 13:56:22 by olomova          ###   ########.fr       */
+/*   Created: 2024/05/21 13:12:37 by vsanin            #+#    #+#             */
+/*   Updated: 2024/05/21 19:19:53 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,27 @@
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	size_t	i;
+	unsigned int	i;
+	int				ret;
 
 	i = 0;
-	while (s1[i] != '\0' && s2[i] != '\0' && i < n)
+	ret = 0;
+	while ((s1[i] || s2[i]) && n != i)
 	{
-		if (s1[i] > s2[i])
-			return (1);
-		else if (s1[i] < s2[i])
-			return (-1);
+		if (s1[i] != s2[i])
+		{
+			ret = s1[i] - s2[i];
+			return (ret);
+		}
 		i++;
 	}
-	if (n == i)
-		return (0);
-	return (s1[i] - s2[i]);
+	return (0);
 }
-/*int main ()
-{
-	printf("%d", ft_strncmp("1234", "1235", 3));
-}*/
+
+// int	main()
+// {
+// 	char *s1 = "abc";
+// 	char *s2 = "abb";
+// 	size_t n = 2;
+// 	printf("%d", ft_strncmp(s1, s2, n));
+// }
