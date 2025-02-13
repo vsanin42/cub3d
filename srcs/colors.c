@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   colors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <olomova@student.42.fr>            #+#  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-02-09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025-02-09 19:08:29 by olomova          ###   ########.fr       */
+/*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
+/*   Updated: 2025/02/13 01:44:56 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,8 @@ int	save_color_floor(char *line, t_game *game, int counter, int j)
 			return (0);
 		i++;
 	}
-	if (game->floor_color[0] > 255 || game->floor_color[1] > 255
-		|| game->floor_color[2] > 255 || counter != 2 || j != 3)
-		return (0);
+	if (!check_rgb_values(game, 2) || counter != 2 || j != 3)
+		return (err("Error: invalid RGB value!"), 0);
 	return (1);
 }
 
@@ -72,8 +71,26 @@ int	save_color(char *line, t_game *game, int counter, int j)
 			return (0);
 		i++;
 	}
-	if (game->ceiling_color[0] > 255 || game->ceiling_color[1] > 255
-		|| game->ceiling_color[2] > 255 || counter != 2 || j != 3)
-		return (0);
+	if (!check_rgb_values(game, 1) || counter != 2 || j != 3)
+		return (err("Error: invalid RGB value!"), 0);
+	return (1);
+}
+
+int	check_rgb_values(t_game *game, int flag)
+{
+	if (flag == 1)
+	{
+		if (game->ceiling_color[0] < 0 || game->ceiling_color[0] > 255
+			|| game->ceiling_color[1] < 0 || game->ceiling_color[1] > 255
+			|| game->ceiling_color[2] < 0 || game->ceiling_color[2] > 255)
+			return (0);
+	}
+	else if (flag == 2)
+	{
+		if (game->floor_color[0] < 0 || game->floor_color[0] > 255
+			|| game->floor_color[1] < 0 || game->floor_color[1] > 255
+			|| game->floor_color[2] < 0 || game->floor_color[2] > 255)
+			return (0);
+	}
 	return (1);
 }

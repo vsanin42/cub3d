@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <olomova@student.42.fr>            #+#  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-02-09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/09 22:00:46 by olomova          ###   ########.fr       */
+/*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
+/*   Updated: 2025/02/13 01:46:10 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	alloc_all(t_game *game)
 {
 	game->map = malloc(sizeof(t_map));
 	if (!game->map)
-		return (0);
+		return (err("Error: map allocation failed!"), 0);
 	game->map->grid = NULL;
 	game->map->height = 0;
-	flag_init(game);
+	flag_init(game); // is this needed? there's space here
 	game->textures[4] = NULL;
 	return (1);
 }
@@ -35,10 +35,12 @@ int	save_and_check(int *map_flag, t_game *game, char *line)
 	offset = skip_whitespace(line);
 	res1 = if_direction_p2(line, game, offset);
 	res2 = if_direction_p1(line, game, offset);
-	res3 = if_surface(line, game, offset);
-	res4 = if_map(line, game, map_flag, offset);
+	res3 = if_surface(line, game, offset); // checked up to here. todo
+	res4 = if_map(line, game, map_flag, offset); 
 	if (!res1 && !res2 && !res3 && !res4)
 	{
+		// get_next_line(-1); // cleans whatever remains in the buffer
+		// if stopped reading in the middle of file - uncomment if there are leaks
 		free(line);
 		return (0);
 	}
@@ -58,7 +60,7 @@ int	valid_map(char *argv, t_game *game, int fd)
 	while (line != NULL)
 	{
 		if (!save_and_check(&map_flag, game, line))
-			return (0);
+			return (0); // get_next_line(-1) to clean buffer?
 		free(line);
 		line = get_next_line(fd);
 	}

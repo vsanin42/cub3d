@@ -71,29 +71,32 @@ int	check_walls(char **map, int rows)
 	return (1);
 }
 
+// 1. check length: if too short, return
+// 2. check extension: if wrong, return
+// 3. check forbidden chars: if found return
+// if everything passes, success
 int	check_format(char *argv)
 {
 	int	i;
+	int	len;
 
 	i = 0;
-	if (ft_strlen(argv) <= 4)
-		return (0);
-	while (argv[i])
+	len = ft_strlen(argv);
+	if (len <= 4)
+		return (err("Error: filename is too short!"), 0);
+	if (ft_strncmp(argv + len - 4, ".cub", 4) != 0) // if matches, it returns 0
+		return (err("Error: wrong extension!"), 0);
+	while (argv[i]) // check for non-alnum and non ._-/ characters
 	{
-		if (!((argv[i] >= '0' && argv[i] <= '9') || (argv[i] >= 'a'
-					&& argv[i] <= 'z') || (argv[i] >= 'A' && argv[i] <= 'Z')
+		if (!((argv[i] >= '0' && argv[i] <= '9')
+				|| (argv[i] >= 'a' && argv[i] <= 'z')
+				|| (argv[i] >= 'A' && argv[i] <= 'Z')
 				|| argv[i] == '.' || argv[i] == '-'
 				|| argv[i] == '_' || argv[i] == '/'))
-			return (0);
-		if (argv[i + 1] != 0 && argv[i] == 'b' && argv[i - 1] == 'u'
-			&& argv[i - 2] == 'c' && argv[i - 3] == '.')
-			return (0);
-		if (!argv[i + 1] && argv[i] == 'b' && argv[i - 1] == 'u'
-			&& argv[i - 2] == 'c' && argv[i - 3] == '.')
-			return (1);
+			return (err("Error: forbidden character in the filename!"), 0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 void	flag_init(t_game *game)
