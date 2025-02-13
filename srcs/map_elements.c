@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_elements.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <olomova@student.42.fr>            #+#  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-02-09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025-02-09 19:09:29 by olomova          ###   ########.fr       */
+/*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
+/*   Updated: 2025/02/13 15:01:25 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,12 @@ int	if_surface(char *line, t_game *game, int offset)
 
 int	if_line_1(char *line, t_game *game, int *map_flag)
 {
-	*map_flag = 1;
-	if (!add_map_line(game->map, line))
-		return (0);
+	// do this first to avoid extra malloc calls if textures/floor/ceiling wasn't set
 	if (game->flag_n != 1 || game->flag_w != 1 || game->flag_e != 1
 		|| game->flag_s != 1 || game->flag_f != 1 || game->flag_c != 1)
+		return (0);
+	*map_flag = 1;
+	if (!add_map_line(game->map, line))
 		return (0);
 	return (1);
 }

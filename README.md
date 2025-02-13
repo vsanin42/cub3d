@@ -23,3 +23,21 @@ did some figuring out what's going on, still checking things, will be adding ray
 - added int max overflow check in atoi just in case. if overflow, atoi returns -1.
 
 - added a small rgb value check 0 to 255 which also excludes negative values. this is longggggg bzbzbzbzbz
+
+13.02 - V
+
+done checking up to game start, math next
+
+- if_line_1: swapped flag check with line allocation - if textures/floor/ceiling wasn't allocated, return and don't allocate the grid and grid lines.
+
+- valid_map: after close(fd), there's a check for nswefc flags + map flag. if map_flag == 0, map wasn't found/something went wrong, this is ok. what if it's -1 or 1 and something happened mid parsing? just making sure the check is enough, i think it looks right.
+
+- init_map_data: why "+ 1" in "ft_strlen(map[i]) + 1"? doesn't that add an extra column?
+
+- changed free_map_data: we don't want to free all visited[i] rows from 0 to rows if it failed in the middle, must only free up the last allocated index.
+
+- is_valid_char: is checking for spaces only enough? maybe tabs/\r, others? idk probably doesn't matter
+
+- trim_spaces: made it return the updates pointer, as a void function the pointer shift was local and texture stayed the same.
+
+- UPDATE: trim_spaces replaced with ft_strtrim. original version didn't change the string, my updated version messed up the pointer (we'd have issues when freeing because it's no longer the same pointer, doesn't point to the same place that was allocated initially). ft_strtrim trims and allocates a new trimmed string, just had to free the old one in the wrapper. set up error messages accordingly because it could be null or empty string. should be ok now. + textures[i] has the output of gnl, which always ends in a newline, so right after newline is \0. but still gotta check for things like: "NO   *spaces*    \n\0"

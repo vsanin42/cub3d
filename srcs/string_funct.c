@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/12 14:30:24 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:18:11 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	add_map_line(t_map *map, const char *line)
 	return (1);
 }
 
+// only spaces and no tabs/\r, etc..?
 int	is_valid_char(char c)
 {
 	return (c == '0' || c == '1' || c == 'N'
@@ -64,16 +65,19 @@ int	my_isspace(char c)
 		|| c == '\v' || c == '\f' || c == '\r');
 }
 
-void	trim_spaces(char *str)
+// 2.0 USE FT_STRTRIM
+// return the updated str to assign in the caller, otherwise the change is local
+char	*trim_spaces(char *str)
 {
 	char	*end;
 
 	while (my_isspace((unsigned char)*str))
 		str++;
-	if (*str == 0)
-		return ;
+	if (*str == '\0')
+		return (NULL); // i guess empty string for texture is an error?
 	end = str + ft_strlen(str) - 1;
 	while (end > str && my_isspace((unsigned char)*end))
 		end--;
 	*(end + 1) = '\0';
+	return (str);
 }

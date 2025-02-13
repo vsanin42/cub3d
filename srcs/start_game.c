@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/12 14:30:24 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/13 23:35:59 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,14 @@ void	start_game(t_game *game)
 {
 	t_win_params	wind;
 
-	if (game)
-	{
-		wind.mlx = mlx_init();
-		if (!wind.mlx)
-			err_exit("Error: Something is wrong with window!", game);
-		wind.win = mlx_new_window(wind.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
-		if (!wind.win)
-			err_exit("Error: Something is wrong with window!", game);
-		wind.game = game;
-		mlx_key_hook(wind.win, key_press, &wind);
-		mlx_hook(wind.win, 17, 0, close_window, &wind);
-		mlx_loop(wind.mlx);
-	}
+	wind.mlx = mlx_init();
+	if (!wind.mlx)
+		err_exit("Error: Something is wrong with window!", game);
+	wind.win = mlx_new_window(wind.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
+	if (!wind.win)
+		err_exit("Error: Something is wrong with window!", game);
+	wind.game = game;
+	mlx_key_hook(wind.win, key_press, &wind);
+	mlx_hook(wind.win, 17, 0, close_window, &wind);
+	mlx_loop(wind.mlx);
 }

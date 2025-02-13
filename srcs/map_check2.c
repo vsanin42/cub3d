@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_check2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olomova <olomova@student.42.fr>            #+#  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-02-09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025-02-09 19:09:29 by olomova          ###   ########.fr       */
+/*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
+/*   Updated: 2025/02/13 18:07:59 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_char_validity(t_map_data *data, int i, int j)
 	c = data->map[i][j];
 	if (!is_valid_char(c))
 	{
-		printf("Invalid character at position [%d, %d] |%c|\n", i, j, c);
+		printf("Error: invalid character at position [%d, %d] |%c|\n", i, j, c);
 		return (0);
 	}
 	return (1);
@@ -35,13 +35,14 @@ int	check_area_closure(t_map_data *data, int i, int j)
 	{
 		if (!flood_fill(data, i, j))
 		{
-			printf("Open area detected at position [%d, %d]\n", i, j);
+			printf("Error: open area detected at position [%d, %d]\n", i, j);
 			return (0);
 		}
 	}
 	return (1);
 }
 
+// map is grid
 int	check_walls(char **map, int rows)
 {
 	int			i;
@@ -55,19 +56,19 @@ int	check_walls(char **map, int rows)
 	while (i < data->rows)
 	{
 		j = 0;
-		while (j < (int)ft_strlen(data->map[i]))
+		while (j < ft_strlen(data->map[i]))
 		{
 			if (!check_char_validity(data, i, j)
 				|| !check_area_closure(data, i, j))
 			{
-				free_map_data(data);
+				free_map_data(data, -1);
 				return (0);
 			}
 			j++;
 		}
 		i++;
 	}
-	free_map_data(data);
+	free_map_data(data, -1);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/13 01:50:30 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:15:48 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void		parse_color_component_floor(t_game *game,
 int			is_out_of_bounds(char **map, int x, int y, int rows);
 int			flood_fill(t_map_data *data, int x, int y);
 t_map_data	*init_map_data(char **map, int rows);
-void		free_map_data(t_map_data *data);
+void		free_map_data(t_map_data *data, int index);
 int			check_player(char **grid);
 
 /* srcs/map_check2.c */
@@ -104,9 +104,10 @@ char		*ft_strdup_without_newline(const char *str);
 int			add_map_line(t_map *map, const char *line);
 int			is_valid_char(char c);
 int			my_isspace(char c);
-void		trim_spaces(char *str);
+char		*trim_spaces(char *str);
 
 /* srcs/string_funct2.c */
+char		*trim_wrapper(char *str);
 int			skip_whitespace(const char *str);
 int			edit_paths(char **textures);
 

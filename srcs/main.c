@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/13 00:29:07 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/13 15:00:53 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,16 @@ void	free_map(t_map *map)
 	int	i;
 
 	i = 0;
-	if (!map)
+	if (!map) // map is always alloced in alloc_all but keep it
 		return ;
-	while (i < map->height)
+	if (!map->grid) // grid may not be alloced if textures/floor/ceiling is missing
+		return (free(map)); // in that case only free the map and exit
+	while (i < map->height) // otherwise free each grid line, grid itself and finally map
 	{
 		free(map->grid[i]);
 		i++;
 	}
-	if (map->grid)
-		free(map->grid);
+	free(map->grid);
 	free(map);
 }
 
