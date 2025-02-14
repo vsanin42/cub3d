@@ -1,7 +1,7 @@
-NO textures/matrix.xpm
-SO textures/matrix.xpm
-WE textures/matrix.xpm
-EA textures/matrix.xpm
+NO maps/good/texture_valid.xpm
+SO maps/good/texture_valid.xpm
+WE maps/good/texture_valid.xpm
+EA maps/good/texture_valid.xpm
 
 F 0,0,0
 C 0,0,0

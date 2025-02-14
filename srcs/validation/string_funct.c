@@ -6,11 +6,11 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/13 20:18:11 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/14 16:01:56 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 char	*ft_strdup_without_newline(const char *str)
 {

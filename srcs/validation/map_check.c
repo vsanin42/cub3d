@@ -6,11 +6,11 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/13 17:58:01 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/14 18:00:51 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	is_out_of_bounds(char **map, int x, int y, int rows)
 {
@@ -116,5 +116,5 @@ int	check_player(char **grid)
 	}
 	if (flag == 1)
 		return (1);
-	return (0);
+	return (err("Error: Missing/extra player position!"), 0);
 }

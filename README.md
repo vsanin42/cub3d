@@ -12,7 +12,7 @@ did some figuring out what's going on, still checking things, will be adding ray
 
 - solution: alloc all at once, instantly check for malloc fails and free all 3 - we can do it safely since we used memset above and all game members are either alloced (freeable) or null (freeing doesn't do anything so it's safe). then thanks to saved space we can set textures[i], etc.. to null or 0 in the same function - alloc_and_nullify. we'll also need more space in main for mlx functions, so that's another plus. btw thanks for showing me memset, i've never used it before :D cool thing. i know this is probably overkill and we 99% won't run into an issue like this irl, but i'm trying to polish it now so we don't run into issues related to this later.
 
-- **TODO**: may need to replace gnl in my libft with your gnl because of buffer issues, i'll test it. for my gnl if gnl returned mid-file before finishing it whole, the buffer would be stuck, so i added -1 option to free the buffer afterwards. if it causes problems will roll back to your gnl.
+- for my gnl if gnl returned mid-file before finishing it whole, the buffer would be stuck, so i added -1 option to free the buffer afterwards.
 
 - if map name is abc.cub.cub it will be considered invalid - correct? i agree logically because we never see such files but theoretically it's possible to have such names, extension = everything after the last dot. probably doesn't matter but i'll adjust it.
 
@@ -41,3 +41,23 @@ done checking up to game start, math next
 - trim_spaces: made it return the updates pointer, as a void function the pointer shift was local and texture stayed the same.
 
 - UPDATE: trim_spaces replaced with ft_strtrim. original version didn't change the string, my updated version messed up the pointer (we'd have issues when freeing because it's no longer the same pointer, doesn't point to the same place that was allocated initially). ft_strtrim trims and allocates a new trimmed string, just had to free the old one in the wrapper. set up error messages accordingly because it could be null or empty string. should be ok now. + textures[i] has the output of gnl, which always ends in a newline, so right after newline is \0. but still gotta check for things like: "NO   *spaces*    \n\0"
+
+14.02 - V
+
+i in fact wasn't done checking :D now validation should be pretty robust, just double check later.
+
+- added srcs subfolders, everything works after my changes too.
+
+- what is forbidden.cub supposed to test? assuming it's for file permissions, i added another check there for 1. files with no permissions 2. non-existent files (wrong names) based on error number (errno), all works fine. for xpm paths too.
+
+- improved messages depending on what failed during validation
+
+- slightly changed err() to use write instead of printf and print to stderr instead of stdout
+
+- all bad maps verified with new messages, some may be a bit off - test again later to be 100% sure. goods and weirds also tested, all good:)
+
+- test_map_hole.cub moved to bad, open unguarded space
+
+- to test textures_forbidden.cub + texture_forbidden.xpm and forbidden.cub, reset rights with chmod to all 0 or smth
+
+https://aurelienbrabant.fr/blog/pixel-drawing-with-the-minilibx useful for drawing pixels later

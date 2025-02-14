@@ -6,11 +6,11 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/13 01:44:56 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/14 17:44:15 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 void	parse_color_component_floor(t_game *game, int *j, int *i, char *line)
 {
@@ -44,11 +44,11 @@ int	save_color_floor(char *line, t_game *game, int counter, int j)
 		if (line[i] == ',')
 			counter++;
 		else
-			return (0);
+			return (err("Error: Non-numeric/negative floor RGB value!"), 0);
 		i++;
 	}
-	if (!check_rgb_values(game, 2) || counter != 2 || j != 3)
-		return (err("Error: invalid RGB value!"), 0);
+	if (counter != 2 || j != 3 || !check_rgb_values(game, 2))
+		return (err("Error: Invalid/missing floor RGB value!"), 0);
 	return (1);
 }
 
@@ -68,11 +68,11 @@ int	save_color(char *line, t_game *game, int counter, int j)
 		if (line[i] == ',')
 			counter++;
 		else
-			return (0);
+			return (err("Error: Non-numeric/negative ceiling RGB value!"), 0);
 		i++;
 	}
-	if (!check_rgb_values(game, 1) || counter != 2 || j != 3)
-		return (err("Error: invalid RGB value!"), 0);
+	if (counter != 2 || j != 3 || !check_rgb_values(game, 1))
+		return (err("Error: Invalid/missing ceiling RGB value!"), 0);
 	return (1);
 }
 

@@ -6,11 +6,11 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/13 21:10:04 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/14 18:56:25 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	skip_whitespace(const char *str)
 {
@@ -37,8 +37,19 @@ char	*trim_wrapper(char *str)
 	if (res == NULL)
 		err("Error: ft_strtrim malloc failed!");
 	else if (*res == '\0')
-		err("Error: texture not specified!");
+		err("Error: Texture not specified!");
 	return (res);
+}
+
+int	check_texture_path(char *str)
+{
+	int	fd;
+
+	fd = open(str, O_RDONLY);
+	if (check_fd(fd) == -1)
+		return (0);
+	close(fd);
+	return (1);
 }
 
 // replaced trim_spaces with ft_strtrim
@@ -59,7 +70,9 @@ int	edit_paths(char **textures)
 		if (len < 5 || textures[i][len - 1] != 'm'
 			|| textures[i][len - 2] != 'p' || textures[i][len - 3] != 'x'
 			|| textures[i][len - 4] != '.')
-			return (err("Error: wrong texture format!"), 0);
+			return (err("Error: Wrong texture format!"), 0);
+		if (!check_texture_path(textures[i]))
+			return (err("Error: Opening .xpm failed!"), 0);
 		i++;
 	}
 	return (1);

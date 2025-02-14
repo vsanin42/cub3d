@@ -6,12 +6,13 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/13 23:35:59 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/14 16:09:31 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+// currently not in use, freeing is done in main
 void	err_exit(char *err_msg, t_game *game)
 {
 	free_game(game);
@@ -19,36 +20,46 @@ void	err_exit(char *err_msg, t_game *game)
 	exit(1);
 }
 
-int	close_window(t_win_params *wind)
+int	close_window(t_game *game)
 {
-	mlx_destroy_window(wind->mlx, wind->win);
-	free_game(wind->game);
+	// destroy images
+	mlx_destroy_window(game->mlx, game->win);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	free_game(game);
 	exit(0);
-}
-
-int	key_press(int keycode, t_win_params *wind)
-{
-	if (keycode == 65307)
-	{
-		mlx_destroy_window(wind->mlx, wind->win);
-		free_game(wind->game);
-		exit(0);
-	}
 	return (0);
 }
 
-void	start_game(t_game *game)
+int	key_press(int keycode, t_game *game)
 {
-	t_win_params	wind;
+	if (keycode == 65307)
+		close_window(game);
+	// todo
+	return (0);
+}
 
-	wind.mlx = mlx_init();
-	if (!wind.mlx)
-		err_exit("Error: Something is wrong with window!", game);
-	wind.win = mlx_new_window(wind.mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
-	if (!wind.win)
-		err_exit("Error: Something is wrong with window!", game);
-	wind.game = game;
-	mlx_key_hook(wind.win, key_press, &wind);
-	mlx_hook(wind.win, 17, 0, close_window, &wind);
-	mlx_loop(wind.mlx);
+int	render(t_game *game)
+{
+	// todo
+	(void)game;
+	return (0);
+}
+
+int	start_game(t_game *game)
+{
+	game->mlx = mlx_init();
+	if (!game->mlx)
+		return (err("Error: mlx_init() failed!:("), 0);
+	game->win = mlx_new_window(game->mlx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
+	if (!game->win)
+		return (free(game->mlx), err("Error: mlx_new_window() failed!:("), 0);
+	// todo img and addr (?)
+	// todo load textures
+	mlx_hook(game->win, 2, 1L << 0, key_press, game);
+	mlx_hook(game->win, 17, 1L << 0, close_window, game);
+	// todo render everything initially (or not?)
+	mlx_loop_hook(game->mlx, render, game);
+	mlx_loop(game->mlx);
+	return (1);
 }

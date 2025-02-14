@@ -6,58 +6,11 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/13 15:00:53 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/14 16:42:26 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-int	err(char *text_err)
-{
-	printf("%s\n", text_err);
-	return (1);
-}
-
-void	free_map(t_map *map)
-{
-	int	i;
-
-	i = 0;
-	if (!map) // map is always alloced in alloc_all but keep it
-		return ;
-	if (!map->grid) // grid may not be alloced if textures/floor/ceiling is missing
-		return (free(map)); // in that case only free the map and exit
-	while (i < map->height) // otherwise free each grid line, grid itself and finally map
-	{
-		free(map->grid[i]);
-		i++;
-	}
-	free(map->grid);
-	free(map);
-}
-
-void	free_game(t_game *game)
-{
-	int	i;
-
-	i = 0;
-	if (game->textures)
-	{
-		while (i < 5)
-		{
-			if (game->textures[i])
-				free(game->textures[i]);
-			i++;
-		}
-		free(game->textures);
-	}
-	if (game->floor_color)
-		free(game->floor_color);
-	if (game->ceiling_color)
-		free(game->ceiling_color);
-	if (game->map)
-		free_map(game->map);
-}
 
 // not used if we keep alloc_and_nullify
 void	set_array_as_null(char **textures, int *floor_color, int *ceiling_color)
@@ -115,8 +68,9 @@ int	main(int argc, char **argv)
 		return (1);
 	// set_array_as_null(game.textures, game.floor_color, game.ceiling_color);
 	if (!valid_map(argv[1], &game, 0))
-		return (free_game(&game), err("Error: Not a valid map!:("));
-	start_game(&game);
+		return (free_game(&game), err("Error: Map validation failed!:("));
+	if (!start_game(&game))
+		return (free_game(&game), 1);
 	free_game(&game);
 	return (0);
 }
