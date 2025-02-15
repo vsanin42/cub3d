@@ -56,8 +56,14 @@ i in fact wasn't done checking :D now validation should be pretty robust, just d
 
 - all bad maps verified with new messages, some may be a bit off - test again later to be 100% sure. goods and weirds also tested, all good:)
 
-- test_map_hole.cub moved to bad, open unguarded space
+- test_map_hole.cub moved to bad, open unguarded space - we can handle it how we want according to subject.
 
 - to test textures_forbidden.cub + texture_forbidden.xpm and forbidden.cub, reset rights with chmod to all 0 or smth
 
+---------------------------------
+
+https://lodev.org/cgtutor/raycasting.html main tutorial i'm following, ref.cpp is from there.
+https://medium.com/@afatir.ahmedfatir/cub3d-tutorial-af5dd31d2fcf this has some good pictures to visualize geometry and direction of vectors
 https://aurelienbrabant.fr/blog/pixel-drawing-with-the-minilibx useful for drawing pixels later
+
+- check_player: when we find NSWE, we also update the starting position in the game struct with its coordinates + the orientation with its value to know which way we're facing and how to define the starting vector. also define a camera plane perpendicular to the direction vector. the best way to understand it is to visualize it, links above are good.

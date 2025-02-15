@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/14 18:49:58 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/15 00:57:44 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@
 
 # define WIN_WIDTH 640
 # define WIN_HEIGHT 480
+
+typedef struct s_pos
+{
+	double	x;
+	double	y;
+}	t_pos;
 
 typedef struct s_map
 {
@@ -46,6 +52,11 @@ typedef struct s_game
 	int		flag_c;
 	void	*mlx;
 	void	*win;
+	t_pos	pos;
+	t_pos	dir;
+	t_pos	plane;
+	double	time;
+	double	old_time;
 }	t_game;
 
 typedef struct s_win_params
@@ -62,6 +73,12 @@ typedef struct s_map_data
 	int		**visited;
 }	t_map_data;
 
+/* srcs/raycasting */
+/* srcs/raycasting/raycaster.c */
+
+
+/* ------------------------------------------------ */
+
 /* srcs/utils */
 /* srcs/utils/print.c */
 void		print_colors(t_game *game);
@@ -72,6 +89,7 @@ void		print_map(t_game *game);
 int			err(char *text_err);
 void		free_game(t_game *game);
 void		free_map(t_map *map);
+void		free_map_data(t_map_data *data, int index);
 
 /* ------------------------------------------------ */
 
@@ -88,8 +106,8 @@ void		parse_color_component_floor(t_game *game,
 int			is_out_of_bounds(char **map, int x, int y, int rows);
 int			flood_fill(t_map_data *data, int x, int y);
 t_map_data	*init_map_data(char **map, int rows);
-void		free_map_data(t_map_data *data, int index);
-int			check_player(char **grid);
+void		set_start_pos(char c, int i, int j, t_game *game);
+int			check_player(char **grid, t_game *game);
 
 /* srcs/validation/map_check2.c */
 int			check_char_validity(t_map_data *data, int i, int j);

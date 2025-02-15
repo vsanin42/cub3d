@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/14 19:14:10 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/15 01:00:48 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,14 @@ int	alloc_all(t_game *game, int fd)
 	}
 	game->map->grid = NULL;
 	game->map->height = 0;
-	flag_init(game); // is this needed? there's space here
+	flag_init(game);
 	game->textures[4] = NULL;
+	game->dir.x = 0;
+	game->dir.y = 0;
+	game->plane.x = 0;
+	game->plane.y = 0;
+	game->time = 0;
+	game->old_time = 0;
 	return (1);
 }
 
@@ -99,7 +105,7 @@ int	valid_map(char *argv, t_game *game, int fd)
 		|| game->flag_s != 1 || game->flag_f != 1 || game->flag_c != 1
 		|| map_flag == 0) // is map_flag == 0 enough to check? 
 		return (err("Error: Missing/extra textures, colors and/or map!"), 0);
-	if (!check_height(game->map->height) || !check_player(game->map->grid)
+	if (!check_height(game->map->height) || !check_player(game->map->grid, game)
 		|| !check_walls(game->map->grid, game->map->height)
 		|| !edit_paths(game->textures))
 		return (0);

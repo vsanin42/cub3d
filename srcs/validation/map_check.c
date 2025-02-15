@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/14 18:00:51 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/15 00:50:21 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,30 +71,44 @@ t_map_data	*init_map_data(char **map, int rows)
 	return (data);
 }
 
-// 1. default: index == -1. stop index == rows. free all visited[i]
-// 2. if failed at initializing of visited array: index == last valid index.
-// stop index == index to stop at. free up to that index only.
-void	free_map_data(t_map_data *data, int index)
+// if NSWE was found:
+// 1. set the coordinates x and y based on j and i.
+// 2. set the orientation based on NSWE.
+// dir and plane are set to 0 in alloc_all, so we just replace what's needed.
+// 3. set plane.x and plane.t PERPENDICULAR to dir.
+// 4. 0.66 dictates field of view, sign changes to reflect the right side. THIS CAN CHANGE IDK
+// example: for direction WEST (-1, 0), right hand side is NORTH
+// so adding the vector plane and getting farthest right ray means adding -0.66 to y dimension
+// this is crazy
+// left (x = -1) ------ 0 ------- right (x = 1)
+// up (y = -1) -------- 0 ------- down (y = 1) (O_o)
+void	set_start_pos(char c, int i, int j, t_game *game)
 {
-	int	i;
-	int	stop_index;
-
-	i = 0;
-	if (!data)
-		return ;
-	stop_index = data->rows;		
-	if (index > -1)
-		stop_index = index;
-	while (i < stop_index)
+	game->pos.x = j; // x = column from left to right = j
+	game->pos.y = i; // y = row from top to bottom = i
+	if (c == 'N') // dir: (0, -1); plane: (0.66, 0)
 	{
-		free(data->visited[i]);
-		i++;
+		game->dir.y = -1;
+		game->plane.x = 0.66;
 	}
-	free(data->visited);
-	free(data);
+	else if (c == 'S') // dir: (0, 1); plane: (-0.66, 0)
+	{
+		game->dir.y = 1;
+		game->plane.x = -0.66;
+	}
+	else if (c == 'W') // dir: (-1, 0); plane: (0, -0.66)
+	{
+		game->dir.x = -1;
+		game->plane.y = -0.66;
+	}
+	else if (c == 'E') // dir: (1, 0); plane: (0, 0.66)
+	{
+		game->dir.x = 1;
+		game->plane.y = 0.66;
+	}
 }
 
-int	check_player(char **grid)
+int	check_player(char **grid, t_game *game)
 {
 	int	i;
 	int	j;
@@ -109,7 +123,10 @@ int	check_player(char **grid)
 		{
 			if (grid[i][j] == 'S' || grid[i][j] == 'W'
 				|| grid[i][j] == 'N' || grid[i][j] == 'E')
+			{
+				set_start_pos(grid[i][j], i, j, game);
 				flag++;
+			}
 			j++;
 		}
 		i++;

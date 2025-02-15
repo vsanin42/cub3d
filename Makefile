@@ -25,7 +25,10 @@ MLX_FLAGS = -L/usr/lib/X11 -lXext -lX11
 
 HEADER = includes/cub3d.h
 
-SRC  = 	srcs/utils/print.c \
+SRC  = 	srcs/main.c \
+		srcs/start_game.c \
+		srcs/raycasting/raycaster.c \
+		srcs/utils/print.c \
 		srcs/utils/utils.c \
 		srcs/validation/colors.c \
 		srcs/validation/map_check.c \
@@ -34,8 +37,6 @@ SRC  = 	srcs/utils/print.c \
 		srcs/validation/string_funct.c \
 		srcs/validation/string_funct2.c \
 		srcs/validation/valid_map.c \
-		srcs/main.c \
-		srcs/start_game.c \
 
 OBJ = $(SRC:.c=.o)
 

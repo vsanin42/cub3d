@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:00:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/14 16:40:30 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/14 22:32:35 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,27 @@ void	free_game(t_game *game)
 		free(game->ceiling_color);
 	if (game->map)
 		free_map(game->map);
+}
+
+// 1. default: index == -1. stop index == rows. free all visited[i]
+// 2. if failed at initializing of visited array: index == last valid index.
+// stop index == index to stop at. free up to that index only.
+void	free_map_data(t_map_data *data, int index)
+{
+	int	i;
+	int	stop_index;
+
+	i = 0;
+	if (!data)
+		return ;
+	stop_index = data->rows;		
+	if (index > -1)
+		stop_index = index;
+	while (i < stop_index)
+	{
+		free(data->visited[i]);
+		i++;
+	}
+	free(data->visited);
+	free(data);
 }
