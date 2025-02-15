@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/15 00:50:21 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/15 16:26:30 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,14 @@ t_map_data	*init_map_data(char **map, int rows)
 // 2. set the orientation based on NSWE.
 // dir and plane are set to 0 in alloc_all, so we just replace what's needed.
 // 3. set plane.x and plane.t PERPENDICULAR to dir.
-// 4. 0.66 dictates field of view, sign changes to reflect the right side. THIS CAN CHANGE IDK
+// 4. 0.66 dictates field of view, sign changes to reflect the right side.
 // example: for direction WEST (-1, 0), right hand side is NORTH
 // so adding the vector plane and getting farthest right ray means adding -0.66 to y dimension
 // this is crazy
 // left (x = -1) ------ 0 ------- right (x = 1)
 // up (y = -1) -------- 0 ------- down (y = 1) (O_o)
+// !!!!! 
+// IF DIRECTIONS AND EVERYTHING IS FLIPPED OR SOMETHING THEN FLIP SIGNS OF 0.66 VALUES !!!!!
 void	set_start_pos(char c, int i, int j, t_game *game)
 {
 	game->pos.x = j; // x = column from left to right = j

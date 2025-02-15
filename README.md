@@ -67,3 +67,15 @@ https://medium.com/@afatir.ahmedfatir/cub3d-tutorial-af5dd31d2fcf this has some 
 https://aurelienbrabant.fr/blog/pixel-drawing-with-the-minilibx useful for drawing pixels later
 
 - check_player: when we find NSWE, we also update the starting position in the game struct with its coordinates + the orientation with its value to know which way we're facing and how to define the starting vector. also define a camera plane perpendicular to the direction vector. the best way to understand it is to visualize it, links above are good.
+
+15.02 - V
+
+working on raycaster math - everything is documented in the functions.
+
+possible issues: despite trying to understand the coordinate system, i'm not sure that things won't be flipped, if any related issue arises - it's likely because of coordinates. so try to flip some x/y values until it works (solid plan :D).
+
+current weak points that could be problematic:
+
+- map_check.c set_start_pos - may need to swap/completely remove negative values of 0.66.
+- related to that is the calculation of ray_dir values in set_ray_variables.
+- dda algorithm - we check grid[y][x], the reference has it the other way so idk what he meant by which coordinate.

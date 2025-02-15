@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/15 00:57:44 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/15 19:29:34 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,25 @@ typedef struct s_map
 	char	**grid;
 	int		height;
 }	t_map;
+
+// struct to hold all variables used in raycasting
+typedef struct s_ray
+{
+	double	camera_x; 		// x coordinate in the camera plane
+	double	ray_dir_x;		// direction of a ray
+	double	ray_dir_y;
+	double	side_dist_x;	// distance to the first x/y side from current position
+	double	side_dist_y;
+	double	delta_dist_x;	// distance from one x/y side to the next
+	double	delta_dist_y;
+	double	perp_wall_dist;	// distance to the wall - to make all rays the same length - avoids fisheye effect
+	int		map_x;			// map square coordinates (not the position inside the square - so just int)
+	int		map_y;
+	int		step_x;			// in which direction to step (-1/1)
+	int		step_y;
+	int		hit;			// was wall hit or not - DDA stopping condition
+	int		side;			// which side was hit - y or x
+}	t_ray;
 
 typedef struct s_game
 {
