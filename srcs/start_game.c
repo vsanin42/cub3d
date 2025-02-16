@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/14 16:09:31 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/16 21:42:06 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,6 @@ int	key_press(int keycode, t_game *game)
 	if (keycode == 65307)
 		close_window(game);
 	// todo
-	return (0);
-}
-
-int	render(t_game *game)
-{
-	// todo
-	(void)game;
 	return (0);
 }
 

@@ -79,3 +79,11 @@ current weak points that could be problematic:
 - map_check.c set_start_pos - may need to swap/completely remove negative values of 0.66.
 - related to that is the calculation of ray_dir values in set_ray_variables.
 - dda algorithm - we check grid[y][x], the reference has it the other way so idk what he meant by which coordinate.
+
+16.02 - V
+
+raycasting math is +- complete. we now have almost all info we need to draw vertical lines.
+TODO: textures - find something (think of size) convert to xpm, save somewhere, ...
+TODO: mlx - work with images and all those functions to draw things.
+
+next goal: have at least one static frame render.

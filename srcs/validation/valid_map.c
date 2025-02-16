@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/15 01:00:48 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:01:09 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	alloc_all(t_game *game, int fd)
 	game->plane.y = 0;
 	game->time = 0;
 	game->old_time = 0;
+	game->frame_time = 0;
 	return (1);
 }
 

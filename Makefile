@@ -28,6 +28,7 @@ HEADER = includes/cub3d.h
 SRC  = 	srcs/main.c \
 		srcs/start_game.c \
 		srcs/raycasting/raycaster.c \
+		srcs/utils/free.c \
 		srcs/utils/print.c \
 		srcs/utils/utils.c \
 		srcs/validation/colors.c \

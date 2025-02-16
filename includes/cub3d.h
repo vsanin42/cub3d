@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/15 19:29:34 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/16 21:46:18 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <errno.h>
 # include <math.h>
+# include <sys/time.h>
 # include "../libft/libft.h"
 # include "../mlx/mlx.h"
 # include "../mlx/mlx_int.h"
@@ -48,13 +49,16 @@ typedef struct s_ray
 	double	side_dist_y;
 	double	delta_dist_x;	// distance from one x/y side to the next
 	double	delta_dist_y;
-	double	perp_wall_dist;	// distance to the wall - to make all rays the same length - avoids fisheye effect
+	double	perp_wall_dist;	// distance from camera plane to the wall - to make all rays the same length - avoids fisheye effect
 	int		map_x;			// map square coordinates (not the position inside the square - so just int)
 	int		map_y;
 	int		step_x;			// in which direction to step (-1/1)
 	int		step_y;
 	int		hit;			// was wall hit or not - DDA stopping condition
 	int		side;			// which side was hit - y or x
+	int		line_height;	// height of the vertical line to be drawn - depends on perp_wall_dist
+	int		draw_start;		// where to start and stop drawing the line - lowest/highest points in a vertical column
+	int		draw_end;
 }	t_ray;
 
 typedef struct s_game
@@ -76,6 +80,7 @@ typedef struct s_game
 	t_pos	plane;
 	double	time;
 	double	old_time;
+	double	frame_time;
 }	t_game;
 
 typedef struct s_win_params
@@ -94,7 +99,13 @@ typedef struct s_map_data
 
 /* srcs/raycasting */
 /* srcs/raycasting/raycaster.c */
+int			render(t_game *game);
+void		dda(t_ray *r, t_game *game);
+void		set_draw_start_end(t_ray *r);
+void		set_ray_variables(t_ray *r, t_game *game, int x);
+void		set_step_and_side(t_ray *r, t_game *game);
 
+/* srcs/raycasting/TODOOOOOOOOOOOO */
 
 /* ------------------------------------------------ */
 
@@ -106,6 +117,10 @@ void		print_map(t_game *game);
 
 /* srcs/utils/utils.c */
 int			err(char *text_err);
+long		get_current_time(void);
+long		get_timestamp(long start); // not used, maybe will be
+
+/* srcs/utils/free.c */
 void		free_game(t_game *game);
 void		free_map(t_map *map);
 void		free_map_data(t_map_data *data, int index);
@@ -171,7 +186,6 @@ void		err_exit(char *err_msg, t_game *game); // not used
 int			close_window(t_game *game);
 int			key_press(int keycode, t_game *game);
 int			start_game(t_game *game);
-int			render(t_game *game);
 
 /* srcs/main.c */
 int			alloc_and_nullify(t_game *game);
