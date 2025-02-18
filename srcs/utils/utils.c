@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:00:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/16 20:07:34 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:12:34 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ long	get_current_time(void)
 	return (time.tv_sec); // * 1000000 + time.tv_usec);
 }
 
+// NOT USED ATM
 // gets the current timestamp: elapsed time from start time and current time.
 // calculated in microseconds and converted to milliseconds for the timestamp.
 long	get_timestamp(long start)

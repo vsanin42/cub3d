@@ -87,3 +87,11 @@ TODO: textures - find something (think of size) convert to xpm, save somewhere, 
 TODO: mlx - work with images and all those functions to draw things.
 
 next goal: have at least one static frame render.
+
+18.02 - V
+
+doing more research on how to draw everything.
+
+- added TRGB conversion functions to create colors as integers from each TRGB component and getting them from the texture pixels.
+- loading + destroying textures (no textures yet), figuring out which side (NSWE) was hit by the ray
+- some extra variables for raycasting to tell 1. where on the GRID SQUARE the ray hit the  wall (0 to 1 - left to right value) and 2. where on the TEXTURE that is relative to its width. now we know which stripe of the texture we need to use to draw under each ray.

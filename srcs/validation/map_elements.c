@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_elements.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/14 19:17:07 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/18 10:36:42 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	if_direction_p2(char *line, t_game *game, int offset)
 	{
 		if (game->flag_w > 0)
 			return (err("Error: More than 1 texture of WE type!"), 0);
-		game->textures[2] = ft_strdup(line + 3 + offset);
+		game->textures[WEST] = ft_strdup(line + 3 + offset);
 		game->flag_w++;
 		return (1);
 	}
@@ -26,7 +26,7 @@ int	if_direction_p2(char *line, t_game *game, int offset)
 	{
 		if (game->flag_e > 0)
 			return (err("Error: More than 1 texture of EA type!"), 0);
-		game->textures[3] = ft_strdup(line + 3 + offset);
+		game->textures[EAST] = ft_strdup(line + 3 + offset);
 		game->flag_e++;
 		return (1);
 	}
@@ -39,7 +39,7 @@ int	if_direction_p1(char *line, t_game *game, int offset)
 	{
 		if (game->flag_n > 0)
 			return (err("Error: More than 1 texture of NO type!"), 0);
-		game->textures[0] = ft_strdup(line + 3 + offset);
+		game->textures[NORTH] = ft_strdup(line + 3 + offset);
 		game->flag_n++;
 		return (1);
 	}
@@ -47,7 +47,7 @@ int	if_direction_p1(char *line, t_game *game, int offset)
 	{
 		if (game->flag_s > 0)
 			return (err("Error: More than 1 texture of SO type!"), 0);
-		game->textures[1] = ft_strdup(line + 3 + offset);
+		game->textures[SOUTH] = ft_strdup(line + 3 + offset);
 		game->flag_s++;
 		return (1);
 	}

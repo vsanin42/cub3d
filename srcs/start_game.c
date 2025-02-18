@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_game.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/16 21:42:06 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:42:39 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	err_exit(char *err_msg, t_game *game)
 
 int	close_window(t_game *game)
 {
-	// destroy images
+	mlx_destroy_image(game->mlx, game->north.img);
+	mlx_destroy_image(game->mlx, game->south.img);
+	mlx_destroy_image(game->mlx, game->west.img);
+	mlx_destroy_image(game->mlx, game->east.img);
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);
@@ -39,6 +42,18 @@ int	key_press(int keycode, t_game *game)
 	return (0);
 }
 
+void	load_textures(t_game *game)
+{
+	game->north.img = mlx_xpm_file_to_image(game->mlx, game->textures[NORTH],
+			&game->north.w, &game->north.h);
+	game->south.img = mlx_xpm_file_to_image(game->mlx, game->textures[SOUTH],
+			&game->south.w, &game->south.h);
+	game->west.img = mlx_xpm_file_to_image(game->mlx, game->textures[WEST],
+			&game->west.w, &game->west.h);
+	game->east.img = mlx_xpm_file_to_image(game->mlx, game->textures[EAST],
+			&game->east.w, &game->east.h);
+}
+
 int	start_game(t_game *game)
 {
 	game->mlx = mlx_init();
@@ -48,11 +63,11 @@ int	start_game(t_game *game)
 	if (!game->win)
 		return (free(game->mlx), err("Error: mlx_new_window() failed!:("), 0);
 	// todo img and addr (?)
-	// todo load textures
+	// load_textures(game);
 	mlx_hook(game->win, 2, 1L << 0, key_press, game);
 	mlx_hook(game->win, 17, 1L << 0, close_window, game);
 	// todo render everything initially (or not?)
-	mlx_loop_hook(game->mlx, render, game);
+	// mlx_loop_hook(game->mlx, render, game);
 	mlx_loop(game->mlx);
 	return (1);
 }
