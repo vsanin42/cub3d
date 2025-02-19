@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 21:54:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/18 17:13:00 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/19 19:38:11 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,49 @@ void	dda(t_ray *r, t_game *game)
 	set_final_vars(r, game);
 }
 
-void	draw_line(t_ray *ray, t_game *game)
+// gets the correct texture depending on the side that was hit
+t_image	*get_nswe_tex(t_game *game, t_side nswe)
 {
-	// TODO, still researching
+	if (nswe == NORTH)
+		return (&game->north);
+	if (nswe == SOUTH)
+		return (&game->south);
+	if (nswe == WEST)
+		return (&game->west);
+	if (nswe == EAST)
+		return (&game->east);
+	return (NULL);
+}
+
+// now we need to draw the line.
+// 1. we get the texture to draw from.
+// 2. we set y as draw start and iterate until draw end, drawing the full line.
+// 3. step tells us how many texture pixels correspond to one screen pixel - scaling variable.
+// 4. tex pos is the position on the texture to start drawing from.
+// calculated by substracting the perfectly sized position from the real intended position and multiplyin by step to get the texture position.
+// 5. loop from top to bottom.
+// 5.1. tex_y is the exact y coordinate of the texture. together with tex_x it allows us to reach the desired pixel.
+// & (TEX_HEIGHT - 1) is a bitwise operation that acts like a mask to prevent undefined behaviour, makes it wrap around.
+// 5.2. each time we draw, we move over in texture position by the defined step.
+// 5.3. color will hold the value of a pixel at [tex_y][tex_x] in the texture. it is then assigned to the [y][x] position on the real screen image.
+void	draw_line(t_ray *r, t_game *game, int x)
+{
+	int		y;
+	t_image	*tex;
+	int		color;
+
+	tex = get_nswe_tex(game, r->nswe);
+	y = r->draw_start;
+	r->draw_step = (double)TEX_HEIGHT / r->line_height;
+	r->tex_pos = (y - WIN_HEIGHT / 2 + r->line_height / 2) * r->draw_step;
+	while (y < r->draw_end)
+	{
+		r->tex_y = (int)r->tex_pos & (TEX_HEIGHT - 1); // only works if TEX_HEIGHT is a power of 2. otherwise use % TEX_HEIGHT
+		r->tex_pos += r->draw_step;
+		color = tex->addr[r->tex_y * TEX_WIDTH + r->tex_x];
+		game->img.addr[y * WIN_WIDTH + x] = color;
+		y++;
+	}
 }
 
 // this is in mlx_loop_hook
@@ -57,7 +97,9 @@ void	draw_line(t_ray *ray, t_game *game)
 // 4. run the dda algorithm to cast a ray in a specific direction until it hits a wall.
 // by the end of dda() function, we have all the info we need to draw a single vertical line of a needed size.
 // it's all stored in the r struct.
-// . move onto the next x column of the screen, cast a ray, find the line height, repeat until WIN_WIDTH.
+// 5. move onto the next x column of the screen, cast a ray, find the line height, repeat until WIN_WIDTH.
+// 6. set_frame_time() tracks time between two frames created. - WIP
+// 7. put the created image to the window.
 int	render(t_game *game)
 {
 	int		x;
@@ -66,15 +108,14 @@ int	render(t_game *game)
 	x = 0;
 	while (x < WIN_WIDTH)
 	{
+		ft_memset(&r, 0, sizeof(t_ray)); // just in case
 		set_ray_variables(&r, game, x);
 		dda(&r, game);
-		// draw the vertical line - big TODO
-		draw_line(&r, game);
+		draw_line(&r, game, x);
 		x++;
 	}
 	set_frame_time(game);
-
-	// draw everything (i guess push the image to the window?)
 	// any buffer clearing of the last image? idk
+	mlx_put_image_to_window(game->mlx, game->win, game->img.ptr, 0, 0);
 	return (0);
 }

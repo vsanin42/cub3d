@@ -95,3 +95,10 @@ doing more research on how to draw everything.
 - added TRGB conversion functions to create colors as integers from each TRGB component and getting them from the texture pixels.
 - loading + destroying textures (no textures yet), figuring out which side (NSWE) was hit by the ray
 - some extra variables for raycasting to tell 1. where on the GRID SQUARE the ray hit the  wall (0 to 1 - left to right value) and 2. where on the TEXTURE that is relative to its width. now we know which stripe of the texture we need to use to draw under each ray.
+
+19.02
+
+added a lot of textures. .cub file to be tested on - subject_map.cub (changed paths to textures + one zero in the wall to exit the room in the future)
+LETS GO FIRST FRAMEEEE (just had to follow the tutorial to the end and understand it xd)
+TODO: textures orientation might be changes between NS and WE, check that.
+next todo: floor + ceiling, movements, camera rotation, wall collisions...

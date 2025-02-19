@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:40:55 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/18 17:11:53 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/19 12:29:27 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,5 @@ int	get_trgb(int trgb, t_trgb mode)
 		return ((trgb >> 8) & 0xFF);
 	if (mode == BLUE)
 		return (trgb & 0xFF);
+	return (0);
 }

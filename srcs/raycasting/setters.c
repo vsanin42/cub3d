@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:51:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/18 17:43:36 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/19 19:25:05 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,6 @@ void	set_frame_time(t_game *game)
 	game->old_time = game->time;
 	game->time = get_current_time(); // returns seconds (in long), might need more precision
 	game->frame_time = (game->time - game->old_time);
-	printf("FPS: %f\n", 1 / game->frame_time); // optional?
+	// there is currently a problem with fps counting idk. look into it again
+	// printf("FPS: %f\n", 1 / game->frame_time); // optional? 
 }

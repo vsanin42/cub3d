@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/18 16:55:50 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/19 19:19:54 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ typedef struct s_ray
 	double	delta_dist_y;
 	double	perp_wall_dist;	// distance from camera plane to the wall - to make all rays the same length - avoids fisheye effect
 	double	wall_x;			// where exactly the wall was hit (between 0 and 1 value)
+	double	draw_step;		// scaling variable to tell how many pixels on the texture correspond to one pixel on the screen
+	double	tex_pos;		// starting drawing position of the texture
 	int		tex_x;			// how does wall_x map onto the texture - wall_x scaled to TEX_WIDTH
+	int		tex_y;			// y coordinate of the texture
 	int		map_x;			// map square coordinates (not the position inside the square - so just int)
 	int		map_y;
 	int		step_x;			// in which direction to step (-1/1)
@@ -82,20 +85,21 @@ typedef struct s_ray
 	t_side	nswe;			// which exact side was hit - NSWE 0123 like the textures array.
 }	t_ray;
 
-typedef struct s_tex
+// this struct holds all the info related to an image in one place
+typedef struct s_image
 {
-	void		*img;
-	char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
+	void		*ptr; // pointer to the image
+	int			*addr; // was char*, changed to int* to better navigate to pixels. // address of the image and related information 
+	int			bpp; // next 3 aren't currently used but need to exist for parameters of mlx_get_data_addr 
+	int			size_line;
 	int			endian;
 	int			w;
 	int			h;
-}	t_tex;
+}	t_image;
 
 typedef struct s_game
 {
-	t_map	*map;
+	t_map	*map;	// validation
 	char	**textures;
 	int		*floor_color;
 	int		*ceiling_color;
@@ -105,18 +109,19 @@ typedef struct s_game
 	int		flag_s;
 	int		flag_f;
 	int		flag_c;
-	void	*mlx;
-	void	*win;
-	t_pos	pos;
+	t_pos	pos;	// raycasting
 	t_pos	dir;
 	t_pos	plane;
 	double	time;
 	double	old_time;
 	double	frame_time;
-	t_tex	north;
-	t_tex	south;
-	t_tex	west;
-	t_tex	east;
+	void	*mlx;	// mlx
+	void	*win;
+	t_image img;
+	t_image	north;
+	t_image	south;
+	t_image	west;
+	t_image	east;
 }	t_game;
 
 typedef struct s_win_params
