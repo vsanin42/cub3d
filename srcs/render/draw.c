@@ -1,62 +1,65 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycaster.c                                        :+:      :+:    :+:   */
+/*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/14 21:54:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/19 19:38:11 by vsanin           ###   ########.fr       */
+/*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
+/*   Updated: 2025/02/25 12:50:33 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-// digital differential analysis algorithm.
-// logic:
-// depending on which distance is shorter (to the next x or y side)
-// advance the ray towards that side by delta dist.
-// after that, depending on the step (+-1) taken in that direction, update:
-// the map square it just hit + the type of side that was hit (NS or WE).
-// after this is done, the ray stops at a border of square.
-// thanks to map x and y we know the coordinates of this square.
-// using this x and y check the map grid for what value is in that square.
-// if a wall was hit (grid[y][x] == '1'), set hit and nswe in helper and exit the loop.
-// the last variables we need to set are done in the helper function.
-void	dda(t_ray *r, t_game *game)
+// draw rgb color line to create the floor
+// might need to pass 255 instead of 0 as t param in trgb
+// 1. check if draw_end of the texture line (start for the floor) is at the window border
+// if yes, don't draw anything and return.
+// 2. create the trgb value from the floor colors from the map file.
+// 3. set the beginning of the floor drawing as the last point of texture drawn.
+// 4. fill the main image pixels with the floor color until the window border.
+// otherwise same logic as in the draw line function.
+void	draw_floor(t_ray *r, t_game *game, int x)
 {
-	while (r->hit == 0)
+	int	start;
+	int	color;
+
+	if (r->draw_end == WIN_HEIGHT - 1)
+		return ;
+	color = create_trgb(0, game->floor_color[0],
+			game->floor_color[1], game->floor_color[2]);
+	start = r->draw_end;
+	while (start < WIN_HEIGHT)
 	{
-		if (r->side_dist_x < r->side_dist_y)
-		{
-			r->side_dist_x += r->delta_dist_x;
-			r->map_x += r->step_x;
-			r->side = 0;
-		}
-		else
-		{
-			r->side_dist_y += r->delta_dist_y;
-			r->map_y += r->step_y;
-			r->side = 1;
-		}
-		if (game->map->grid[r->map_y][r->map_x] == '1') // possibly swap y and x if doesn't work?
-			set_hit_and_nswe(r);
+		game->img.addr[start * WIN_WIDTH + x] = color;
+		start++;
 	}
-	set_final_vars(r, game);
 }
 
-// gets the correct texture depending on the side that was hit
-t_image	*get_nswe_tex(t_game *game, t_side nswe)
+// draw rgb color line to create the ceiling
+// might need to pass 255 instead of 0 as t param in trgb
+// 1. check if draw_start of the texture line (start for the ceiling) is at the window border
+// if yes, don't draw anything and return.
+// 2. create the trgb value from the ceiling colors from the map file.
+// 3. set the end of the ceiling drawing as the first point of texture drawn. start is simply 0.
+// 4. fill the main image pixels with the ceiling color until the the first point of texture.
+// otherwise same logic as in the draw line function.
+void	draw_ceiling(t_ray *r, t_game *game, int x)
 {
-	if (nswe == NORTH)
-		return (&game->north);
-	if (nswe == SOUTH)
-		return (&game->south);
-	if (nswe == WEST)
-		return (&game->west);
-	if (nswe == EAST)
-		return (&game->east);
-	return (NULL);
+	int	start;
+	int	color;
+
+	if (r->draw_start == 0)
+		return ;
+	color = create_trgb(0, game->ceiling_color[0],
+			game->ceiling_color[1], game->ceiling_color[2]);
+	start = 0;
+	while (start < r->draw_start)
+	{
+		game->img.addr[start * WIN_WIDTH + x] = color;
+		start++;
+	}
 }
 
 // now we need to draw the line.
@@ -80,6 +83,7 @@ void	draw_line(t_ray *r, t_game *game, int x)
 	y = r->draw_start;
 	r->draw_step = (double)TEX_HEIGHT / r->line_height;
 	r->tex_pos = (y - WIN_HEIGHT / 2 + r->line_height / 2) * r->draw_step;
+	draw_ceiling(r, game, x);
 	while (y < r->draw_end)
 	{
 		r->tex_y = (int)r->tex_pos & (TEX_HEIGHT - 1); // only works if TEX_HEIGHT is a power of 2. otherwise use % TEX_HEIGHT
@@ -88,6 +92,7 @@ void	draw_line(t_ray *r, t_game *game, int x)
 		game->img.addr[y * WIN_WIDTH + x] = color;
 		y++;
 	}
+	draw_floor(r, game, x);
 }
 
 // this is in mlx_loop_hook
@@ -114,7 +119,7 @@ int	render(t_game *game)
 		draw_line(&r, game, x);
 		x++;
 	}
-	set_frame_time(game);
+	// set_frame_time(game); idk yet
 	// any buffer clearing of the last image? idk
 	mlx_put_image_to_window(game->mlx, game->win, game->img.ptr, 0, 0);
 	return (0);

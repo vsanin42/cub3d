@@ -102,3 +102,8 @@ added a lot of textures. .cub file to be tested on - subject_map.cub (changed pa
 LETS GO FIRST FRAMEEEE (just had to follow the tutorial to the end and understand it xd)
 TODO: textures orientation might be changes between NS and WE, check that.
 next todo: floor + ceiling, movements, camera rotation, wall collisions...
+
+25.02
+
+- ceiling + floor are now being drawn (gotta test when the whole window is wall)
+- some file renames

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/19 19:19:54 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:51:50 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,19 +138,23 @@ typedef struct s_map_data
 	int		**visited;
 }	t_map_data;
 
-/* srcs/raycasting */
-/* srcs/raycasting/raycaster.c */
+/* srcs/render */
+/* srcs/render/draw.c */
 int			render(t_game *game);
-void		dda(t_ray *r, t_game *game);
+void		draw_line(t_ray *r, t_game *game, int x);
+void		draw_ceiling(t_ray *r, t_game *game, int x);
+void		draw_floor(t_ray *r, t_game *game, int x);
 
-/* srcs/raycasting/setters.c */
+/* srcs/render/raycasting.c */
+void		dda(t_ray *r, t_game *game);
 void		set_ray_variables(t_ray *r, t_game *game, int x);
 void		set_step_and_side(t_ray *r, t_game *game);
 void		set_final_vars(t_ray *r, t_game *game);
 void		set_hit_and_nswe(t_ray *r);
-void		set_frame_time(t_game *game);
 
-/* srcs/raycasting/TODOOOOOOOOOOOO */
+/* srcs/render/render_utils.c */
+void		set_frame_time(t_game *game);
+t_image		*get_nswe_tex(t_game *game, t_side nswe);
 
 /* ------------------------------------------------ */
 

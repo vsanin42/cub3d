@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/14 16:42:26 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:25:09 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ int	main(int argc, char **argv)
 	// set_array_as_null(game.textures, game.floor_color, game.ceiling_color);
 	if (!valid_map(argv[1], &game, 0))
 		return (free_game(&game), err("Error: Map validation failed!:("));
+	// print_textures(&game);
+	// print_colors(&game);
+	// print_map(&game);
 	if (!start_game(&game))
 		return (free_game(&game), 1);
 	free_game(&game);

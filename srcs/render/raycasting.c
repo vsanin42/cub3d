@@ -1,16 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setters.c                                          :+:      :+:    :+:   */
+/*   ray_setters.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:51:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/19 19:25:05 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/25 12:49:41 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+// digital differential analysis algorithm.
+// logic:
+// depending on which distance is shorter (to the next x or y side)
+// advance the ray towards that side by delta dist.
+// after that, depending on the step (+-1) taken in that direction, update:
+// the map square it just hit + the type of side that was hit (NS or WE).
+// after this is done, the ray stops at a border of square.
+// thanks to map x and y we know the coordinates of this square.
+// using this x and y check the map grid for what value is in that square.
+// if a wall was hit (grid[y][x] == '1'), set hit and nswe in helper and exit the loop.
+// the last variables we need to set are done in the helper function.
+void	dda(t_ray *r, t_game *game)
+{
+	while (r->hit == 0)
+	{
+		if (r->side_dist_x < r->side_dist_y)
+		{
+			r->side_dist_x += r->delta_dist_x;
+			r->map_x += r->step_x;
+			r->side = 0;
+		}
+		else
+		{
+			r->side_dist_y += r->delta_dist_y;
+			r->map_y += r->step_y;
+			r->side = 1;
+		}
+		if (game->map->grid[r->map_y][r->map_x] == '1') // possibly swap y and x if doesn't work?
+			set_hit_and_nswe(r);
+	}
+	set_final_vars(r, game);
+}
 
 // calculate the step (used to specify which way the ray moves in the dda algorithm)
 // and side dist (distance from ray start to the first x/y side)
@@ -129,26 +162,16 @@ void	set_hit_and_nswe(t_ray *r)
 	r->hit = 1;
 	if (r->side == 0) // vertical (x) side was hit - EAST OR WEST?
 	{
-		if (r->step_x == 1) // we were going right - EAST
-			r->nswe = EAST;
-		else if (r->step_x == -1) // we were going left - WEST
+		if (r->step_x == 1) // we were going right (EAST) - texture facing WEST
 			r->nswe = WEST;
+		else if (r->step_x == -1) // we were going left (WEST) - texture facing EAST
+			r->nswe = EAST;
 	}
 	else if (r->side == 1) // horitonzal (y) side was hit - NORTH or SOUTH?
 	{
-		if (r->step_y == 1) // we were going down - SOUTH
-			r->nswe = SOUTH;
-		else if (r->step_y == -1) // we were going up - NORTH
+		if (r->step_y == 1) // we were going down (SOUTH) - texture facing NORTH
 			r->nswe = NORTH;
+		else if (r->step_y == -1) // we were going up (NORTH) - texture facing SOUTH
+			r->nswe = SOUTH;
 	}
-}
-
-// set time and old_time to determine fps once the whole image is drawn
-void	set_frame_time(t_game *game)
-{
-	game->old_time = game->time;
-	game->time = get_current_time(); // returns seconds (in long), might need more precision
-	game->frame_time = (game->time - game->old_time);
-	// there is currently a problem with fps counting idk. look into it again
-	// printf("FPS: %f\n", 1 / game->frame_time); // optional? 
 }
