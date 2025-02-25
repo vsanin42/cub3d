@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:43:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/25 12:45:53 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/25 17:51:40 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	set_frame_time(t_game *game)
 	game->time = get_current_time(); // returns seconds (in long), might need more precision
 	game->frame_time = (game->time - game->old_time);
 	// there is currently a problem with fps counting idk. look into it again
-	// printf("FPS: %f\n", 1 / game->frame_time); // optional? 
+	printf("FPS: %.2f\n", 1 / game->frame_time); // optional? 
 }
 
 // gets the correct texture depending on the side that was hit

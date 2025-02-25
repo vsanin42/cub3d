@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/25 12:50:33 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/25 17:54:21 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,9 @@ int	render(t_game *game)
 		draw_line(&r, game, x);
 		x++;
 	}
-	// set_frame_time(game); idk yet
+	set_frame_time(game); // idk yet
 	// any buffer clearing of the last image? idk
 	mlx_put_image_to_window(game->mlx, game->win, game->img.ptr, 0, 0);
+	// usleep for 16000 usec to tone down the cpu usage?
 	return (0);
 }

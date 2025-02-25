@@ -106,4 +106,19 @@ next todo: floor + ceiling, movements, camera rotation, wall collisions...
 25.02
 
 - ceiling + floor are now being drawn (gotta test when the whole window is wall)
+- movement done on a basic level, need good wall collisions, rotations, proper FPS counter and speed modifier based on that. idk how to make it smooth. might need a key storage to keep track of what key is pressed and what to do. idk
 - some file renames
+- issue: mlx currently runs at full CPU power, even when standing still. it must only react to events. FIXED (?) - has to do with mlx_hook_loop. it could be worse so may need to rollback. by eval sheet it's still fine but i doubt it's the intended behaviour.
+- issue: program currently only works fine with fixed 64x64 textures, at 128x128 there are color distortions. it's also not in the eval sheet, so technically nobody should go out of their way to download different textures and try to run the game with them, but ideally it should work with any texture. idk what the problem is still but will look into it when troubleshooting. 
+
+- should we handle Shift+WASD presses? prob not xd
+
+cool floors:
+- 47, 79, 79 - mossy wet stone floor like in a castle
+- 210, 180, 140 - sandy, needs darker ceiling
+- 112, 128, 144 - muted blue, needs lighter ceiling
+
+cool ceilings:
+- 220, 220, 220 - off white ceiling, needs darker floor
+- 176, 224, 230 - nice chill blue, very natural
+- 250, 235, 215 - light beige, like regular room

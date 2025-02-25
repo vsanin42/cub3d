@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/19 19:23:16 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/25 19:17:05 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,45 @@ int	close_window(t_game *game)
 	return (0);
 }
 
+// derived these values from printing keycodes:
+// W	119
+// A	97
+// S	115
+// D	100
+// L	65361
+// R	65363
+// ESC	65307
+// might not work on other systems, so i'm using Xlib keysyms, they all correspond to the above.
 int	key_press(int keycode, t_game *game)
 {
-	if (keycode == 65307)
+	// printf("%d\n", keycode);
+	if (keycode == XK_Escape)
 		close_window(game);
-	// todo
+	if (keycode == XK_w) // TODO WALL COLLISIONS
+	{
+		game->pos.x += game->dir.x; // * speed based on FPS?
+		game->pos.y += game->dir.y;
+	}
+	if (keycode == XK_s)
+	{
+		game->pos.x -= game->dir.x;
+		game->pos.y -= game->dir.y;
+	}
+	if (keycode == XK_a)
+	{
+		game->pos.x -= game->plane.x;
+		game->pos.y -= game->plane.y;
+	}
+	if (keycode == XK_d)
+	{
+		game->pos.x += game->plane.x;
+		game->pos.y += game->plane.y;
+	}
+	if (keycode == XK_Left || keycode == XK_Right)
+	{
+		
+	}
+	render(game);
 	return (0);
 }
 
@@ -75,9 +109,11 @@ int	start_game(t_game *game)
 	game->img.addr = (int *)mlx_get_data_addr(game->img.ptr,
 			&game->img.bpp, &game->img.size_line, &game->img.endian);
 	load_textures(game);
+	render(game);
 	mlx_hook(game->win, 2, 1L << 0, key_press, game);
 	mlx_hook(game->win, 17, 1L << 0, close_window, game);
-	mlx_loop_hook(game->mlx, render, game);
+	// might need to uncomment if i wanna keep the movement smooth, idk how it will be registered yet.
+	// mlx_loop_hook(game->mlx, render, game); // this makes render() be called on loop - CPU is like 90% - bad
 	mlx_loop(game->mlx);
 	return (1);
 }

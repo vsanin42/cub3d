@@ -3,8 +3,8 @@ SO textures/xpm/64/SLIME_1A.xpm
 WE textures/xpm/64/TILE_2C.xpm
 EA textures/xpm/64/TILE_1A.xpm
 
-F 220,100,0
-C 225,30,0
+F 47, 79, 79
+C 176, 224, 230
 
         1111111111111111111111111
         1000000000110000000000001

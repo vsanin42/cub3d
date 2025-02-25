@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/25 12:51:50 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/25 14:47:09 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "../mlx/mlx.h"
 # include "../mlx/mlx_int.h"
 
-# define WIN_WIDTH 640
-# define WIN_HEIGHT 480
+# define WIN_WIDTH 800
+# define WIN_HEIGHT 600
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 
