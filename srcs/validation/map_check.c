@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/15 16:26:30 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/26 13:24:27 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ t_map_data	*init_map_data(char **map, int rows)
 // IF DIRECTIONS AND EVERYTHING IS FLIPPED OR SOMETHING THEN FLIP SIGNS OF 0.66 VALUES !!!!!
 void	set_start_pos(char c, int i, int j, t_game *game)
 {
-	game->pos.x = j; // x = column from left to right = j
-	game->pos.y = i; // y = row from top to bottom = i
+	game->pos.x = j + 0.5; // x = column from left to right = j, 0.5 to center
+	game->pos.y = i + 0.5; // y = row from top to bottom = i
 	if (c == 'N') // dir: (0, -1); plane: (0.66, 0)
 	{
 		game->dir.y = -1;

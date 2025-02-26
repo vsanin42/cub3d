@@ -122,3 +122,14 @@ cool ceilings:
 - 220, 220, 220 - off white ceiling, needs darker floor
 - 176, 224, 230 - nice chill blue, very natural
 - 250, 235, 215 - light beige, like regular room
+
+26.02
+
+- position centered on a block by adding + 0.5 to x and y
+- movement WIP - eliminated input lag, need to link to fps counter because right now it's too fast and does like 500-1000 fps lmao
+- old movement: register key - update its status - update position - render - all in one function.
+- new movement: register key - update its status and quit - render() reads that a key is pressed - render() updates position without input lag - render.
+- i guess cpu heavier in exchange for quicker response.
+- wall collision imbedded into moving so an automatic bonus xd
+- TODO: FPS, speed, rotation.
+- MAKE CHECK KEYMAP BETTER

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/25 17:54:21 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/26 19:31:57 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	draw_line(t_ray *r, t_game *game, int x)
 }
 
 // this is in mlx_loop_hook
+// 0.1 movement changed from reacting to events to constantly reading key up/down states
 // 1. t_ray r holds all variables we're working with.
 // 2. for every x (column) of the screen width, going from left to right, perform the raycasting process.
 // 3. set the variables of r struct.
@@ -111,6 +112,16 @@ int	render(t_game *game)
 	t_ray	r;
 
 	x = 0;
+	if (!check_keymap(game) && game->first_render == 1)
+		return (1);
+	if (game->keymap.w == true)
+		update_pos(game, game->dir.x, game->dir.y);
+	if (game->keymap.s == true)
+		update_pos(game, -game->dir.x, -game->dir.y);
+	if (game->keymap.a == true)
+		update_pos(game, -game->plane.x, -game->plane.y);
+	if (game->keymap.d == true)
+		update_pos(game, game->plane.x, game->plane.y);
 	while (x < WIN_WIDTH)
 	{
 		ft_memset(&r, 0, sizeof(t_ray)); // just in case

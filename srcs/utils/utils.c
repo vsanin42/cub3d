@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:00:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/18 17:12:34 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:51:46 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ long	get_current_time(void)
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	return (time.tv_sec); // * 1000000 + time.tv_usec);
+	// printf("get_current_time - milliseconds: %ld\n", time.tv_sec * 1000 + time.tv_usec / 1000);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000); // ms
 }
 
 // NOT USED ATM
@@ -38,4 +39,13 @@ long	get_timestamp(long start)
 
 	gettimeofday(&current, NULL);
 	return ((((current.tv_sec * 1000000) + current.tv_usec) - start) / 1000);
+}
+
+int	check_keymap(t_game *game)
+{
+	if (game->keymap.w == false && game->keymap.a == false
+		&& game->keymap.s == false && game->keymap.d == false
+		&& game->keymap.l == false && game->keymap.r == false)
+		return (0);
+	return (1);
 }

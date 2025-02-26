@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/25 14:47:09 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:48:27 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <errno.h>
@@ -97,6 +98,16 @@ typedef struct s_image
 	int			h;
 }	t_image;
 
+typedef struct s_kmap
+{
+	bool	w;
+	bool	a;
+	bool	s;
+	bool	d;
+	bool	l; // idk
+	bool	r; // idk
+}	t_kmap;
+
 typedef struct s_game
 {
 	t_map	*map;	// validation
@@ -122,6 +133,8 @@ typedef struct s_game
 	t_image	south;
 	t_image	west;
 	t_image	east;
+	t_kmap	keymap;
+	int		first_render;
 }	t_game;
 
 typedef struct s_win_params
@@ -168,6 +181,7 @@ void		print_map(t_game *game);
 int			err(char *text_err);
 long		get_current_time(void);
 long		get_timestamp(long start); // not used, maybe will be
+int			check_keymap(t_game *game);
 
 /* srcs/utils/free.c */
 void		free_game(t_game *game);
@@ -237,7 +251,10 @@ int			valid_map(char *argv, t_game *game, int fd);
 /* srcs/start_game.c */
 void		err_exit(char *err_msg, t_game *game); // not used
 int			close_window(t_game *game);
+int			update_pos(t_game *game, double x, double y);
 int			key_press(int keycode, t_game *game);
+int			key_press_wasd(t_game *game, int keycode);
+int			key_release(int keycode, t_game *game);
 int			start_game(t_game *game);
 void		load_textures(t_game *game);
 
