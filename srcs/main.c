@@ -6,39 +6,45 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/27 15:17:46 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 18:32:30 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-// 1. alloc 3 members of game that we need
-// 2. if malloc fails, free all 3 (safe thanks to memset)
-// 3. if all ok, set all elements to either NULL or 0, also saves lines in main
-int	alloc_and_nullify(t_game *game)
+// validate map by checking:
+// - map file existence/permissions/extension
+// - check the file line by line for all necessary elements (textures/F/C/map).
+// error if mismatch in element count.
+// error if area too small, unclosed, no/extra player position,
+// problem with texture path...
+int	valid_map(char *argv, t_game *game, int fd)
 {
-	int	i;
+	char	*line;
+	int		map_flag;
 
-	i = 0;
-	game->textures = malloc(5 * sizeof(char *));
-	game->floor_color = malloc(3 * sizeof(int));
-	game->ceiling_color = malloc(3 * sizeof(int));
-	if (!game->textures || !game->floor_color || !game->ceiling_color)
+	fd = open(argv, O_RDONLY); 
+	if (check_fd(fd) == -1 || !check_format(argv, fd) || !alloc_all(game, fd)) // + close(fd) inside both if error
+		return (0);
+	line = get_next_line(fd);
+	map_flag = 0;
+	while (line != NULL)
 	{
-		free(game->textures);
-		free(game->floor_color);
-		free(game->ceiling_color);
-		return (err("Error: allocation failed!"));
+		if (!save_and_check(&map_flag, game, line))
+			return (close(fd), 0); // + close(fd)
+		free(line);
+		line = get_next_line(fd);
 	}
-	while (i < 5)
-		game->textures[i++] = NULL;
-	i = 0;
-	while (i < 3)
-		game->floor_color[i++] = 0;
-	i = 0;
-	while (i < 3)
-		game->ceiling_color[i++] = 0;
-	return (0);
+	close(fd);
+	if (game->flag_n != 1 || game->flag_w != 1 || game->flag_e != 1
+		|| game->flag_s != 1 || game->flag_f != 1 || game->flag_c != 1
+		|| map_flag == 0) // is map_flag == 0 enough to check? 
+		return (err("Error: Missing/extra textures, colors and/or map!"), 0);
+	if (!check_height(game->map->height) || !check_player(game->map->grid, game)
+		|| !check_walls(game->map->grid, game->map->height)
+		|| !edit_paths(game->textures))
+		return (0);
+	return (1);
 }
 
 // 1. initialize the mlx, window and main image instances.

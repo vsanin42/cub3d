@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/27 14:49:32 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 18:22:51 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,6 @@ typedef enum s_side
 	EAST
 }	t_side;
 
-typedef enum s_trgb
-{
-	TRANSPARENT,
-	RED,
-	GREEN,
-	BLUE
-}	t_trgb;
-
 // struct to hold all variables used in raycasting
 typedef struct s_ray
 {
@@ -89,13 +81,13 @@ typedef struct s_ray
 // this struct holds all the info related to an image in one place
 typedef struct s_image
 {
-	void		*ptr; // pointer to the image
-	int			*addr; // was char*, changed to int* to better navigate to pixels. // address of the image and related information 
-	int			bpp; // next 3 aren't currently used but need to exist for parameters of mlx_get_data_addr 
-	int			size_line;
-	int			endian;
-	int			w;
-	int			h;
+	void	*ptr; // pointer to the image
+	int		*addr; // was char*, changed to int* to better navigate to pixels. // address of the image and related information 
+	int		bpp; // next 3 aren't currently used but need to exist for parameters of mlx_get_data_addr 
+	int		size_line;
+	int		endian;
+	int		w;
+	int		h;
 }	t_image;
 
 typedef struct s_kmap
@@ -104,8 +96,8 @@ typedef struct s_kmap
 	bool	a;
 	bool	s;
 	bool	d;
-	bool	l; // idk
-	bool	r; // idk
+	bool	l;
+	bool	r;
 }	t_kmap;
 
 typedef struct s_game
@@ -136,15 +128,7 @@ typedef struct s_game
 	t_image	west;
 	t_image	east;
 	t_kmap	keymap;
-	//bool	first_render_done;
 }	t_game;
-
-typedef struct s_win_params
-{
-	void	*mlx;
-	void	*win;
-	t_game	*game;
-}	t_win_params;
 
 typedef struct s_map_data
 {
@@ -154,14 +138,15 @@ typedef struct s_map_data
 }	t_map_data;
 
 /* -------------------------------------------------------------------------- */
-
-/* GAME */
+/*								     GAME							   	  	  */
+/* -------------------------------------------------------------------------- */
 
 /* srcs/events.c */
-int			key_press(int keycode, t_game *game);
-int			key_press_wasd(t_game *game, int keycode);
-int			key_release(int keycode, t_game *game);
 int			close_window(t_game *game);
+int			key_press(int keycode, t_game *game);
+int			key_release(int keycode, t_game *game);
+int			update_pos(t_game *game, double x, double y);
+int			update_cam(t_game *game);
 
 /* srcs/game/raycasting.c */
 void		dda(t_ray *r, t_game *game);
@@ -173,22 +158,20 @@ void		set_hit_and_nswe(t_ray *r);
 /* srcs/game/render_utils.c */
 void		set_frame_time(t_game *game);
 t_image		*get_nswe_tex(t_game *game, t_side nswe);
-int			check_keymap(t_game *game);
 void		load_textures(t_game *game);
-void		move(t_game *game);
 
 /* srcs/game/render.c */
 int			render(t_game *game);
 void		draw_line(t_ray *r, t_game *game, int x);
 void		draw_ceiling(t_ray *r, t_game *game, int x);
 void		draw_floor(t_ray *r, t_game *game, int x);
-int			update_pos(t_game *game, double x, double y);
+void		move(t_game *game);
 
 /* -------------------------------------------------------------------------- */
+/*									UTILS							     	  */
+/* -------------------------------------------------------------------------- */
 
-/* UTILS */
-
-/* srcs/utils/print.c */
+/* srcs/utils/print.c */ // this is not used at all so delete later completely
 void		print_colors(t_game *game);
 void		print_textures(t_game *game);
 void		print_map(t_game *game);
@@ -202,10 +185,12 @@ int			create_trgb(int t, int r, int g, int b);
 void		free_game(t_game *game);
 void		free_map(t_map *map);
 void		free_map_data(t_map_data *data, int index);
+int			alloc_and_nullify(t_game *game);
+int			alloc_all(t_game *game, int fd);
 
 /* -------------------------------------------------------------------------- */
-
-/* VALIDATION */
+/*								 VALIDATION							   	  	  */
+/* -------------------------------------------------------------------------- */
 
 /* srcs/validation/colors.c */
 int			check_rgb_values(t_game *game, int flag);
@@ -236,32 +221,26 @@ int			if_line_1(char *line, t_game *game, int *map_flag);
 int			if_surface(char *line, t_game *game, int offset);
 int			if_map(char *line, t_game *game, int *map_flag, int offset);
 
-/* srcs/validation/string_funct.c */
-char		*ft_strdup_without_newline(const char *str);
-int			add_map_line(t_map *map, const char *line);
-int			is_valid_char(char c);
-int			my_isspace(char c); // not used
-char		*trim_spaces(char *str); // not used
-
-// could have one less file if rearranged between these three files ^v
-
-/* srcs/validation/string_funct2.c */
+/* srcs/validation/string_ft.c */
 char		*trim_wrapper(char *str);
-int			skip_whitespace(const char *str);
 int			edit_paths(char **textures);
 int			check_texture_path(char *str);
+char		*ft_strdup_without_newline(const char *str);
+int			add_map_line(t_map *map, const char *line);
 
-/* srcs/validation/valid_map.c */
-int			alloc_all(t_game *game, int fd);
+/* srcs/validation/valid_utils.c */
 int			save_and_check(int *map_flag, t_game *game, char *line);
 int			check_fd(int fd);
 int			check_height(int height);
-int			valid_map(char *argv, t_game *game, int fd);
+int			is_valid_char(char c);
+int			skip_whitespace(const char *str);
 
+/* -------------------------------------------------------------------------- */
+/*								    MAIN							   	  	  */
 /* -------------------------------------------------------------------------- */
 
 /* srcs/main.c */
-int			alloc_and_nullify(t_game *game);
+int			valid_map(char *argv, t_game *game, int fd);
 int			start_game(t_game *game);
 
 #endif

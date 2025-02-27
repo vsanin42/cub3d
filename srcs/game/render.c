@@ -6,44 +6,11 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 15:23:12 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:32:05 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-// update the position after checking for collisions.
-// check if the projected position after moving ends up inside a wall.
-// checking the point itself is not safe.
-// imagine two walls touching by their corners.
-// if the moving step allows for it, it's possible to step through them,
-// even though the other side is not even visible.
-// so instead of checking the point itself,
-// check the 4 grid directions relative to that point, in NSWE order below.
-// if any of the directions is a wall, don't perform the move.
-// if all OK, update pos - x and y increments are already passed as params.
-// how close to a wall you can possibly get is determined by step.
-// it can be modified, but >0.5 would make passing between two walls impossible.
-int	update_pos(t_game *game, double x, double y)
-{
-	t_pos	proj;
-	double	step;
-
-	step = 0.15;
-	proj.x = game->pos.x + x * game->move_speed;
-	proj.y = game->pos.y + y * game->move_speed;
-	if (game->map->grid[(int)(proj.y - step)][(int)proj.x] == '1')
-		return (0);
-	if (game->map->grid[(int)(proj.y + step)][(int)proj.x] == '1')
-		return (0);
-	if (game->map->grid[(int)proj.y][(int)(proj.x - step)] == '1')
-		return (0);
-	if (game->map->grid[(int)proj.y][(int)(proj.x + step)] == '1')
-		return (0);
-	game->pos.x += x * game->move_speed;
-	game->pos.y += y * game->move_speed;
-	return (1);
-}
 
 // draw rgb color line to create the floor
 // might need to pass 255 instead of 0 as t param in trgb
@@ -130,6 +97,25 @@ void	draw_line(t_ray *r, t_game *game, int x)
 		y++;
 	}
 	draw_floor(r, game, x);
+}
+
+// perform movements: position or camera.
+// if WASD are pressed:
+// update the player's position depending on the key that's currently pressed.
+// if LR arrows are pressed:
+// rotate the camera.
+void	move(t_game *game)
+{
+	if (game->keymap.w == true)
+		update_pos(game, game->dir.x, game->dir.y);
+	if (game->keymap.s == true)
+		update_pos(game, -game->dir.x, -game->dir.y);
+	if (game->keymap.a == true)
+		update_pos(game, -game->plane.x, -game->plane.y);
+	if (game->keymap.d == true)
+		update_pos(game, game->plane.x, game->plane.y);
+	if (game->keymap.l == true || game->keymap.r == true)
+		update_cam(game);
 }
 
 // main rendering function.

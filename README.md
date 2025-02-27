@@ -139,3 +139,7 @@ cool ceilings:
 - movement - smooth, endless render loop - new reacting to key press and release only to set the keymap bools, not to perform the actual movement.
 - linked it against fps, now the speed is fixed and relative to the frame rate.
 - some folder and file reorganization + minor norm cleanups -  trying to keep the comments for future reference.
+
+- done? let's go i guess
+- movement ok, collisions ok, camera ok, textures ok (gonna replace with something more interesting)
+- file reorg once again...

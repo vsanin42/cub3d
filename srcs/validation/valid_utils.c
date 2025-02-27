@@ -1,39 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   valid_map.c                                        :+:      :+:    :+:   */
+/*   valid_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/16 18:01:09 by vsanin           ###   ########.fr       */
+/*   Created: 2025/02/27 18:22:39 by vsanin            #+#    #+#             */
+/*   Updated: 2025/02/27 18:22:42 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-int	alloc_all(t_game *game, int fd)
-{
-	game->map = malloc(sizeof(t_map));
-	if (!game->map)
-	{
-		close(fd);
-		err("Error: map allocation failed!");
-		return (0);
-	}
-	game->map->grid = NULL;
-	game->map->height = 0;
-	flag_init(game);
-	game->textures[4] = NULL;
-	game->dir.x = 0;
-	game->dir.y = 0;
-	game->plane.x = 0;
-	game->plane.y = 0;
-	game->time = 0;
-	game->old_time = 0;
-	game->frame_time = 0;
-	return (1);
-}
 
 int	save_and_check(int *map_flag, t_game *game, char *line)
 {
@@ -84,31 +61,19 @@ int	check_height(int height)
 	return (1);
 }
 
-int	valid_map(char *argv, t_game *game, int fd)
+// only spaces and no tabs/\r, etc..?
+int	is_valid_char(char c)
 {
-	char	*line;
-	int		map_flag;
+	return (c == '0' || c == '1' || c == 'N'
+		|| c == 'S' || c == 'E' || c == 'W' || c == ' ');
+}
 
-	fd = open(argv, O_RDONLY); 
-	if (check_fd(fd) == -1 || !check_format(argv, fd) || !alloc_all(game, fd)) // + close(fd) inside both if error
-		return (0);
-	line = get_next_line(fd);
-	map_flag = 0;
-	while (line != NULL)
-	{
-		if (!save_and_check(&map_flag, game, line))
-			return (close(fd), 0); // + close(fd)
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	if (game->flag_n != 1 || game->flag_w != 1 || game->flag_e != 1
-		|| game->flag_s != 1 || game->flag_f != 1 || game->flag_c != 1
-		|| map_flag == 0) // is map_flag == 0 enough to check? 
-		return (err("Error: Missing/extra textures, colors and/or map!"), 0);
-	if (!check_height(game->map->height) || !check_player(game->map->grid, game)
-		|| !check_walls(game->map->grid, game->map->height)
-		|| !edit_paths(game->textures))
-		return (0);
-	return (1);
+int	skip_whitespace(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\r'))
+		i++;
+	return (i);
 }

@@ -37,9 +37,8 @@ SRC  = 	srcs/main.c \
 		srcs/validation/map_check.c \
 		srcs/validation/map_check2.c \
 		srcs/validation/map_elements.c \
-		srcs/validation/string_funct.c \
-		srcs/validation/string_funct2.c \
-		srcs/validation/valid_map.c \
+		srcs/validation/string_ft.c \
+		srcs/validation/valid_utils.c \
 
 OBJ = $(SRC:.c=.o)
 

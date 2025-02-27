@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   string_funct2.c                                    :+:      :+:    :+:   */
+/*   string_ft.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/14 18:56:25 by vsanin           ###   ########.fr       */
+/*   Created: 2025/02/27 18:22:31 by vsanin            #+#    #+#             */
+/*   Updated: 2025/02/27 18:22:34 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-int	skip_whitespace(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\r'))
-		i++;
-	return (i);
-}
 
 // wrapper for ft_strtrim function.
 // 1. trims whitespaces of a string, returns it in the end
@@ -75,5 +65,45 @@ int	edit_paths(char **textures)
 			return (err("Error: Opening .xpm failed!"), 0);
 		i++;
 	}
+	return (1);
+}
+
+char	*ft_strdup_without_newline(const char *str)
+{
+	size_t	len;
+	char	*dup;
+
+	len = ft_strlen(str);
+	if (len > 0 && str[len - 1] == '\n')
+		len--;
+	dup = malloc(len + 1);
+	if (!dup)
+		return (NULL);
+	ft_memcpy(dup, str, len);
+	dup[len] = '\0';
+	return (dup);
+}
+
+int	add_map_line(t_map *map, const char *line)
+{
+	char	**new_grid;
+	int		i;
+
+	new_grid = malloc(sizeof(char *) * (map->height + 2));
+	if (!new_grid)
+		return (0);
+	i = 0;
+	while (i < map->height)
+	{
+		new_grid[i] = map->grid[i];
+		i++;
+	}
+	new_grid[map->height] = ft_strdup_without_newline(line);
+	if (!new_grid[map->height])
+		return (0);
+	new_grid[map->height + 1] = NULL;
+	free(map->grid);
+	map->grid = new_grid;
+	map->height++;
 	return (1);
 }

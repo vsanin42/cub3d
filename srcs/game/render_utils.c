@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:43:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 15:41:44 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:32:00 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,6 @@ t_image	*get_nswe_tex(t_game *game, t_side nswe)
 	if (nswe == EAST)
 		return (&game->east);
 	return (NULL);
-}
-
-// update the player's position depending on the key that's currently pressed.
-void	move(t_game *game)
-{
-	if (game->keymap.w == true)
-		update_pos(game, game->dir.x, game->dir.y);
-	if (game->keymap.s == true)
-		update_pos(game, -game->dir.x, -game->dir.y);
-	if (game->keymap.a == true)
-		update_pos(game, -game->plane.x, -game->plane.y);
-	if (game->keymap.d == true)
-		update_pos(game, game->plane.x, game->plane.y);
-}
-
-// not used atm.
-int	check_keymap(t_game *game)
-{
-	if (game->keymap.w == false && game->keymap.a == false
-		&& game->keymap.s == false && game->keymap.d == false
-		&& game->keymap.l == false && game->keymap.r == false)
-		return (0);
-	return (1);
 }
 
 // 1. load the textures from xpm files specified by the paths in game->textures.
