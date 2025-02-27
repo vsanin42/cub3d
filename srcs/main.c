@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/27 12:41:05 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 15:17:46 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,35 @@ int	alloc_and_nullify(t_game *game)
 	return (0);
 }
 
+// 1. initialize the mlx, window and main image instances.
+// 2. save the image address and other info in addr - needed to draw on pixels.
+// 3. load textures from paths specified in textures array.
+// 4. hook into key press, key release and close window events.
+// 5. hook into render function as the main mlx loop function + start the loop.
+int	start_game(t_game *game)
+{
+	game->mlx = mlx_init();
+	if (!game->mlx)
+		return (err("Error: mlx_init() failed!:("), 0);
+	game->win = mlx_new_window(game->mlx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
+	if (!game->win)
+		return (free(game->mlx), err("Error: mlx_new_window() failed!:("), 0);
+	game->img.ptr = mlx_new_image(game->mlx, WIN_WIDTH, WIN_HEIGHT);
+	game->img.addr = (int *)mlx_get_data_addr(game->img.ptr,
+			&game->img.bpp, &game->img.size_line, &game->img.endian);
+	load_textures(game);
+	mlx_hook(game->win, 2, 1L << 0, key_press, game);
+	mlx_hook(game->win, 3, 1L << 1, key_release, game);
+	mlx_hook(game->win, 17, 1L << 0, close_window, game);
+	mlx_loop_hook(game->mlx, render, game);
+	mlx_loop(game->mlx);
+	return (1);
+}
+
+// 1. zero out the game struct for convenience later.
+// 2. check argc, if OK - allocate the key members for validation.
+// 3. check map validity.
+// 4. start game - load textures, setup and run mlx...
 int	main(int argc, char **argv)
 {
 	t_game	game;

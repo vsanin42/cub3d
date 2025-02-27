@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:51:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/25 14:47:00 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 15:42:47 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 // after this is done, the ray stops at a border of square.
 // thanks to map x and y we know the coordinates of this square.
 // using this x and y check the map grid for what value is in that square.
-// if a wall was hit (grid[y][x] == '1'), set hit and nswe in helper and exit the loop.
+// if a wall was hit (grid[y][x] == '1'), set hit and nswe in helper function
+// and exit the loop.
 // the last variables we need to set are done in the helper function.
 void	dda(t_ray *r, t_game *game)
 {
@@ -143,7 +144,7 @@ void	set_final_vars(t_ray *r, t_game *game)
 		r->wall_x = game->pos.x + r->perp_wall_dist * r->ray_dir_x;
 	r->wall_x -= floor(r->wall_x);
 	r->tex_x = (int)(r->wall_x * (double)TEX_WIDTH);
-	// code bwlow flips the textures for opposite directions. may not be needed idk i wanna test without it first
+	// code below flips the textures for opposite directions. may not be needed idk i wanna test without it first
 	/*
 	if (r->side == 0 && r->ray_dir_x > 0) // also possibly flip >< for raydirx and raydiry
 		r->tex_x = TEX_WIDTH - r->tex_x - 1;

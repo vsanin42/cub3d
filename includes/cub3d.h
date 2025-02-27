@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/27 12:44:02 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 14:49:32 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ typedef struct s_game
 	double	time;
 	double	old_time;
 	double	frame_time;
+	double	move_speed;
+	double	rot_speed;
 	void	*mlx;	// mlx
 	void	*win;
 	t_image img;
@@ -134,7 +136,7 @@ typedef struct s_game
 	t_image	west;
 	t_image	east;
 	t_kmap	keymap;
-	bool	first_render_done;
+	//bool	first_render_done;
 }	t_game;
 
 typedef struct s_win_params
@@ -151,27 +153,41 @@ typedef struct s_map_data
 	int		**visited;
 }	t_map_data;
 
-/* srcs/render */
-/* srcs/render/draw.c */
-int			render(t_game *game);
-void		draw_line(t_ray *r, t_game *game, int x);
-void		draw_ceiling(t_ray *r, t_game *game, int x);
-void		draw_floor(t_ray *r, t_game *game, int x);
+/* -------------------------------------------------------------------------- */
 
-/* srcs/render/raycasting.c */
+/* GAME */
+
+/* srcs/events.c */
+int			key_press(int keycode, t_game *game);
+int			key_press_wasd(t_game *game, int keycode);
+int			key_release(int keycode, t_game *game);
+int			close_window(t_game *game);
+
+/* srcs/game/raycasting.c */
 void		dda(t_ray *r, t_game *game);
 void		set_ray_variables(t_ray *r, t_game *game, int x);
 void		set_step_and_side(t_ray *r, t_game *game);
 void		set_final_vars(t_ray *r, t_game *game);
 void		set_hit_and_nswe(t_ray *r);
 
-/* srcs/render/render_utils.c */
+/* srcs/game/render_utils.c */
 void		set_frame_time(t_game *game);
 t_image		*get_nswe_tex(t_game *game, t_side nswe);
+int			check_keymap(t_game *game);
+void		load_textures(t_game *game);
+void		move(t_game *game);
 
-/* ------------------------------------------------ */
+/* srcs/game/render.c */
+int			render(t_game *game);
+void		draw_line(t_ray *r, t_game *game, int x);
+void		draw_ceiling(t_ray *r, t_game *game, int x);
+void		draw_floor(t_ray *r, t_game *game, int x);
+int			update_pos(t_game *game, double x, double y);
 
-/* srcs/utils */
+/* -------------------------------------------------------------------------- */
+
+/* UTILS */
+
 /* srcs/utils/print.c */
 void		print_colors(t_game *game);
 void		print_textures(t_game *game);
@@ -180,7 +196,6 @@ void		print_map(t_game *game);
 /* srcs/utils/utils.c */
 int			err(char *text_err);
 long		get_current_time(void);
-int			check_keymap(t_game *game);
 int			create_trgb(int t, int r, int g, int b);
 
 /* srcs/utils/free.c */
@@ -188,11 +203,10 @@ void		free_game(t_game *game);
 void		free_map(t_map *map);
 void		free_map_data(t_map_data *data, int index);
 
-/* srcs/utils/rgb.c */
+/* -------------------------------------------------------------------------- */
 
-/* ------------------------------------------------ */
+/* VALIDATION */
 
-/* srcs/validation */
 /* srcs/validation/colors.c */
 int			check_rgb_values(t_game *game, int flag);
 int			save_color_floor(char *line, t_game *game, int counter, int j);
@@ -244,20 +258,10 @@ int			check_fd(int fd);
 int			check_height(int height);
 int			valid_map(char *argv, t_game *game, int fd);
 
-/* ------------------------------------------------ */
-
-/* srcs/events.c */
-int			key_press(int keycode, t_game *game);
-int			key_press_wasd(t_game *game, int keycode);
-int			key_release(int keycode, t_game *game);
-int			close_window(t_game *game);
-
-/* srcs/start_game.c */
-int			update_pos(t_game *game, double x, double y);
-int			start_game(t_game *game);
-void		load_textures(t_game *game);
+/* -------------------------------------------------------------------------- */
 
 /* srcs/main.c */
 int			alloc_and_nullify(t_game *game);
+int			start_game(t_game *game);
 
 #endif

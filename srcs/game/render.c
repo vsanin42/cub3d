@@ -1,21 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 12:44:59 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 15:23:12 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
+// update the position after checking for collisions.
+// check if the projected position after moving ends up inside a wall.
+// checking the point itself is not safe.
+// imagine two walls touching by their corners.
+// if the moving step allows for it, it's possible to step through them,
+// even though the other side is not even visible.
+// so instead of checking the point itself,
+// check the 4 grid directions relative to that point, in NSWE order below.
+// if any of the directions is a wall, don't perform the move.
+// if all OK, update pos - x and y increments are already passed as params.
+// how close to a wall you can possibly get is determined by step.
+// it can be modified, but >0.5 would make passing between two walls impossible.
+int	update_pos(t_game *game, double x, double y)
+{
+	t_pos	proj;
+	double	step;
+
+	step = 0.15;
+	proj.x = game->pos.x + x * game->move_speed;
+	proj.y = game->pos.y + y * game->move_speed;
+	if (game->map->grid[(int)(proj.y - step)][(int)proj.x] == '1')
+		return (0);
+	if (game->map->grid[(int)(proj.y + step)][(int)proj.x] == '1')
+		return (0);
+	if (game->map->grid[(int)proj.y][(int)(proj.x - step)] == '1')
+		return (0);
+	if (game->map->grid[(int)proj.y][(int)(proj.x + step)] == '1')
+		return (0);
+	game->pos.x += x * game->move_speed;
+	game->pos.y += y * game->move_speed;
+	return (1);
+}
+
 // draw rgb color line to create the floor
 // might need to pass 255 instead of 0 as t param in trgb
-// 1. check if draw_end of the texture line (start for the floor) is at the window border
-// if yes, don't draw anything and return.
+// 1. check if draw_end of the texture line (start for the floor)
+// is at the window border. if yes, don't draw anything and return.
 // 2. create the trgb value from the floor colors from the map file.
 // 3. set the beginning of the floor drawing as the last point of texture drawn.
 // 4. fill the main image pixels with the floor color until the window border.
@@ -65,14 +98,18 @@ void	draw_ceiling(t_ray *r, t_game *game, int x)
 // now we need to draw the line.
 // 1. we get the texture to draw from.
 // 2. we set y as draw start and iterate until draw end, drawing the full line.
-// 3. step tells us how many texture pixels correspond to one screen pixel - scaling variable.
+// 3. step tells us how many texture pixels correspond to one screen pixel.
 // 4. tex pos is the position on the texture to start drawing from.
-// calculated by substracting the perfectly sized position from the real intended position and multiplyin by step to get the texture position.
+// calculated by substracting the perfectly sized position
+// from the intended position and multiplying by step to get the tex position.
 // 5. loop from top to bottom.
-// 5.1. tex_y is the exact y coordinate of the texture. together with tex_x it allows us to reach the desired pixel.
-// & (TEX_HEIGHT - 1) is a bitwise operation that acts like a mask to prevent undefined behaviour, makes it wrap around.
+// 5.1. tex_y is the exact y coordinate of the texture.
+// together with tex_x it allows us to reach the desired pixel.
+// & (TEX_HEIGHT - 1) is a bitwise operation that acts like a mask
+// to prevent undefined behaviour, makes it wrap around.
 // 5.2. each time we draw, we move over in texture position by the defined step.
-// 5.3. color will hold the value of a pixel at [tex_y][tex_x] in the texture. it is then assigned to the [y][x] position on the real screen image.
+// 5.3. color will hold the value of a pixel at [tex_y][tex_x] in the texture.
+// it is then assigned to the [y][x] position on the real screen image.
 void	draw_line(t_ray *r, t_game *game, int x)
 {
 	int		y;
@@ -95,37 +132,40 @@ void	draw_line(t_ray *r, t_game *game, int x)
 	draw_floor(r, game, x);
 }
 
-// this is in mlx_loop_hook
-// 0.1 movement changed from reacting to events to constantly reading key up/down states
+// main rendering function.
 // 1. t_ray r holds all variables we're working with.
-// 2. for every x (column) of the screen width, going from left to right, perform the raycasting process.
+// 2. for every x (column) of the screen width, going from left to right,
+// perform the raycasting process.
+// 2.1 to make sure the ray is clear for each iteration, zero it out w/ memset.
 // 3. set the variables of r struct.
-// 4. run the dda algorithm to cast a ray in a specific direction until it hits a wall.
-// by the end of dda() function, we have all the info we need to draw a single vertical line of a needed size.
+// 4. run the dda algorithm to cast a ray in a specific direction
+// until it hits a wall. by the end of dda() function,
+// we have all the info we need to draw a single vertical line of a needed size.
 // it's all stored in the r struct.
-// 5. move onto the next x column of the screen, cast a ray, find the line height, repeat until WIN_WIDTH.
-// 6. set_frame_time() tracks time between two frames created. - WIP
-// 7. put the created image to the window.
+// 5. move onto the next x column of the screen, cast a ray,
+// find the line height, repeat until WIN_WIDTH.
+// 6. set_frame_time() tracks time between two frames created.
+// 7. update player position. safer to do it here, only sacrificing one frame.
+// with in infinite mlx loop, it's incredibly unlikely, but not impossible,
+// that you can move before the first frames are drawn, meaning move_speed == 0,
+// meaning the position update will be at 0, 0, which can be empty -> segfault.
+// 8. put the created image to the window.
 int	render(t_game *game)
 {
 	int		x;
 	t_ray	r;
 
 	x = 0;
-	if (!check_keymap(game) && game->first_render_done == true)
-		return (1);
-	check_keymap(game);
 	while (x < WIN_WIDTH)
 	{
-		ft_memset(&r, 0, sizeof(t_ray)); // just in case
+		ft_memset(&r, 0, sizeof(t_ray));
 		set_ray_variables(&r, game, x);
 		dda(&r, game);
 		draw_line(&r, game, x);
 		x++;
 	}
-	set_frame_time(game); // idk yet
-	// any buffer clearing of the last image? idk
+	set_frame_time(game);
+	move(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.ptr, 0, 0);
-	// usleep for 16000 usec to tone down the cpu usage?
 	return (0);
 }

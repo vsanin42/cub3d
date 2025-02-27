@@ -133,3 +133,9 @@ cool ceilings:
 - wall collision imbedded into moving so an automatic bonus xd
 - TODO: FPS, speed, rotation.
 - MAKE CHECK KEYMAP BETTER
+
+27.02
+
+- movement - smooth, endless render loop - new reacting to key press and release only to set the keymap bools, not to perform the actual movement.
+- linked it against fps, now the speed is fixed and relative to the frame rate.
+- some folder and file reorganization + minor norm cleanups -  trying to keep the comments for future reference.

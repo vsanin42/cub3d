@@ -6,13 +6,14 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:31:11 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 12:33:44 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 15:35:30 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
-// setting like this could be bad
+// setting like this could be bad - edit: idk what i meant by this
+// 
 int	key_press_wasd(t_game *game, int keycode)
 {
 	if (keycode == XK_w)
@@ -48,6 +49,7 @@ int	key_press_wasd(t_game *game, int keycode)
 // ESC	65307
 // might not work on other systems, so i'm using Xlib keysyms.
 // they all correspond to the above.
+// this only changes the bools in the keymap, they get back to false on release.
 int	key_press(int keycode, t_game *game)
 {
 	if (keycode == XK_Escape)
@@ -57,16 +59,16 @@ int	key_press(int keycode, t_game *game)
 		key_press_wasd(game, keycode);
 	if (keycode == XK_Left)
 	{
-		
+		game->keymap.l = true;
 	}
 	if (keycode == XK_Right)
 	{
-		
+		game->keymap.r = true;
 	}
-	//render(game);
 	return (0);
 }
 
+// reset the keymap bool on key release to indicate it's no longer pressed.
 int	key_release(int keycode, t_game *game)
 {
 	if (keycode == XK_w)
