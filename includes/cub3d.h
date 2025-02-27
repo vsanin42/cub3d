@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/26 18:48:27 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 12:44:02 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct s_game
 	t_image	west;
 	t_image	east;
 	t_kmap	keymap;
-	int		first_render;
+	bool	first_render_done;
 }	t_game;
 
 typedef struct s_win_params
@@ -180,8 +180,8 @@ void		print_map(t_game *game);
 /* srcs/utils/utils.c */
 int			err(char *text_err);
 long		get_current_time(void);
-long		get_timestamp(long start); // not used, maybe will be
 int			check_keymap(t_game *game);
+int			create_trgb(int t, int r, int g, int b);
 
 /* srcs/utils/free.c */
 void		free_game(t_game *game);
@@ -189,8 +189,6 @@ void		free_map(t_map *map);
 void		free_map_data(t_map_data *data, int index);
 
 /* srcs/utils/rgb.c */
-int			create_trgb(int t, int r, int g, int b);
-int			get_trgb(int trgb, t_trgb mode);
 
 /* ------------------------------------------------ */
 
@@ -248,20 +246,18 @@ int			valid_map(char *argv, t_game *game, int fd);
 
 /* ------------------------------------------------ */
 
-/* srcs/start_game.c */
-void		err_exit(char *err_msg, t_game *game); // not used
-int			close_window(t_game *game);
-int			update_pos(t_game *game, double x, double y);
+/* srcs/events.c */
 int			key_press(int keycode, t_game *game);
 int			key_press_wasd(t_game *game, int keycode);
 int			key_release(int keycode, t_game *game);
+int			close_window(t_game *game);
+
+/* srcs/start_game.c */
+int			update_pos(t_game *game, double x, double y);
 int			start_game(t_game *game);
 void		load_textures(t_game *game);
 
 /* srcs/main.c */
 int			alloc_and_nullify(t_game *game);
-
-void		set_array_as_null(char **textures, int *floor_color,
-				int *ceiling_color); // not used
 
 #endif

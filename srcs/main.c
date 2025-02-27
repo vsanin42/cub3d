@@ -6,27 +6,11 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/25 12:25:09 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 12:41:05 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-// not used if we keep alloc_and_nullify
-void	set_array_as_null(char **textures, int *floor_color, int *ceiling_color)
-{
-	int	i;
-
-	i = 0;
-	while (i < 5)
-		textures[i++] = NULL;
-	i = 0;
-	while (i < 3)
-		floor_color[i++] = 0;
-	i = 0;
-	while (i < 3)
-		ceiling_color[i++] = 0;
-}
 
 // 1. alloc 3 members of game that we need
 // 2. if malloc fails, free all 3 (safe thanks to memset)
@@ -66,7 +50,6 @@ int	main(int argc, char **argv)
 		return (err("Error: Too few or many arguments!"));
 	if (alloc_and_nullify(&game) == 1)
 		return (1);
-	// set_array_as_null(game.textures, game.floor_color, game.ceiling_color);
 	if (!valid_map(argv[1], &game, 0))
 		return (free_game(&game), err("Error: Map validation failed!:("));
 	// print_textures(&game);

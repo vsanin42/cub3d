@@ -26,13 +26,13 @@ MLX_FLAGS = -L/usr/lib/X11 -lXext -lX11
 HEADER = includes/cub3d.h
 
 SRC  = 	srcs/main.c \
+		srcs/events.c \
 		srcs/start_game.c \
 		srcs/render/draw.c \
 		srcs/render/raycasting.c \
 		srcs/render/render_utils.c \
 		srcs/utils/free.c \
 		srcs/utils/print.c \
-		srcs/utils/rgb.c \
 		srcs/utils/utils.c \
 		srcs/validation/colors.c \
 		srcs/validation/map_check.c \

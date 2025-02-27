@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/26 19:31:57 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/02/27 12:44:59 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,16 +112,9 @@ int	render(t_game *game)
 	t_ray	r;
 
 	x = 0;
-	if (!check_keymap(game) && game->first_render == 1)
+	if (!check_keymap(game) && game->first_render_done == true)
 		return (1);
-	if (game->keymap.w == true)
-		update_pos(game, game->dir.x, game->dir.y);
-	if (game->keymap.s == true)
-		update_pos(game, -game->dir.x, -game->dir.y);
-	if (game->keymap.a == true)
-		update_pos(game, -game->plane.x, -game->plane.y);
-	if (game->keymap.d == true)
-		update_pos(game, game->plane.x, game->plane.y);
+	check_keymap(game);
 	while (x < WIN_WIDTH)
 	{
 		ft_memset(&r, 0, sizeof(t_ray)); // just in case
