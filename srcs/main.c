@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/27 18:32:30 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/02 18:28:45 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,12 @@ int	start_game(t_game *game)
 	game->img.addr = (int *)mlx_get_data_addr(game->img.ptr,
 			&game->img.bpp, &game->img.size_line, &game->img.endian);
 	load_textures(game);
-	mlx_hook(game->win, 2, 1L << 0, key_press, game);
-	mlx_hook(game->win, 3, 1L << 1, key_release, game);
-	mlx_hook(game->win, 17, 1L << 0, close_window, game);
+	mlx_hook(game->win, KeyPress, KeyPressMask, key_press, game);
+	mlx_hook(game->win, KeyRelease, KeyReleaseMask, key_release, game);
+	mlx_hook(game->win, EnterNotify, EnterWindowMask, mouse_enter, game);
+	mlx_hook(game->win, LeaveNotify, LeaveWindowMask, mouse_leave, game);
+	mlx_hook(game->win, MotionNotify, PointerMotionMask, mouse_move, game);
+	mlx_hook(game->win, DestroyNotify, StructureNotifyMask, close_window, game); // 1L << 0
 	mlx_loop_hook(game->mlx, render, game);
 	mlx_loop(game->mlx);
 	return (1);

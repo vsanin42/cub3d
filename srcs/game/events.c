@@ -6,12 +6,13 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:31:11 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 17:52:17 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/02 18:47:15 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
+// cleanup function: destroy loaded images, window, mlx, free everything.
 int	close_window(t_game *game)
 {
 	mlx_destroy_image(game->mlx, game->north.ptr);
@@ -42,9 +43,6 @@ int	key_press(int keycode, t_game *game)
 {
 	if (keycode == XK_Escape)
 		close_window(game);
-	// if (keycode == XK_w || keycode == XK_a
-	// 	|| keycode == XK_s || keycode == XK_d)
-	// 	key_press_wasd(game, keycode);
 	if (keycode == XK_w)
 		game->keymap.w = true;
 	if (keycode == XK_s)
@@ -112,24 +110,17 @@ int	update_pos(t_game *game, double x, double y)
 }
 
 // rotate the POV left or right.
-// use the rot_speed as angle and perform rotation matrix multiplication
-// to update the camera.
+// use the rot_speed derived from FPS as angle, adjust based on L/R arrow.
+// perform rotation matrix multiplication to update the camera.
 int	update_cam(t_game *game)
 {
-	double	old_dir_x;
-	double	old_plane_x;
 	double	angle;
 
-	old_dir_x = game->dir.x;
-	old_plane_x = game->plane.x;
 	angle = 0;
 	if (game->keymap.l == true)
 		angle = -game->rot_speed;
 	else if (game->keymap.r == true)
 		angle = game->rot_speed;
-	game->dir.x = old_dir_x * cos(angle) - game->dir.y * sin(angle);
-	game->dir.y = old_dir_x * sin(angle) + game->dir.y * cos(angle);
-	game->plane.x = old_plane_x * cos(angle) - game->plane.y * sin(angle);
-	game->plane.y = old_plane_x * sin(angle) + game->plane.y * cos(angle);
+	rotation_matrix(game, angle);
 	return (0);
 }

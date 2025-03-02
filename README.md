@@ -143,3 +143,9 @@ cool ceilings:
 - done? let's go i guess
 - movement ok, collisions ok, camera ok, textures ok (gonna replace with something more interesting)
 - file reorg once again...
+
+2.03
+
+- did mouse handling - should be ok
+- ideally, if it was a real game, in the middle of gameplay the cursor would be hidden if it's a fps game - think minecraft, shooters, etc, there's only the crosshair in the center. so the mouse should stay hidden in the window, but the function that does that leaks memory. in addition to that, it's probably more natural and more transparent for a small window like ours to keep track of the cursor - kind of annoying to see it disappear and reappear when it's on screen 100% of the time outside of our window. if we decide to hide the mouse, i think it's defendable on evaluation, but will decide what's better later.
+- it's similar to arrow keys, but it's no longer scaled with FPS/rot_speed. since the movement of the mouse is not fixed, we kind of already know how much we want to rotate because the mouse is in our hand, we dictate the diff in x coordinate in real time. on the other hand, the arrow key has to be held for a while, so it can be turning faster or slower, and now THAT changes with how fast the frames are drawn. wasted a lot of time adjusting it, but one stackoverflow answer helped me fix it in 1 minute :D so instead there's a sensitivity macro that has to have a small value (around 0.01 or lower) that simply scales down the diff we receive from x coordinate change.

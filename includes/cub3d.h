@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/27 18:22:51 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/02 18:26:09 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define WIN_HEIGHT 600
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
+# define MOUSE_SENSITIVITY 0.0075
 
 typedef struct s_pos
 {
@@ -128,6 +129,8 @@ typedef struct s_game
 	t_image	west;
 	t_image	east;
 	t_kmap	keymap;
+	t_pos	mouse;
+	bool	mouse_in_window;
 }	t_game;
 
 typedef struct s_map_data
@@ -141,12 +144,19 @@ typedef struct s_map_data
 /*								     GAME							   	  	  */
 /* -------------------------------------------------------------------------- */
 
-/* srcs/events.c */
+/* srcs/game/events.c */
 int			close_window(t_game *game);
 int			key_press(int keycode, t_game *game);
 int			key_release(int keycode, t_game *game);
 int			update_pos(t_game *game, double x, double y);
 int			update_cam(t_game *game);
+
+/* srcs/game/mouse.c */
+int			mouse_enter(t_game *game);
+int			mouse_leave(t_game *game);
+int			mouse_move(int x, int y, t_game *game);
+int			update_mouse_cam(t_game *game);
+void		rotation_matrix(t_game *game, double angle);
 
 /* srcs/game/raycasting.c */
 void		dda(t_ray *r, t_game *game);

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 17:32:05 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/02 18:53:22 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,13 @@ void	draw_floor(t_ray *r, t_game *game, int x)
 
 // draw rgb color line to create the ceiling
 // might need to pass 255 instead of 0 as t param in trgb
-// 1. check if draw_start of the texture line (start for the ceiling) is at the window border
-// if yes, don't draw anything and return.
+// 1. check if draw_start of the texture line (start for the ceiling)
+// is at the window border. if yes, don't draw anything and return.
 // 2. create the trgb value from the ceiling colors from the map file.
-// 3. set the end of the ceiling drawing as the first point of texture drawn. start is simply 0.
-// 4. fill the main image pixels with the ceiling color until the the first point of texture.
-// otherwise same logic as in the draw line function.
+// 3. set the end of the ceiling drawing as the first point of texture drawn.
+// start is simply 0.
+// 4. fill the main image pixels with the ceiling color until the the first
+// point of texture. otherwise same logic as in the draw line function.
 void	draw_ceiling(t_ray *r, t_game *game, int x)
 {
 	int	start;
@@ -74,6 +75,7 @@ void	draw_ceiling(t_ray *r, t_game *game, int x)
 // together with tex_x it allows us to reach the desired pixel.
 // & (TEX_HEIGHT - 1) is a bitwise operation that acts like a mask
 // to prevent undefined behaviour, makes it wrap around.
+// only works if TEX_HEIGHT is a power of 2. otherwise use % TEX_HEIGHT.
 // 5.2. each time we draw, we move over in texture position by the defined step.
 // 5.3. color will hold the value of a pixel at [tex_y][tex_x] in the texture.
 // it is then assigned to the [y][x] position on the real screen image.
@@ -90,7 +92,7 @@ void	draw_line(t_ray *r, t_game *game, int x)
 	draw_ceiling(r, game, x);
 	while (y < r->draw_end)
 	{
-		r->tex_y = (int)r->tex_pos & (TEX_HEIGHT - 1); // only works if TEX_HEIGHT is a power of 2. otherwise use % TEX_HEIGHT
+		r->tex_y = (int)r->tex_pos & (TEX_HEIGHT - 1);
 		r->tex_pos += r->draw_step;
 		color = tex->addr[r->tex_y * TEX_WIDTH + r->tex_x];
 		game->img.addr[y * WIN_WIDTH + x] = color;
@@ -104,6 +106,8 @@ void	draw_line(t_ray *r, t_game *game, int x)
 // update the player's position depending on the key that's currently pressed.
 // if LR arrows are pressed:
 // rotate the camera.
+// check if mouse is in the window and has moved, if yes - also rotate.
+// protect against using mouse and arrows at the same time? no problems found.
 void	move(t_game *game)
 {
 	if (game->keymap.w == true)
@@ -116,6 +120,7 @@ void	move(t_game *game)
 		update_pos(game, game->plane.x, game->plane.y);
 	if (game->keymap.l == true || game->keymap.r == true)
 		update_cam(game);
+	update_mouse_cam(game);
 }
 
 // main rendering function.
