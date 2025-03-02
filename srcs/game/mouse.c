@@ -6,17 +6,25 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 15:43:47 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/02 18:56:32 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/02 20:32:56 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
 // event handler for mouse entering the window.
-// only sets the respective bool to true. optional: hide mouse while in window.
+// sets the respective bool to true. optional: hide mouse while in window.
 // mlx_mouse_hide(game->mlx, game->win);
+// sets the current mouse position to whereever it is - prevents spinning
+// when mouse was already over the window when it opened.
 int	mouse_enter(t_game *game)
 {
+	int	new_x;
+	int	new_y;
+
+	mlx_mouse_get_pos(game->mlx, game->win, &new_x, &new_y);
+	game->mouse.x = new_x;
+	game->mouse.y = new_y;
 	game->mouse_in_window = true;
 	return (0);
 }

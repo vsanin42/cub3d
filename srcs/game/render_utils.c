@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:43:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 17:32:00 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/02 20:50:11 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	set_frame_time(t_game *game)
 	game->frame_time = (game->time - game->old_time) / (double)1000;
 	game->move_speed = game->frame_time * 5;
 	game->rot_speed = game->frame_time * 3;
-	printf("FPS: %.0f\n", 1 / game->frame_time); // optional
 }
 
 // gets the correct texture depending on the side that was hit by the ray.

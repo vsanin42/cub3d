@@ -27,6 +27,7 @@ HEADER = includes/cub3d.h
 
 SRC  = 	srcs/main.c \
 		srcs/game/events.c \
+		srcs/game/minimap.c \
 		srcs/game/mouse.c \
 		srcs/game/raycasting.c \
 		srcs/game/render.c \

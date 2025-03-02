@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/02 18:53:22 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/02 19:18:54 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ int	render(t_game *game)
 		draw_line(&r, game, x);
 		x++;
 	}
+	draw_minimap(game);
 	set_frame_time(game);
 	move(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.ptr, 0, 0);

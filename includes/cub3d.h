@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/02 18:26:09 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/02 20:49:22 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 # define MOUSE_SENSITIVITY 0.0075
+# define RED 16711680
 
 typedef struct s_pos
 {
@@ -150,6 +151,9 @@ int			key_press(int keycode, t_game *game);
 int			key_release(int keycode, t_game *game);
 int			update_pos(t_game *game, double x, double y);
 int			update_cam(t_game *game);
+
+/* srcs/game/minimap.c */
+int			draw_minimap(t_game *game);
 
 /* srcs/game/mouse.c */
 int			mouse_enter(t_game *game);
