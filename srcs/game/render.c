@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/02 19:18:54 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/03 13:41:57 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,13 @@
 void	draw_floor(t_ray *r, t_game *game, int x)
 {
 	int	start;
-	int	color;
 
 	if (r->draw_end == WIN_HEIGHT - 1)
 		return ;
-	color = create_trgb(0, game->floor_color[0],
-			game->floor_color[1], game->floor_color[2]);
 	start = r->draw_end;
 	while (start < WIN_HEIGHT)
 	{
-		game->img.addr[start * WIN_WIDTH + x] = color;
+		game->img.addr[start * WIN_WIDTH + x] = game->floor;
 		start++;
 	}
 }
@@ -49,16 +46,13 @@ void	draw_floor(t_ray *r, t_game *game, int x)
 void	draw_ceiling(t_ray *r, t_game *game, int x)
 {
 	int	start;
-	int	color;
 
 	if (r->draw_start == 0)
 		return ;
-	color = create_trgb(0, game->ceiling_color[0],
-			game->ceiling_color[1], game->ceiling_color[2]);
 	start = 0;
 	while (start < r->draw_start)
 	{
-		game->img.addr[start * WIN_WIDTH + x] = color;
+		game->img.addr[start * WIN_WIDTH + x] = game->ceiling;
 		start++;
 	}
 }

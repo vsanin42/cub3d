@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:43:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/02 20:50:11 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/03 13:40:13 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,8 @@ void	load_textures(t_game *game)
 			&game->west.bpp, &game->west.size_line, &game->west.endian);
 	game->east.addr = (int *)mlx_get_data_addr(game->east.ptr,
 			&game->east.bpp, &game->east.size_line, &game->east.endian);
+	game->floor = create_trgb(0, game->floor_color[0],
+			game->floor_color[1], game->floor_color[2]);
+	game->ceiling = create_trgb(0, game->ceiling_color[0],
+			game->ceiling_color[1], game->ceiling_color[2]);
 }

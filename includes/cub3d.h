@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/02 20:49:22 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/03 15:44:10 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ typedef struct s_map
 	char	**grid;
 	int		height;
 }	t_map;
+
+typedef struct s_mimap
+{
+	int		map_side;
+	int		offset;
+}	t_mimap;
 
 typedef enum s_side
 {
@@ -108,6 +114,8 @@ typedef struct s_game
 	char	**textures;
 	int		*floor_color;
 	int		*ceiling_color;
+	int		floor;
+	int		ceiling;
 	int		flag_n;
 	int		flag_e;
 	int		flag_w;
@@ -153,7 +161,13 @@ int			update_pos(t_game *game, double x, double y);
 int			update_cam(t_game *game);
 
 /* srcs/game/minimap.c */
-int			draw_minimap(t_game *game);
+void		draw_map_square(t_game *game, t_mimap *minimap);
+void		draw_map_padding_horizontal(t_game *game, t_mimap *minimap);
+void		draw_map_padding_vertical(t_game *game, t_mimap *minimap);
+void		draw_map_padding_horizontal2(t_game *game, t_mimap *minimap);
+void		draw_map_padding_vertical2(t_game *game, t_mimap *minimap);
+void		draw_red_dot(t_game *game, t_mimap *minimap);
+void		draw_minimap(t_game *game);
 
 /* srcs/game/mouse.c */
 int			mouse_enter(t_game *game);
