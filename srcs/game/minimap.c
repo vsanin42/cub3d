@@ -6,121 +6,11 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:33:09 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/03 19:29:55 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 14:21:59 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-void	draw_map_square(t_game *game, t_mimap *minimap)
-{
-	int	y;
-	int	x;
-
-	y = minimap->offset;
-	while (y < minimap->map_side + minimap->offset)
-	{
-		x = minimap->offset;
-		while (x < minimap->map_side + minimap->offset)
-		{
-			game->img.addr[y * WIN_WIDTH + x] = game->floor;
-			x++;
-		}
-		y++;
-	}
-}
-
-/* add inner layer of padding in ceiling color */
-
-void	draw_map_padding_horizontal(t_game *game, t_mimap *minimap)
-{
-	int	y;
-	int	y2;
-	int	x;
-
-	y = minimap->offset * 0.8;
-	y2 = minimap->offset + minimap->map_side;
-	while (y < minimap->offset)
-	{
-		x = minimap->offset * 0.8;
-		while (x < minimap->offset + minimap->map_side + minimap->offset * 0.2)
-		{
-			game->img.addr[y * WIN_WIDTH + x] = game->ceiling;
-			game->img.addr[y2 * WIN_WIDTH + x] = game->ceiling;
-			x++;
-		}
-		y++;
-		y2++;
-	}
-}
-
-void	draw_map_padding_vertical(t_game *game, t_mimap *minimap)
-{
-	int	y;
-	int	x;
-	int	x2;
-
-	y = minimap->offset * 0.8;
-	while (y < minimap->offset + minimap->map_side + minimap->offset * 0.2)
-	{
-		x = minimap->offset * 0.8;
-		x2 = minimap->offset + minimap->map_side;
-		while (x < minimap->offset)
-		{
-			game->img.addr[y * WIN_WIDTH + x] = game->ceiling;
-			game->img.addr[y * WIN_WIDTH + x2] = game->ceiling;
-			x++;
-			x2++;
-		}
-		y++;
-	}
-}
-
-/* add outer layer of padding in floor color */
-
-void	draw_map_padding_horizontal2(t_game *game, t_mimap *minimap)
-{
-	int	y;
-	int	y2;
-	int	x;
-
-	y = minimap->offset * 0.6;
-	y2 = minimap->offset + minimap->map_side + minimap->offset * 0.4;
-	while (y < minimap->offset * 0.8)
-	{
-		x = minimap->offset * 0.6;
-		while (x < minimap->offset + minimap->map_side + minimap->offset * 0.4)
-		{
-			game->img.addr[y * WIN_WIDTH + x] = game->floor;
-			game->img.addr[y2 * WIN_WIDTH + x] = game->floor;
-			x++;
-		}
-		y++;
-		y2--;
-	}
-}
-
-void	draw_map_padding_vertical2(t_game *game, t_mimap *minimap)
-{
-	int	y;
-	int	x;
-	int	x2;
-
-	y = minimap->offset * 0.6;
-	while (y < minimap->offset + minimap->map_side + minimap->offset * 0.4)
-	{
-		x = minimap->offset * 0.6;
-		x2 = minimap->offset + minimap->map_side + minimap->offset * 0.2;
-		while (x < minimap->offset * 0.8)
-		{
-			game->img.addr[y * WIN_WIDTH + x] = game->floor;
-			game->img.addr[y * WIN_WIDTH + x2] = game->floor;
-			x++;
-			x2++;
-		}
-		y++;
-	}
-}
 
 void	draw_red_dot(t_game *game, t_mimap *minimap)
 {
@@ -144,54 +34,131 @@ void	draw_red_dot(t_game *game, t_mimap *minimap)
 	}
 }
 
+void	draw_map_top_right(t_game *game, t_mimap *m)
+{
+	m->x_win = m->x_start;
+	m->y_win = m->y_start;
+	m->y_step_count = 1;
+	m->x_step_count = 1;
+	while (m->x_win < m->offset + m->map_side)
+	{
+		m->g_x = game->pos.x + m->step * m->x_step_count;
+		m->y_win = m->y_start;
+		m->y_step_count = 1;
+		while (m->y_win > m->offset)
+		{
+			m->g_y = game->pos.y - m->step * m->y_step_count;
+			m->y_step_count++;
+			if (m->g_y < 0 || m->g_y >= game->map->height || m->g_x < 0
+				|| m->g_x >= ft_strlen(game->map->grid[m->g_y]))
+				break ;
+			if (is_floor(game, m->g_y, m->g_x))
+				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = game->ceiling;
+			m->y_win--;
+		}
+		m->x_step_count++;
+		m->x_win++;
+	}
+}
+
+void	draw_map_top_left(t_game *game, t_mimap *m)
+{
+	m->x_win = m->x_start;
+	m->y_win = m->y_start;
+	m->y_step_count = 1;
+	m->x_step_count = 1;
+	while (m->x_win > m->offset)
+	{
+		m->g_x = game->pos.x - m->step * m->x_step_count;
+		m->y_win = m->y_start;
+		m->y_step_count = 1;
+		while (m->y_win > m->offset)
+		{
+			m->g_y = game->pos.y - m->step * m->y_step_count;
+			m->y_step_count++;
+			if (m->g_y < 0 || m->g_y >= game->map->height || m->g_x < 0
+				|| m->g_x >= ft_strlen(game->map->grid[m->g_y]))
+				break ;
+			if (is_floor(game, m->g_y, m->g_x))
+				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = game->ceiling;
+			m->y_win--;
+		}
+		m->x_step_count++;
+		m->x_win--;
+	}
+}
+
+void	draw_map_bottom_right(t_game *game, t_mimap *m)
+{
+	m->x_win = m->x_start;
+	m->y_win = m->y_start;
+	m->y_step_count = 1;
+	m->x_step_count = 1;
+	while (m->x_win < m->offset + m->map_side)
+	{
+		m->g_x = game->pos.x + m->step * m->x_step_count;
+		m->y_win = m->y_start;
+		m->y_step_count = 1;
+		while (m->y_win < m->offset + m->map_side)
+		{
+			m->g_y = game->pos.y + m->step * m->y_step_count;
+			m->y_step_count++;
+			if (m->g_y < 0 || m->g_y >= game->map->height || m->g_x < 0
+				|| m->g_x >= ft_strlen(game->map->grid[m->g_y]))
+				break ;
+			if (is_floor(game, m->g_y, m->g_x))
+				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = game->ceiling;
+			m->y_win++;
+		}
+		m->x_step_count++;
+		m->x_win++;
+	}
+}
+
+void	draw_map_bottom_left(t_game *game, t_mimap *m)
+{
+	m->x_win = m->x_start;
+	m->y_win = m->y_start;
+	m->y_step_count = 1;
+	m->x_step_count = 1;
+	while (m->x_win > m->offset)
+	{
+		m->g_x = game->pos.x - m->step * m->x_step_count;
+		m->y_win = m->y_start;
+		m->y_step_count = 1;
+		while (m->y_win < m->offset + m->map_side)
+		{
+			m->g_y = game->pos.y + m->step * m->y_step_count;
+			m->y_step_count++;
+			if (m->g_y < 0 || m->g_y >= game->map->height || m->g_x < 0
+				|| m->g_x >= ft_strlen(game->map->grid[m->g_y]))
+				break ;
+			if (is_floor(game, m->g_y, m->g_x))
+				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = game->ceiling;
+			m->y_win++;
+		}
+		m->x_step_count++;
+		m->x_win--;
+	}
+}
+
 void	draw_minimap(t_game *game)
 {
 	t_mimap	minimap;
 	
 	minimap.offset = WIN_HEIGHT / 50;
 	minimap.map_side = WIN_HEIGHT / 3.5;
-
+	minimap.y_start = minimap.offset + minimap.map_side / 2;
+	minimap.x_start = minimap.offset + minimap.map_side / 2;
+	minimap.step = 5.0 / (minimap.map_side / 2);
 	draw_map_square(game, &minimap);
 	draw_map_padding_horizontal(game, &minimap);
 	draw_map_padding_vertical(game, &minimap);
 	draw_map_padding_horizontal2(game, &minimap);
 	draw_map_padding_vertical2(game, &minimap);
-	
-	int	y_start = minimap.offset + minimap.map_side / 2;
-	int	x_start = minimap.offset + minimap.map_side / 2;
-	double step = 5.0 / (minimap.map_side / 2);
-	int	y_step_count = 1;
-	int	x_step_count = 1;
-	double	pos_x = game->pos.x;
-	double	pos_y = game->pos.y;
-	int	x = x_start;
-	int y = y_start;
-	while (x < minimap.offset + minimap.map_side)
-	{
-		int g_x = pos_x + step * x_step_count;
-		y = y_start;
-		y_step_count = 1;
-		while (y > minimap.offset)
-		{
-			int	g_y = pos_y - step * y_step_count;
-			y_step_count++;
-			if (g_y < 0
-				|| g_y >= game->map->height
-				|| g_x < 0
-				|| g_x >= ft_strlen(game->map->grid[g_y]))
-			{
-				break ;
-			}
-			if (game->map->grid[g_y][g_x] == '0'
-				|| game->map->grid[g_y][g_x] == 'N'
-				|| game->map->grid[g_y][g_x] == 'S'
-				|| game->map->grid[g_y][g_x] == 'W'
-				|| game->map->grid[g_y][g_x] == 'E')
-				game->img.addr[y * WIN_WIDTH + x] = game->ceiling;
-			y--;
-		}
-		x_step_count++;
-		x++;
-	}
+	draw_map_top_right(game, &minimap);
+	draw_map_top_left(game, &minimap);
+	draw_map_bottom_right(game, &minimap);
+	draw_map_bottom_left(game, &minimap);
 	draw_red_dot(game, &minimap);
 }

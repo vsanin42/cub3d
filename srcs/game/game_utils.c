@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:43:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/03 13:40:13 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 13:22:23 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,15 @@ void	load_textures(t_game *game)
 			game->floor_color[1], game->floor_color[2]);
 	game->ceiling = create_trgb(0, game->ceiling_color[0],
 			game->ceiling_color[1], game->ceiling_color[2]);
+}
+
+int	is_floor(t_game *game, int g_y, int g_x)
+{
+	if (game->map->grid[g_y][g_x] == '0'
+		|| game->map->grid[g_y][g_x] == 'N'
+		|| game->map->grid[g_y][g_x] == 'S'
+		|| game->map->grid[g_y][g_x] == 'W'
+		|| game->map->grid[g_y][g_x] == 'E')
+		return (1);
+	return (0);
 }

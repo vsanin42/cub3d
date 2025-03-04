@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/03 15:44:10 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 14:24:48 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ typedef struct s_mimap
 {
 	int		map_side;
 	int		offset;
+	int		y_start;
+	int		x_start;
+	int		y_win;
+	int		x_win;
+	int		y_step_count;
+	int		x_step_count;
+	int		g_y;
+	int		g_x;
+	double	pos_y;
+	double	pos_x;
+	double	step;
 }	t_mimap;
 
 typedef enum s_side
@@ -160,13 +171,18 @@ int			key_release(int keycode, t_game *game);
 int			update_pos(t_game *game, double x, double y);
 int			update_cam(t_game *game);
 
-/* srcs/game/minimap.c */
+/* srcs/game/minimap_init.c */
 void		draw_map_square(t_game *game, t_mimap *minimap);
 void		draw_map_padding_horizontal(t_game *game, t_mimap *minimap);
 void		draw_map_padding_vertical(t_game *game, t_mimap *minimap);
 void		draw_map_padding_horizontal2(t_game *game, t_mimap *minimap);
 void		draw_map_padding_vertical2(t_game *game, t_mimap *minimap);
-void		draw_red_dot(t_game *game, t_mimap *minimap);
+
+/* srcs/game/minimap.c */
+void		draw_map_top_right(t_game *game, t_mimap *m);
+void		draw_map_top_left(t_game *game, t_mimap *m);
+void		draw_map_bottom_right(t_game *game, t_mimap *m);
+void		draw_map_bottom_left(t_game *game, t_mimap *m);
 void		draw_minimap(t_game *game);
 
 /* srcs/game/mouse.c */
@@ -183,10 +199,12 @@ void		set_step_and_side(t_ray *r, t_game *game);
 void		set_final_vars(t_ray *r, t_game *game);
 void		set_hit_and_nswe(t_ray *r);
 
-/* srcs/game/render_utils.c */
+/* srcs/game/game_utils.c */
 void		set_frame_time(t_game *game);
 t_image		*get_nswe_tex(t_game *game, t_side nswe);
 void		load_textures(t_game *game);
+int			is_floor(t_game *game, int g_y, int g_x);
+void		draw_red_dot(t_game *game, t_mimap *minimap);
 
 /* srcs/game/render.c */
 int			render(t_game *game);
