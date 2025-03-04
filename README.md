@@ -159,3 +159,7 @@ cool ceilings:
 - minimap works smooth and cool, one exception is when trying to start to read the map from out of bounds, it won't show a part of the map, but it's no big deal tbh. it used to call an invalid read error, so i'd rather be safe than risk it on the evals.
 - also added some padding to make it stand out both in front of the walls and the ceiling.
 - TODO: test with different window resolutions - should be fine because no variable is really static but are fractions of fixed units like window height, but idk.
+
+4.03
+
+- full minimap ok
