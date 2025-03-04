@@ -6,33 +6,11 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:33:09 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/04 14:21:59 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:41:25 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-void	draw_red_dot(t_game *game, t_mimap *minimap)
-{
-	int	y;
-	int	x;
-	int	half_side;
-	int	dot_half_side;
-
-	half_side = minimap->map_side / 2;
-	dot_half_side = minimap->map_side * 0.025;
-	y = minimap->offset + half_side - dot_half_side;
-	while (y < minimap->offset + half_side + dot_half_side)
-	{
-		x = minimap->offset + half_side - dot_half_side;
-		while (x < minimap->offset + half_side + dot_half_side)
-		{
-			game->img.addr[y * WIN_WIDTH + x] = RED;
-			x++;
-		}
-		y++;
-	}
-}
 
 void	draw_map_top_right(t_game *game, t_mimap *m)
 {
@@ -45,7 +23,7 @@ void	draw_map_top_right(t_game *game, t_mimap *m)
 		m->g_x = game->pos.x + m->step * m->x_step_count;
 		m->y_win = m->y_start;
 		m->y_step_count = 1;
-		while (m->y_win > m->offset)
+		while (m->y_win >= m->offset)
 		{
 			m->g_y = game->pos.y - m->step * m->y_step_count;
 			m->y_step_count++;
@@ -67,12 +45,12 @@ void	draw_map_top_left(t_game *game, t_mimap *m)
 	m->y_win = m->y_start;
 	m->y_step_count = 1;
 	m->x_step_count = 1;
-	while (m->x_win > m->offset)
+	while (m->x_win >= m->offset)
 	{
 		m->g_x = game->pos.x - m->step * m->x_step_count;
 		m->y_win = m->y_start;
 		m->y_step_count = 1;
-		while (m->y_win > m->offset)
+		while (m->y_win >= m->offset)
 		{
 			m->g_y = game->pos.y - m->step * m->y_step_count;
 			m->y_step_count++;
@@ -121,7 +99,7 @@ void	draw_map_bottom_left(t_game *game, t_mimap *m)
 	m->y_win = m->y_start;
 	m->y_step_count = 1;
 	m->x_step_count = 1;
-	while (m->x_win > m->offset)
+	while (m->x_win >= m->offset)
 	{
 		m->g_x = game->pos.x - m->step * m->x_step_count;
 		m->y_win = m->y_start;
@@ -142,10 +120,16 @@ void	draw_map_bottom_left(t_game *game, t_mimap *m)
 	}
 }
 
+// creates a minimap with dynamically updated surroundings.
+// variables are derived from fixed values like win and height
+// draw the background and padding to separate the map from the main screen
+// draw walkable area in all directions in columns that begin from the center
+// and extend outwards left/right/up/down
+// add a red square on top of it that represents the player position
 void	draw_minimap(t_game *game)
 {
 	t_mimap	minimap;
-	
+
 	minimap.offset = WIN_HEIGHT / 50;
 	minimap.map_side = WIN_HEIGHT / 3.5;
 	minimap.y_start = minimap.offset + minimap.map_side / 2;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_check2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/14 19:12:53 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:47:52 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	check_char_validity(t_map_data *data, int i, int j)
 	c = data->map[i][j];
 	if (!is_valid_char(c))
 	{
-		// printf("Error: invalid character at position [%d, %d] |%c|\n", i, j, c);
 		err("Error: Invalid character detected!");
 		return (0);
 	}
@@ -36,7 +35,6 @@ int	check_area_closure(t_map_data *data, int i, int j)
 	{
 		if (!flood_fill(data, i, j))
 		{
-			// printf("Error: open area detected at position [%d, %d]\n", i, j);
 			err("Error: Open area detected!");
 			return (0);
 		}
@@ -77,6 +75,7 @@ int	check_walls(char **map, int rows)
 // 1. check length: if too short, return
 // 2. check extension: if wrong, return
 // 3. check forbidden chars: if found return
+// (big while if: check for non-alnum and non ._-/ characters)
 // if everything passes, success
 int	check_format(char *argv, int fd)
 {
@@ -87,9 +86,9 @@ int	check_format(char *argv, int fd)
 	len = ft_strlen(argv);
 	if (len <= 4)
 		return (close(fd), err("Error: Filename is too short!"), 0);
-	if (ft_strncmp(argv + len - 4, ".cub", 4) != 0) // if matches, it returns 0
+	if (ft_strncmp(argv + len - 4, ".cub", 4) != 0)
 		return (close(fd), err("Error: Wrong/missing map extension!"), 0);
-	while (argv[i]) // check for non-alnum and non ._-/ characters
+	while (argv[i])
 	{
 		if (!((argv[i] >= '0' && argv[i] <= '9')
 				|| (argv[i] >= 'a' && argv[i] <= 'z')

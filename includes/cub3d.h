@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/04 14:24:48 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 18:30:13 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,40 +69,64 @@ typedef enum s_side
 	EAST
 }	t_side;
 
-// struct to hold all variables used in raycasting
+// struct to hold all variables used in raycasting.
+// camera_x:		x coordinate in the camera plane
+// ray_dir_x: 		direction of a ray
+// side_dist_x: 	distance to the first x/y side from current position
+// delta_dist_x: 	distance from one x/y side to the next
+// perp_wall_dist:	distance from camera plane to the wall
+// 					- to make all rays the same length - avoids fisheye effect
+// wall_x: 			where exactly the wall was hit (between 0 and 1 value)
+// draw_step:		scaling variable - how many pixels on the texture
+// 					correspond to one pixel on the screen
+// tex_pos:			starting drawing position of the texture
+// tex_x;			how wall_x maps onto texture - wall_x scaled to TEX_WIDTH
+// tex_y;			y coordinate of the texture
+// map_x;			map square coordinates (not the position inside the square)
+// step_x;			in which direction to step (-1/1)
+// hit;				was wall hit or not - DDA stopping condition
+// side;			which side was hit - y or x
+// line_height;		height of the line to be drawn - depends on perp_wall_dist
+// draw_start;		where to start and stop drawing the line
+// 					- lowest/highest points in a vertical column
+// nswe;			which exact side was hit (NSWE 0123 like the textures array)
 typedef struct s_ray
 {
-	double	camera_x; 		// x coordinate in the camera plane
-	double	ray_dir_x;		// direction of a ray
+	double	camera_x;
+	double	ray_dir_x;
 	double	ray_dir_y;
-	double	side_dist_x;	// distance to the first x/y side from current position
+	double	side_dist_x;
 	double	side_dist_y;
-	double	delta_dist_x;	// distance from one x/y side to the next
+	double	delta_dist_x;
 	double	delta_dist_y;
-	double	perp_wall_dist;	// distance from camera plane to the wall - to make all rays the same length - avoids fisheye effect
-	double	wall_x;			// where exactly the wall was hit (between 0 and 1 value)
-	double	draw_step;		// scaling variable to tell how many pixels on the texture correspond to one pixel on the screen
-	double	tex_pos;		// starting drawing position of the texture
-	int		tex_x;			// how does wall_x map onto the texture - wall_x scaled to TEX_WIDTH
-	int		tex_y;			// y coordinate of the texture
-	int		map_x;			// map square coordinates (not the position inside the square - so just int)
+	double	perp_wall_dist;
+	double	wall_x;
+	double	draw_step;
+	double	tex_pos;
+	int		tex_x;
+	int		tex_y;
+	int		map_x;
 	int		map_y;
-	int		step_x;			// in which direction to step (-1/1)
+	int		step_x;
 	int		step_y;
-	int		hit;			// was wall hit or not - DDA stopping condition
-	int		side;			// which side was hit - y or x
-	int		line_height;	// height of the vertical line to be drawn - depends on perp_wall_dist
-	int		draw_start;		// where to start and stop drawing the line - lowest/highest points in a vertical column
+	int		hit;
+	int		side;
+	int		line_height;
+	int		draw_start;
 	int		draw_end;
-	t_side	nswe;			// which exact side was hit - NSWE 0123 like the textures array.
+	t_side	nswe;
 }	t_ray;
 
 // this struct holds all the info related to an image in one place
+// ptr: pointer to the image
+// addr: was char*, changed to int* to better navigate to pixels.
+// address of the image and related information.
+// next 3 aren't used but must exist for parameters of mlx_get_data_addr.
 typedef struct s_image
 {
-	void	*ptr; // pointer to the image
-	int		*addr; // was char*, changed to int* to better navigate to pixels. // address of the image and related information 
-	int		bpp; // next 3 aren't currently used but need to exist for parameters of mlx_get_data_addr 
+	void	*ptr;
+	int		*addr;
+	int		bpp;
 	int		size_line;
 	int		endian;
 	int		w;
@@ -121,7 +145,7 @@ typedef struct s_kmap
 
 typedef struct s_game
 {
-	t_map	*map;	// validation
+	t_map	*map;
 	char	**textures;
 	int		*floor_color;
 	int		*ceiling_color;
@@ -133,7 +157,7 @@ typedef struct s_game
 	int		flag_s;
 	int		flag_f;
 	int		flag_c;
-	t_pos	pos;	// raycasting
+	t_pos	pos;
 	t_pos	dir;
 	t_pos	plane;
 	double	time;
@@ -141,9 +165,9 @@ typedef struct s_game
 	double	frame_time;
 	double	move_speed;
 	double	rot_speed;
-	void	*mlx;	// mlx
+	void	*mlx;
 	void	*win;
-	t_image img;
+	t_image	img;
 	t_image	north;
 	t_image	south;
 	t_image	west;

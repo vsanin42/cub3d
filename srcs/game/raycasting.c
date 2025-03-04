@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:51:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 15:42:47 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:39:40 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ void	dda(t_ray *r, t_game *game)
 			r->map_y += r->step_y;
 			r->side = 1;
 		}
-		if (game->map->grid[r->map_y][r->map_x] == '1') // possibly swap y and x if doesn't work?
+		if (game->map->grid[r->map_y][r->map_x] == '1')
 			set_hit_and_nswe(r);
 	}
 	set_final_vars(r, game);
 }
 
-// calculate the step (used to specify which way the ray moves in the dda algorithm)
+// calculate the step (used to specify which way the ray should move in dda)
 // and side dist (distance from ray start to the first x/y side)
 // negative direction = negative step, etc...
 void	set_step_and_side(t_ray *r, t_game *game)
@@ -73,44 +73,40 @@ void	set_step_and_side(t_ray *r, t_game *game)
 	}
 }
 
+// 1. calculate the current ray direction coordinates
+// 2. track the square of the map we're in (ignores decimal part and keeps int)
+// 3. do the following to avoid dividing by 0:
+// dir coordinate 0 = the direction is either perfectly vertical or horizontal.
+// that means the delta dist should indicate
+// that we'll never hit a wall in that direction.
+// example: going perfectly east, a ray will never hit the north/south wall.
+// if 0, make it a very large value (one we won't ever find in any map)
+// else find absolute value of a double in brackets.
+// this achieves proper comparison between side dist x and y later.
+// 4. hit indicates if a wall was hit. also some more vars to be defined.
 void	set_ray_variables(t_ray *r, t_game *game, int x)
 {
-	// calculate the current ray direction coordinates
 	r->camera_x = 2 * x / (double)WIN_WIDTH - 1;
 	r->ray_dir_x = game->dir.x + game->plane.x * r->camera_x;
 	r->ray_dir_y = game->dir.y + game->plane.y * r->camera_x;
-
-	// track the square of the map we're in (ignores decimal part and keeps int)
 	r->map_x = (int)game->pos.x;
 	r->map_y = (int)game->pos.y;
-
-	// do the following to avoid dividing by 0
-	// dir coordinate being 0 = the direction is either perfectly vertical or horizontal.
-	// that means the delta dist should indicate that we'll never hit a wall in that direction
-	// example: going perfectly east, a ray will never hit the north/south wall.
-	// if 0, make it a very large value (one we won't ever find in any map)
-	// else find absolute value of a double in brackets (fabs instead of abs) !!! (possibly may need abs)
-	// (idk the calculations that led to this lol so it's just this formula)
 	if (r->ray_dir_x == 0)
 		r->delta_dist_x = 1e30;
 	else
 		r->delta_dist_x = fabs(1 / r->ray_dir_x);
-
-	// same for dir y
 	if (r->ray_dir_y == 0)
 		r->delta_dist_y = 1e30;
 	else
 		r->delta_dist_y = fabs(1 / r->ray_dir_y);
-	
-	// this will help keep track if we've hit a wall
 	r->hit = 0;
-
 	set_step_and_side(r, game);
 }
 
-// 1. depending on which side was hit, calculate the distance from the camera plane to the wall.
-// it's perpendicular to the camera plane/our screen and remains fixed to avoid fisheye effect.
-// 2. calculate the height of the line to be drawn - depends on the perp distance above.
+// 1. depending on which side was hit, calculate the distance
+// from the camera plane to the wall. it's perpendicular to
+// the camera plane/our screen and remains fixed to avoid fisheye effect.
+// 2. calculate the height of the line to be drawn - depends on the perp dist.
 // 3. set the start/end points of the line we want to draw.
 // start point - the higher one. end point - the lower one.
 // 3.1. WIN_HEIGHT / 2 centers the point.
@@ -119,18 +115,24 @@ void	set_ray_variables(t_ray *r, t_game *game, int x)
 // if the projected point is above the top of the screen, hard set it to 0.
 // 3.3. for end, we add half of the line height,
 // so the end point will be between the center and the bottom of the screen.
-// if the projected point is above the bottom of the screen, hard set it to WIN_HEIGHT - 1 (last drawable pixel).
-// 4. find the x coordinate (column) of the square that was just hit - needed to know which texture column to draw.
-// floor() returns the closest integer - rounds down. when subtracted, wall_x becomes a value between 0 and 1.
-// this only tells us how far left or right (an a scale from 0 to 1) the required texture line would be, not which line it is.
-// 5. this decimal value needs to be scaled to the texture width to find the actual pixel stripe value.
+// if the projected point is above the bottom of the screen, hard set it to
+// WIN_HEIGHT - 1 (last drawable pixel).
+// 4. find the x coordinate (column) of the square that was just hit
+// - needed to know which texture column to draw.
+// floor() returns the closest integer - rounds down. when subtracted,
+// wall_x becomes a value between 0 and 1.
+// this only tells us how far left or right (on a scale from 0 to 1)
+// the required texture line would be, not which line it is.
+// 5. this decimal value needs to be scaled to the texture width to find
+// the actual pixel stripe value.
+// note: value of WIN_HEIGHT can be multiplied by something
+// to make the walls taller, but no need.
 void	set_final_vars(t_ray *r, t_game *game)
 {
 	if (r->side == 0)
 		r->perp_wall_dist = r->side_dist_x - r->delta_dist_x;
 	else
 		r->perp_wall_dist = r->side_dist_y - r->delta_dist_y;
-	// value of WIN_HEIGHT below can be changed (multiplied by a number) to make walls higher/lower
 	r->line_height = (int)(WIN_HEIGHT / r->perp_wall_dist);
 	r->draw_start = WIN_HEIGHT / 2 - r->line_height / 2;
 	if (r->draw_start < 0)
@@ -144,35 +146,32 @@ void	set_final_vars(t_ray *r, t_game *game)
 		r->wall_x = game->pos.x + r->perp_wall_dist * r->ray_dir_x;
 	r->wall_x -= floor(r->wall_x);
 	r->tex_x = (int)(r->wall_x * (double)TEX_WIDTH);
-	// code below flips the textures for opposite directions. may not be needed idk i wanna test without it first
-	/*
-	if (r->side == 0 && r->ray_dir_x > 0) // also possibly flip >< for raydirx and raydiry
-		r->tex_x = TEX_WIDTH - r->tex_x - 1;
-	if (r->side == 1 && r->ray_dir_y < 0)
-		r->tex_x = TEX_WIDTH - r->tex_x - 1;
-	*/
 }
 
 // i really hope this works. xd
 // 1. setting hit to 1 lets us exit the loop.
 // 2. then we figure out which exact side was hit.
-// this is done with side variable: 0 or 1 already limits the choices to N/S and W/E
+// this is done with side variable:
+// 0 or 1 already limits the choices to N/S and W/E
 // then the step variable tells which way we were moving.
+// example: side == 0 - vertical (x) side was hit - EAST OR WEST?
+// step == 1 - we were going right (EAST) - texture facing WEST.
+// step == 0 - ... - EAST. same for N/S.
 void	set_hit_and_nswe(t_ray *r)
 {
 	r->hit = 1;
-	if (r->side == 0) // vertical (x) side was hit - EAST OR WEST?
+	if (r->side == 0)
 	{
-		if (r->step_x == 1) // we were going right (EAST) - texture facing WEST
+		if (r->step_x == 1)
 			r->nswe = WEST;
-		else if (r->step_x == -1) // we were going left (WEST) - texture facing EAST
+		else if (r->step_x == -1)
 			r->nswe = EAST;
 	}
-	else if (r->side == 1) // horitonzal (y) side was hit - NORTH or SOUTH?
+	else if (r->side == 1)
 	{
-		if (r->step_y == 1) // we were going down (SOUTH) - texture facing NORTH
+		if (r->step_y == 1)
 			r->nswe = NORTH;
-		else if (r->step_y == -1) // we were going up (NORTH) - texture facing SOUTH
+		else if (r->step_y == -1)
 			r->nswe = SOUTH;
 	}
 }

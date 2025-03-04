@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 15:43:47 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/02 20:32:56 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:40:06 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	rotation_matrix(t_game *game, double angle)
 
 	old_dir_x = game->dir.x;
 	old_plane_x = game->plane.x;
-
 	game->dir.x = old_dir_x * cos(angle) - game->dir.y * sin(angle);
 	game->dir.y = old_dir_x * sin(angle) + game->dir.y * cos(angle);
 	game->plane.x = old_plane_x * cos(angle) - game->plane.y * sin(angle);

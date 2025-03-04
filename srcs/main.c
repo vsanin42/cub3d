@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/02 18:28:45 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:49:10 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,28 @@
 // error if mismatch in element count.
 // error if area too small, unclosed, no/extra player position,
 // problem with texture path...
+// ???: is map_flag == 0 enough to check?
 int	valid_map(char *argv, t_game *game, int fd)
 {
 	char	*line;
 	int		map_flag;
 
-	fd = open(argv, O_RDONLY); 
-	if (check_fd(fd) == -1 || !check_format(argv, fd) || !alloc_all(game, fd)) // + close(fd) inside both if error
+	fd = open(argv, O_RDONLY);
+	if (check_fd(fd) == -1 || !check_format(argv, fd) || !alloc_all(game, fd))
 		return (0);
 	line = get_next_line(fd);
 	map_flag = 0;
 	while (line != NULL)
 	{
 		if (!save_and_check(&map_flag, game, line))
-			return (close(fd), 0); // + close(fd)
+			return (close(fd), 0);
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
 	if (game->flag_n != 1 || game->flag_w != 1 || game->flag_e != 1
 		|| game->flag_s != 1 || game->flag_f != 1 || game->flag_c != 1
-		|| map_flag == 0) // is map_flag == 0 enough to check? 
+		|| map_flag == 0)
 		return (err("Error: Missing/extra textures, colors and/or map!"), 0);
 	if (!check_height(game->map->height) || !check_player(game->map->grid, game)
 		|| !check_walls(game->map->grid, game->map->height)
@@ -69,7 +70,7 @@ int	start_game(t_game *game)
 	mlx_hook(game->win, EnterNotify, EnterWindowMask, mouse_enter, game);
 	mlx_hook(game->win, LeaveNotify, LeaveWindowMask, mouse_leave, game);
 	mlx_hook(game->win, MotionNotify, PointerMotionMask, mouse_move, game);
-	mlx_hook(game->win, DestroyNotify, StructureNotifyMask, close_window, game); // 1L << 0
+	mlx_hook(game->win, DestroyNotify, StructureNotifyMask, close_window, game);
 	mlx_loop_hook(game->mlx, render, game);
 	mlx_loop(game->mlx);
 	return (1);
@@ -79,6 +80,10 @@ int	start_game(t_game *game)
 // 2. check argc, if OK - allocate the key members for validation.
 // 3. check map validity.
 // 4. start game - load textures, setup and run mlx...
+// if testing needed:
+// print_textures(&game);
+// print_colors(&game);
+// print_map(&game);
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -90,9 +95,6 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!valid_map(argv[1], &game, 0))
 		return (free_game(&game), err("Error: Map validation failed!:("));
-	// print_textures(&game);
-	// print_colors(&game);
-	// print_map(&game);
 	if (!start_game(&game))
 		return (free_game(&game), 1);
 	free_game(&game);

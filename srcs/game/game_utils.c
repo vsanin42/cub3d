@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_utils.c                                     :+:      :+:    :+:   */
+/*   game_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:43:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/04 13:22:23 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:41:06 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	load_textures(t_game *game)
 			game->ceiling_color[1], game->ceiling_color[2]);
 }
 
+// used in minimap to check the value of a grid square
 int	is_floor(t_game *game, int g_y, int g_x)
 {
 	if (game->map->grid[g_y][g_x] == '0'
@@ -75,4 +76,27 @@ int	is_floor(t_game *game, int g_y, int g_x)
 		|| game->map->grid[g_y][g_x] == 'E')
 		return (1);
 	return (0);
+}
+
+// draws red dot for the center of the minimap
+void	draw_red_dot(t_game *game, t_mimap *minimap)
+{
+	int	y;
+	int	x;
+	int	half_side;
+	int	dot_half_side;
+
+	half_side = minimap->map_side / 2;
+	dot_half_side = minimap->map_side * 0.025;
+	y = minimap->offset + half_side - dot_half_side;
+	while (y < minimap->offset + half_side + dot_half_side)
+	{
+		x = minimap->offset + half_side - dot_half_side;
+		while (x < minimap->offset + half_side + dot_half_side)
+		{
+			game->img.addr[y * WIN_WIDTH + x] = RED;
+			x++;
+		}
+		y++;
+	}
 }

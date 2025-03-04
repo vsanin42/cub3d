@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:02:33 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 18:19:08 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:48:09 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	free_map_data(t_map_data *data, int index)
 	i = 0;
 	if (!data)
 		return ;
-	stop_index = data->rows;		
+	stop_index = data->rows;
 	if (index > -1)
 		stop_index = index;
 	while (i < stop_index)
@@ -112,6 +112,7 @@ int	alloc_and_nullify(t_game *game)
 	return (0);
 }
 
+// allocate or set some game struct members.
 int	alloc_all(t_game *game, int fd)
 {
 	game->map = malloc(sizeof(t_map));

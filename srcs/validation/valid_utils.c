@@ -6,12 +6,14 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:22:39 by vsanin            #+#    #+#             */
-/*   Updated: 2025/02/27 18:22:42 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:43:08 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
+// get_next_line(-1) cleans whatever remains in the buffer
+// if stopped reading in the middle of file
 int	save_and_check(int *map_flag, t_game *game, char *line)
 {
 	int	offset;
@@ -27,7 +29,6 @@ int	save_and_check(int *map_flag, t_game *game, char *line)
 	res4 = if_map(line, game, map_flag, offset);
 	if (!res1 && !res2 && !res3 && !res4)
 	{
-		// cleans whatever remains in the buffer if stopped reading in the middle of file
 		get_next_line(-1);
 		free(line);
 		return (0);

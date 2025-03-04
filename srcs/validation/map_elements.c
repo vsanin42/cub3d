@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/18 10:36:42 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:45:45 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,10 @@ int	if_surface(char *line, t_game *game, int offset)
 	return (0);
 }
 
+// first if check:
+// do this 1st to avoid extra malloc calls if textures/floor/ceiling wasn't set
 int	if_line_1(char *line, t_game *game, int *map_flag)
 {
-	// do this first to avoid extra malloc calls if textures/floor/ceiling wasn't set
 	if (game->flag_n != 1 || game->flag_w != 1 || game->flag_e != 1
 		|| game->flag_s != 1 || game->flag_f != 1 || game->flag_c != 1)
 		return (err("Error: Map found before all NSWEFC elements!"), 0);

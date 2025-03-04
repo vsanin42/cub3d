@@ -162,4 +162,5 @@ cool ceilings:
 
 4.03
 
-- full minimap ok
+- full minimap ok, looks great at different window sizes too!
+- cleaned up some minor norm things + some small tweaks to map. pretty much done. :) just remove unused textures and pngs + edit maps + more testing.

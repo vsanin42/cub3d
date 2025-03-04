@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/02/26 13:24:27 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/04 17:54:51 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ int	flood_fill(t_map_data *data, int x, int y)
 		&& flood_fill(data, x, y + 1));
 }
 
+// ???: why + 1 when doing calloc?
+// free_map_data(data, i):
+// pass index up to which we want to free rows to avoid freeing unalloced rows
 t_map_data	*init_map_data(char **map, int rows)
 {
 	int			i;
@@ -61,10 +64,10 @@ t_map_data	*init_map_data(char **map, int rows)
 	i = -1;
 	while (++i < rows)
 	{
-		data->visited[i] = (int *)ft_calloc(ft_strlen(map[i]) + 1, sizeof(int)); // why + 1?
+		data->visited[i] = (int *)ft_calloc(ft_strlen(map[i]) + 1, sizeof(int));
 		if (!data->visited[i])
 		{
-			free_map_data(data, i); // pass index up to which we want to free rows to avoid freeing unallocated rows
+			free_map_data(data, i);
 			return (NULL);
 		}
 	}
@@ -78,32 +81,31 @@ t_map_data	*init_map_data(char **map, int rows)
 // 3. set plane.x and plane.t PERPENDICULAR to dir.
 // 4. 0.66 dictates field of view, sign changes to reflect the right side.
 // example: for direction WEST (-1, 0), right hand side is NORTH
-// so adding the vector plane and getting farthest right ray means adding -0.66 to y dimension
-// this is crazy
+// so adding the vector plane and getting farthest right ray
+// means adding -0.66 to y dimension.
 // left (x = -1) ------ 0 ------- right (x = 1)
-// up (y = -1) -------- 0 ------- down (y = 1) (O_o)
-// !!!!! 
-// IF DIRECTIONS AND EVERYTHING IS FLIPPED OR SOMETHING THEN FLIP SIGNS OF 0.66 VALUES !!!!!
+// up (y = -1) -------- 0 ------- down (y = 1)
+// center the position within the square to avoid being stuck if near a wall.
 void	set_start_pos(char c, int i, int j, t_game *game)
 {
-	game->pos.x = j + 0.5; // x = column from left to right = j, 0.5 to center
-	game->pos.y = i + 0.5; // y = row from top to bottom = i
-	if (c == 'N') // dir: (0, -1); plane: (0.66, 0)
+	game->pos.x = j + 0.5;
+	game->pos.y = i + 0.5;
+	if (c == 'N')
 	{
 		game->dir.y = -1;
 		game->plane.x = 0.66;
 	}
-	else if (c == 'S') // dir: (0, 1); plane: (-0.66, 0)
+	else if (c == 'S')
 	{
 		game->dir.y = 1;
 		game->plane.x = -0.66;
 	}
-	else if (c == 'W') // dir: (-1, 0); plane: (0, -0.66)
+	else if (c == 'W')
 	{
 		game->dir.x = -1;
 		game->plane.y = -0.66;
 	}
-	else if (c == 'E') // dir: (1, 0); plane: (0, 0.66)
+	else if (c == 'E')
 	{
 		game->dir.x = 1;
 		game->plane.y = 0.66;
