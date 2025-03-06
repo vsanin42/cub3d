@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/04 17:45:45 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 17:44:28 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ int	if_direction_p2(char *line, t_game *game, int offset)
 			return (err("Error: More than 1 texture of EA type!"), 0);
 		game->textures[EAST] = ft_strdup(line + 3 + offset);
 		game->flag_e++;
+		return (1);
+	}
+	else if (ft_strncmp(line + offset, "DO", 2) == 0 && line[offset + 2] == ' ')
+	{
+		game->textures[DOOR] = ft_strdup(line + 3 + offset);
 		return (1);
 	}
 	return (0);

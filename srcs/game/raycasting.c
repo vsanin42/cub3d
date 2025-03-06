@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:51:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 12:51:16 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 17:37:18 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ void	dda(t_ray *r, t_game *game)
 		}
 		if (game->map->grid[r->map_y][r->map_x] == '1')
 			set_hit_and_nswe(r);
+		if (game->map->grid[r->map_y][r->map_x] == 'D')
+		{
+			r->hit = 1;
+			r->nswe = DOOR;
+		}
 	}
 	set_final_vars(r, game);
 }

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:02:33 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/04 17:48:09 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 17:45:09 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_game(t_game *game)
 	i = 0;
 	if (game->textures)
 	{
-		while (i < 5)
+		while (i < 6)
 		{
 			if (game->textures[i])
 				free(game->textures[i]);
@@ -91,7 +91,7 @@ int	alloc_and_nullify(t_game *game)
 	int	i;
 
 	i = 0;
-	game->textures = malloc(5 * sizeof(char *));
+	game->textures = malloc(6 * sizeof(char *));
 	game->floor_color = malloc(3 * sizeof(int));
 	game->ceiling_color = malloc(3 * sizeof(int));
 	if (!game->textures || !game->floor_color || !game->ceiling_color)
@@ -101,7 +101,7 @@ int	alloc_and_nullify(t_game *game)
 		free(game->ceiling_color);
 		return (err("Error: allocation failed!"));
 	}
-	while (i < 5)
+	while (i < 6)
 		game->textures[i++] = NULL;
 	i = 0;
 	while (i < 3)
@@ -125,7 +125,7 @@ int	alloc_all(t_game *game, int fd)
 	game->map->grid = NULL;
 	game->map->height = 0;
 	flag_init(game);
-	game->textures[4] = NULL;
+	game->textures[5] = NULL;
 	game->dir.x = 0;
 	game->dir.y = 0;
 	game->plane.x = 0;

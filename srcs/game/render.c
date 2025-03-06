@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/03 13:41:57 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:31:26 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int	render(t_game *game)
 	draw_minimap(game);
 	set_frame_time(game);
 	move(game);
+	if (game->textures[DOOR] != NULL)
+		respawn_doors(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.ptr, 0, 0);
 	return (0);
 }

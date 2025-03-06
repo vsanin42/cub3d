@@ -173,3 +173,10 @@ cool ceilings:
 - maps are updated with real textures now, a few were renamed to reflect their content better.
 - removed textures that are unused/unlikely to be used.
 - TODO: final tests, bad maps once again, etc... otherwise done.
+
+- ...i did doors...
+- edited validation stage to allow for D (door) and O (open door - empty spot where a door should be but it's currently not there).
+- while makin the move (update_pos()), also call the open door function - if there's a door in range of a bit less than 1 block - replace D with O and set the bool door_open to true. you can now walk over it and it's not rendered anymore, but it "remembers" that it needs to close too. if the door is open (bool is true), and you've moved away from it far enough, traverse the whole map and replace all O chars with D - this closes the door.
+- door is not a necessary map char, so everything that gets created that's related to it (images, etc) is conditional.
+- i did some basic things like a door can't be at the border and all that, but i'm not sure i covered all cases. it's all leak free though :)
+- DO EXTRA TESTING WITH DOORS

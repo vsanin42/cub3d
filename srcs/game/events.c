@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:31:11 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 15:59:33 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:33:29 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	close_window(t_game *game)
 		mlx_destroy_image(game->mlx, game->west.ptr);
 	if (game->east.ptr != NULL)
 		mlx_destroy_image(game->mlx, game->east.ptr);
+	if (game->door.ptr != NULL && game->textures[DOOR] != NULL)
+		mlx_destroy_image(game->mlx, game->door.ptr);
 	mlx_destroy_image(game->mlx, game->img.ptr);
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_display(game->mlx);
@@ -87,19 +89,18 @@ int	key_release(int keycode, t_game *game)
 int	update_pos(t_game *game, double x, double y)
 {
 	t_pos	proj;
-	double	step;
 
-	step = 0.15;
 	proj.x = game->pos.x + x * game->move_speed;
 	proj.y = game->pos.y + y * game->move_speed;
-	if (game->map->grid[(int)(proj.y - step)][(int)proj.x] == '1')
+	if (game->map->grid[(int)(proj.y - MOVE_STEP)][(int)proj.x] == '1')
 		return (0);
-	if (game->map->grid[(int)(proj.y + step)][(int)proj.x] == '1')
+	if (game->map->grid[(int)(proj.y + MOVE_STEP)][(int)proj.x] == '1')
 		return (0);
-	if (game->map->grid[(int)proj.y][(int)(proj.x - step)] == '1')
+	if (game->map->grid[(int)proj.y][(int)(proj.x - MOVE_STEP)] == '1')
 		return (0);
-	if (game->map->grid[(int)proj.y][(int)(proj.x + step)] == '1')
+	if (game->map->grid[(int)proj.y][(int)(proj.x + MOVE_STEP)] == '1')
 		return (0);
+	open_door(game, proj);
 	game->pos.x += x * game->move_speed;
 	game->pos.y += y * game->move_speed;
 	return (1);

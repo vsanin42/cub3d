@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:00:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 16:07:14 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:36:02 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,29 @@ int	check_texture_size(t_game *game)
 	else if (game->east.h != game->east.w
 		|| game->east.h != TEX_HEIGHT || game->east.w != TEX_WIDTH)
 		return (err("Error: EA texture W/H doesn't match defined macros."), 0);
+	return (1);
+}
+
+// 2. to access their individual pixels, store their addresses in addr.
+// bits per pixel, line size an endian are not used, but need to be stored.
+int	load_textures_addr(t_game *game)
+{
+	game->north.addr = (int *)mlx_get_data_addr(game->north.ptr,
+			&game->north.bpp, &game->north.size_line, &game->north.endian);
+	game->south.addr = (int *)mlx_get_data_addr(game->south.ptr,
+			&game->south.bpp, &game->south.size_line, &game->south.endian);
+	game->west.addr = (int *)mlx_get_data_addr(game->west.ptr,
+			&game->west.bpp, &game->west.size_line, &game->west.endian);
+	game->east.addr = (int *)mlx_get_data_addr(game->east.ptr,
+			&game->east.bpp, &game->east.size_line, &game->east.endian);
+	if (game->textures[DOOR] != NULL)
+	{
+		game->door.addr = (int *)mlx_get_data_addr(game->door.ptr,
+				&game->door.bpp, &game->door.size_line, &game->door.endian);
+	}
+	game->floor = create_trgb(0, game->floor_color[0],
+			game->floor_color[1], game->floor_color[2]);
+	game->ceiling = create_trgb(0, game->ceiling_color[0],
+			game->ceiling_color[1], game->ceiling_color[2]);
 	return (1);
 }

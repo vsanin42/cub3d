@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:43:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 16:09:18 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:52:59 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ t_image	*get_nswe_tex(t_game *game, t_side nswe)
 		return (&game->west);
 	if (nswe == EAST)
 		return (&game->east);
+	if (nswe == DOOR)
+		return (&game->door);
 	return (NULL);
 }
 
 // 1. load the textures from xpm files specified by the paths in game->textures.
-// 2. to access their individual pixels, store their addresses in addr.
-// bits per pixel, line size an endian are not used, but need to be stored.
 int	load_textures(t_game *game)
 {
 	game->north.ptr = mlx_xpm_file_to_image(game->mlx, game->textures[NORTH],
@@ -52,21 +52,15 @@ int	load_textures(t_game *game)
 			&game->west.w, &game->west.h);
 	game->east.ptr = mlx_xpm_file_to_image(game->mlx, game->textures[EAST],
 			&game->east.w, &game->east.h);
+	if (game->textures[DOOR] != NULL)
+	{
+		game->door.ptr = mlx_xpm_file_to_image(game->mlx, game->textures[DOOR],
+				&game->door.w, &game->door.h);
+	}
 	if (game->north.ptr == NULL || game->south.ptr == NULL
-		|| game->west.ptr == NULL || game->east.ptr == NULL)
+		|| game->west.ptr == NULL || game->east.ptr == NULL
+		|| (game->textures[DOOR] != NULL && game->door.ptr == NULL))
 		return (err("Error: Invalid .xpm file!"), 0);
-	game->north.addr = (int *)mlx_get_data_addr(game->north.ptr,
-			&game->north.bpp, &game->north.size_line, &game->north.endian);
-	game->south.addr = (int *)mlx_get_data_addr(game->south.ptr,
-			&game->south.bpp, &game->south.size_line, &game->south.endian);
-	game->west.addr = (int *)mlx_get_data_addr(game->west.ptr,
-			&game->west.bpp, &game->west.size_line, &game->west.endian);
-	game->east.addr = (int *)mlx_get_data_addr(game->east.ptr,
-			&game->east.bpp, &game->east.size_line, &game->east.endian);
-	game->floor = create_trgb(0, game->floor_color[0],
-			game->floor_color[1], game->floor_color[2]);
-	game->ceiling = create_trgb(0, game->ceiling_color[0],
-			game->ceiling_color[1], game->ceiling_color[2]);
 	return (1);
 }
 
@@ -77,7 +71,8 @@ int	is_floor(t_game *game, int g_y, int g_x)
 		|| game->map->grid[g_y][g_x] == 'N'
 		|| game->map->grid[g_y][g_x] == 'S'
 		|| game->map->grid[g_y][g_x] == 'W'
-		|| game->map->grid[g_y][g_x] == 'E')
+		|| game->map->grid[g_y][g_x] == 'E'
+		|| game->map->grid[g_y][g_x] == 'O')
 		return (1);
 	return (0);
 }

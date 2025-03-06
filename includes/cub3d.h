@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/06 15:49:21 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:36:32 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define WIN_HEIGHT 600
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
+# define MOVE_STEP 0.15
 # define MOUSE_SENSITIVITY 0.0075
 # define RED 16711680
 
@@ -66,7 +67,8 @@ typedef enum s_side
 	NORTH,
 	SOUTH,
 	WEST,
-	EAST
+	EAST,
+	DOOR
 }	t_side;
 
 // struct to hold all variables used in raycasting.
@@ -172,9 +174,11 @@ typedef struct s_game
 	t_image	south;
 	t_image	west;
 	t_image	east;
+	t_image	door;
 	t_kmap	keymap;
 	t_pos	mouse;
 	bool	mouse_in_window;
+	bool	door_open;
 }	t_game;
 
 typedef struct s_map_data
@@ -241,16 +245,19 @@ void		move(t_game *game);
 /*									UTILS							     	  */
 /* -------------------------------------------------------------------------- */
 
-/* srcs/utils/print.c */ // this is not used at all so delete later completely
+/* srcs/utils/utils2.c */
 void		print_colors(t_game *game);
 void		print_textures(t_game *game);
 void		print_map(t_game *game);
+void		respawn_doors(t_game *game);
+void		open_door(t_game *game, t_pos proj);
 
 /* srcs/utils/utils.c */
 int			err(char *text_err);
 long		get_current_time(void);
 int			create_trgb(int t, int r, int g, int b);
 int			check_texture_size(t_game *game);
+int			load_textures_addr(t_game *game);
 
 /* srcs/utils/free.c */
 void		free_game(t_game *game);

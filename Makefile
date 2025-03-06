@@ -34,8 +34,8 @@ SRC  = 	srcs/main.c \
 		srcs/game/raycasting.c \
 		srcs/game/render.c \
 		srcs/utils/free.c \
-		srcs/utils/print.c \
 		srcs/utils/utils.c \
+		srcs/utils/utils2.c \
 		srcs/validation/colors.c \
 		srcs/validation/map_check.c \
 		srcs/validation/map_check2.c \

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/06 16:01:02 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:09:54 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	start_game(t_game *game)
 			&game->img.bpp, &game->img.size_line, &game->img.endian);
 	if (!load_textures(game) || !check_texture_size(game))
 		close_window(game);
+	load_textures_addr(game);
 	mlx_hook(game->win, KeyPress, KeyPressMask, key_press, game);
 	mlx_hook(game->win, KeyRelease, KeyReleaseMask, key_release, game);
 	mlx_hook(game->win, EnterNotify, EnterWindowMask, mouse_enter, game);

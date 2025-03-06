@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/04 17:54:51 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 19:53:40 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ int	flood_fill(t_map_data *data, int x, int y)
 		return (1);
 	data->visited[x][y] = 1;
 	if (data->map[x][y] == '0' || data->map[x][y] == 'N'
-		|| data->map[x][y] == 'S' || data->map[x][y] == 'E'
-		|| data->map[x][y] == 'W')
+		|| data->map[x][y] == 'S' || data->map[x][y] == 'W'
+		|| data->map[x][y] == 'E' || data->map[x][y] == 'D'
+		|| data->map[x][y] == 'O')
 	{
 		if (is_out_of_bounds(data->map, x - 1, y, data->rows)
 			|| is_out_of_bounds(data->map, x + 1, y, data->rows)
