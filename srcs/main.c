@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/04 17:49:10 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 13:24:47 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ int	valid_map(char *argv, t_game *game, int fd)
 // 1. initialize the mlx, window and main image instances.
 // 2. save the image address and other info in addr - needed to draw on pixels.
 // 3. load textures from paths specified in textures array.
-// 4. hook into key press, key release and close window events.
-// 5. hook into render function as the main mlx loop function + start the loop.
+// 4. check for a mismatch in texture sizes and the defined width/height values.
+// 5. hook into key press, key release and close window events.
+// 6. hook into render function as the main mlx loop function + start the loop.
 int	start_game(t_game *game)
 {
 	game->mlx = mlx_init();
@@ -65,6 +66,7 @@ int	start_game(t_game *game)
 	game->img.addr = (int *)mlx_get_data_addr(game->img.ptr,
 			&game->img.bpp, &game->img.size_line, &game->img.endian);
 	load_textures(game);
+	check_texture_size(game);
 	mlx_hook(game->win, KeyPress, KeyPressMask, key_press, game);
 	mlx_hook(game->win, KeyRelease, KeyReleaseMask, key_release, game);
 	mlx_hook(game->win, EnterNotify, EnterWindowMask, mouse_enter, game);

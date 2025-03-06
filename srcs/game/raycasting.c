@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:51:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/04 17:39:40 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 12:51:16 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	set_ray_variables(t_ray *r, t_game *game, int x)
 // the required texture line would be, not which line it is.
 // 5. this decimal value needs to be scaled to the texture width to find
 // the actual pixel stripe value.
+// 6. flip tex_x to avoid mirroring of NO and EA facing textures.
 // note: value of WIN_HEIGHT can be multiplied by something
 // to make the walls taller, but no need.
 void	set_final_vars(t_ray *r, t_game *game)
@@ -146,6 +147,10 @@ void	set_final_vars(t_ray *r, t_game *game)
 		r->wall_x = game->pos.x + r->perp_wall_dist * r->ray_dir_x;
 	r->wall_x -= floor(r->wall_x);
 	r->tex_x = (int)(r->wall_x * (double)TEX_WIDTH);
+	if (r->side == 0 && r->ray_dir_x < 0)
+		r->tex_x = TEX_WIDTH - r->tex_x - 1;
+	if (r->side == 1 && r->ray_dir_y > 0)
+		r->tex_x = TEX_WIDTH - r->tex_x - 1;
 }
 
 // i really hope this works. xd

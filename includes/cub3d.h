@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/04 18:30:13 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 13:24:33 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@
 
 # define WIN_WIDTH 800
 # define WIN_HEIGHT 600
-# define TEX_WIDTH 64
-# define TEX_HEIGHT 64
+# define TEX_WIDTH 128
+# define TEX_HEIGHT 128
 # define MOUSE_SENSITIVITY 0.0075
 # define RED 16711680
+# define TEX_SIZE_ERROR "Error: a texture is not a square " \
+						"or its width/height doesn't match the defined macros."
 
 typedef struct s_pos
 {
@@ -250,6 +252,7 @@ void		print_map(t_game *game);
 int			err(char *text_err);
 long		get_current_time(void);
 int			create_trgb(int t, int r, int g, int b);
+int			check_texture_size(t_game *game);
 
 /* srcs/utils/free.c */
 void		free_game(t_game *game);
