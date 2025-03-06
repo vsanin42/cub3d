@@ -1,10 +1,10 @@
 F 139,99,58
 C 171,154,137
 
-NO maps/good/texture_valid.xpm
-SO maps/good/texture_valid.xpm
-WE maps/good/texture_valid.xpm
-EA maps/good/texture_valid.xpm
+NO textures/xpm/64/PAPER_1F.xpm
+SO textures/xpm/64/DOORTRIM_1A.xpm
+WE textures/xpm/64/WOOD_1C.xpm
+EA textures/xpm/64/PIPES_2B.xpm
 
 1111111111111111111
 1001001001001001001

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/06 13:24:33 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 15:49:21 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,10 @@
 
 # define WIN_WIDTH 800
 # define WIN_HEIGHT 600
-# define TEX_WIDTH 128
-# define TEX_HEIGHT 128
+# define TEX_WIDTH 64
+# define TEX_HEIGHT 64
 # define MOUSE_SENSITIVITY 0.0075
 # define RED 16711680
-# define TEX_SIZE_ERROR "Error: a texture is not a square " \
-						"or its width/height doesn't match the defined macros."
 
 typedef struct s_pos
 {
@@ -228,7 +226,7 @@ void		set_hit_and_nswe(t_ray *r);
 /* srcs/game/game_utils.c */
 void		set_frame_time(t_game *game);
 t_image		*get_nswe_tex(t_game *game, t_side nswe);
-void		load_textures(t_game *game);
+int			load_textures(t_game *game);
 int			is_floor(t_game *game, int g_y, int g_x);
 void		draw_red_dot(t_game *game, t_mimap *minimap);
 

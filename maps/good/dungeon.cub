@@ -1,10 +1,10 @@
 F 76,76,76
 C 99,99,99
 
-NO maps/good/texture_valid.xpm
-SO maps/good/texture_valid.xpm
-WE maps/good/texture_valid.xpm
-EA maps/good/texture_valid.xpm
+NO textures/xpm/64/BRICK_3D.xpm
+SO textures/xpm/64/BRICK_6D.xpm
+WE textures/xpm/64/TILE_1A.xpm
+EA textures/xpm/64/TILE_2C.xpm
 
 1111111111111111111
 10W1001001001000001

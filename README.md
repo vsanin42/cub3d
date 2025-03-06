@@ -164,3 +164,12 @@ cool ceilings:
 
 - full minimap ok, looks great at different window sizes too!
 - cleaned up some minor norm things + some small tweaks to map. pretty much done. :) just remove unused textures and pngs + edit maps + more testing.
+
+6.03
+
+- added my cat textures :3 both in 64 and 128 - can be helpful to showcase that it can be resized safely.
+- error handling for cases when TEX_WIDTH and/or TEX_HEIGHT don't match the actual texture dimensions - it would look squashed, distorted or cause a segfault, none of which are good things.
+- error handling for cases when the .xpm file is modified/corrupted - mlx_xpm_file_to_image() returns NULL which needs to be checked instantly. that meant also modified the mlx_destroy_image() calls, since it segfaults if the image was NULL.
+- maps are updated with real textures now, a few were renamed to reflect their content better.
+- removed textures that are unused/unlikely to be used.
+- TODO: final tests, bad maps once again, etc... otherwise done.

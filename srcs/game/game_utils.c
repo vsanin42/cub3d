@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:43:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/04 17:41:06 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 16:09:18 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_image	*get_nswe_tex(t_game *game, t_side nswe)
 // 1. load the textures from xpm files specified by the paths in game->textures.
 // 2. to access their individual pixels, store their addresses in addr.
 // bits per pixel, line size an endian are not used, but need to be stored.
-void	load_textures(t_game *game)
+int	load_textures(t_game *game)
 {
 	game->north.ptr = mlx_xpm_file_to_image(game->mlx, game->textures[NORTH],
 			&game->north.w, &game->north.h);
@@ -52,6 +52,9 @@ void	load_textures(t_game *game)
 			&game->west.w, &game->west.h);
 	game->east.ptr = mlx_xpm_file_to_image(game->mlx, game->textures[EAST],
 			&game->east.w, &game->east.h);
+	if (game->north.ptr == NULL || game->south.ptr == NULL
+		|| game->west.ptr == NULL || game->east.ptr == NULL)
+		return (err("Error: Invalid .xpm file!"), 0);
 	game->north.addr = (int *)mlx_get_data_addr(game->north.ptr,
 			&game->north.bpp, &game->north.size_line, &game->north.endian);
 	game->south.addr = (int *)mlx_get_data_addr(game->south.ptr,
@@ -64,6 +67,7 @@ void	load_textures(t_game *game)
 			game->floor_color[1], game->floor_color[2]);
 	game->ceiling = create_trgb(0, game->ceiling_color[0],
 			game->ceiling_color[1], game->ceiling_color[2]);
+	return (1);
 }
 
 // used in minimap to check the value of a grid square

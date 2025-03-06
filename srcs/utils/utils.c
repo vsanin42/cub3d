@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:00:02 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 13:25:10 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 16:07:14 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,25 +55,17 @@ int	create_trgb(int t, int r, int g, int b)
 // width and height must be equal to each other and their respective macros.
 int	check_texture_size(t_game *game)
 {
-	int	flag;
-
-	flag = 0;
 	if (game->north.h != game->north.w
 		|| game->north.h != TEX_HEIGHT || game->north.w != TEX_WIDTH)
-		flag = 1;
+		return (err("Error: NO texture W/H doesn't match defined macros."), 0);
 	else if (game->south.h != game->south.w
 		|| game->south.h != TEX_HEIGHT || game->south.w != TEX_WIDTH)
-		flag = 1;
+		return (err("Error: SO texture W/H doesn't match defined macros."), 0);
 	else if (game->west.h != game->west.w
 		|| game->west.h != TEX_HEIGHT || game->west.w != TEX_WIDTH)
-		flag = 1;
+		return (err("Error: WE texture W/H doesn't match defined macros."), 0);
 	else if (game->east.h != game->east.w
 		|| game->east.h != TEX_HEIGHT || game->east.w != TEX_WIDTH)
-		flag = 1;
-	if (flag == 1)
-	{
-		err(TEX_SIZE_ERROR);
-		close_window(game);
-	}
-	return (0);
+		return (err("Error: EA texture W/H doesn't match defined macros."), 0);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:31:11 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/04 17:35:26 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/06 15:59:33 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 // cleanup function: destroy loaded images, window, mlx, free everything.
 int	close_window(t_game *game)
 {
-	mlx_destroy_image(game->mlx, game->north.ptr);
-	mlx_destroy_image(game->mlx, game->south.ptr);
-	mlx_destroy_image(game->mlx, game->west.ptr);
-	mlx_destroy_image(game->mlx, game->east.ptr);
+	if (game->north.ptr != NULL)
+		mlx_destroy_image(game->mlx, game->north.ptr);
+	if (game->south.ptr != NULL)
+		mlx_destroy_image(game->mlx, game->south.ptr);
+	if (game->west.ptr != NULL)
+		mlx_destroy_image(game->mlx, game->west.ptr);
+	if (game->east.ptr != NULL)
+		mlx_destroy_image(game->mlx, game->east.ptr);
 	mlx_destroy_image(game->mlx, game->img.ptr);
 	mlx_destroy_window(game->mlx, game->win);
 	mlx_destroy_display(game->mlx);
