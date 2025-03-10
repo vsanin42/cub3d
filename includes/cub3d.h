@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/06 19:36:32 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/10 10:21:55 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define MOVE_STEP 0.15
 # define MOUSE_SENSITIVITY 0.0075
 # define RED 16711680
+# define YELLOW 16776960
 
 typedef struct s_pos
 {

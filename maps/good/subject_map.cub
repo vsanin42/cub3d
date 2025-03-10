@@ -2,7 +2,7 @@ NO textures/xpm/64/WARN_1A.xpm
 SO textures/xpm/64/SLIME_1A.xpm
 WE textures/xpm/64/TILE_2C.xpm
 EA textures/xpm/64/TILE_1A.xpm
-DO textures/xpm/64/DOOR_1C.xpm
+DO textures/xpm/64/brickman_64.xpm
 
 F 47, 79, 79
 C 176, 224, 230

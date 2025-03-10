@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:33:09 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/04 17:41:25 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/10 10:23:01 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	draw_map_top_right(t_game *game, t_mimap *m)
 				break ;
 			if (is_floor(game, m->g_y, m->g_x))
 				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = game->ceiling;
+			else if (game->map->grid[m->g_y][m->g_x] == 'D')
+				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = YELLOW;
 			m->y_win--;
 		}
 		m->x_step_count++;
@@ -59,6 +61,8 @@ void	draw_map_top_left(t_game *game, t_mimap *m)
 				break ;
 			if (is_floor(game, m->g_y, m->g_x))
 				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = game->ceiling;
+			else if (game->map->grid[m->g_y][m->g_x] == 'D')
+				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = YELLOW;
 			m->y_win--;
 		}
 		m->x_step_count++;
@@ -86,6 +90,8 @@ void	draw_map_bottom_right(t_game *game, t_mimap *m)
 				break ;
 			if (is_floor(game, m->g_y, m->g_x))
 				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = game->ceiling;
+			else if (game->map->grid[m->g_y][m->g_x] == 'D')
+				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = YELLOW;
 			m->y_win++;
 		}
 		m->x_step_count++;
@@ -113,6 +119,8 @@ void	draw_map_bottom_left(t_game *game, t_mimap *m)
 				break ;
 			if (is_floor(game, m->g_y, m->g_x))
 				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = game->ceiling;
+			else if (game->map->grid[m->g_y][m->g_x] == 'D')
+				game->img.addr[m->y_win * WIN_WIDTH + m->x_win] = YELLOW;
 			m->y_win++;
 		}
 		m->x_step_count++;

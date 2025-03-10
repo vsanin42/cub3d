@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:44:44 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 19:52:39 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/10 10:20:16 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,11 @@ void	respawn_doors(t_game *game)
 // maybe * other numbers between 4 and 8
 void	open_door(t_game *game, t_pos proj)
 {
+	if ((int)(proj.y - MOVE_STEP * 8) < 0 || (int)(proj.x - MOVE_STEP * 8) < 0
+		|| (int)(proj.y + MOVE_STEP * 8) >= game->map->height
+		|| (int)(proj.x + MOVE_STEP * 8) >=
+		ft_strlen(game->map->grid[(int)(proj.y + MOVE_STEP * 8)]))
+		return ;
 	if (game->map->grid[(int)(proj.y - MOVE_STEP * 8)][(int)proj.x] == 'D')
 	{
 		game->map->grid[(int)(proj.y - MOVE_STEP * 8)][(int)proj.x] = 'O';
