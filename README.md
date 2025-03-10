@@ -180,3 +180,8 @@ cool ceilings:
 - door is not a necessary map char, so everything that gets created that's related to it (images, etc) is conditional.
 - i did some basic things like a door can't be at the border and all that, but i'm not sure i covered all cases. it's all leak free though :)
 - DO EXTRA TESTING WITH DOORS
+
+10.03
+
+- small fix with segfault when checking outof bounds for door opening
+- added man talking to brick wall tex xd
