@@ -4,6 +4,8 @@ by [@vsanin42](https://www.github.com/vsanin42) & [@olgalomova](https://github.c
 
 3D visualization from the inside of a 2D maze using the raycasting technology for 42 School, written in C.
 
+![image](https://github.com/user-attachments/assets/2c8ed4cb-2155-4f11-b9da-d60bd400c663)
+
 Raycasting was first applied in the development of a classic videogame [Wolfenstein 3D](https://en.wikipedia.org/wiki/Wolfenstein_3D) which pioneered and popularized the first-person shooter genre. Sometimes referred to as "2.5D", this technique rendered 2D textures in a way that resembled the 3D view, making it seem like the 3rd (height) dimension was present.
 
 For the purposes of the 42 project it was mandatory to use the MinilibX graphical library for rendering the visuals. Each ray casted using the DDA algorithm provided information about the distance from the player to the wall, its side and the position on the texture that the ray landed on. This information was used to create a correlation between the window pixels and the texture pixels, as well as the height of the wall to be drawn. This allowed drawing the right part of the texture on a vertical pixel column of the window, along with the floor and ceiling. Once this process has been repeated for the entire width of the window and the image buffer pixels were filled with the correct values, the image was pushed to the window, rendering one frame.
