@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:22:39 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 19:53:49 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:52:03 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ int	check_fd(int fd)
 	return (0);
 }
 
-// this check is unnecessary because if if it's too small,
-// then other checks will catch it. but let's keep  it
 int	check_height(int height)
 {
 	if (height < 3)
@@ -62,7 +60,6 @@ int	check_height(int height)
 	return (1);
 }
 
-// only spaces and no tabs/\r, etc..?
 int	is_valid_char(char c)
 {
 	return (c == '0' || c == '1' || c == 'N' || c == 'S'

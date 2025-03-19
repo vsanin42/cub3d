@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/06 19:53:40 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:51:19 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	flood_fill(t_map_data *data, int x, int y)
 		&& flood_fill(data, x, y + 1));
 }
 
-// ???: why + 1 when doing calloc?
 // free_map_data(data, i):
 // pass index up to which we want to free rows to avoid freeing unalloced rows
 t_map_data	*init_map_data(char **map, int rows)

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:31:11 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 19:33:29 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:53:39 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	close_window(t_game *game)
 }
 
 // using Xlib values for keysyms.
-// they all correspond to the above.
 // this only changes the bools in the keymap, they get back to false on release.
 int	key_press(int keycode, t_game *game)
 {

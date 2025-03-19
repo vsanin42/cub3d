@@ -6,14 +6,13 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:47:13 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 19:31:26 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:57:46 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
 // draw rgb color line to create the floor
-// might need to pass 255 instead of 0 as t param in trgb
 // 1. check if draw_end of the texture line (start for the floor)
 // is at the window border. if yes, don't draw anything and return.
 // 2. create the trgb value from the floor colors from the map file.
@@ -35,7 +34,6 @@ void	draw_floor(t_ray *r, t_game *game, int x)
 }
 
 // draw rgb color line to create the ceiling
-// might need to pass 255 instead of 0 as t param in trgb
 // 1. check if draw_start of the texture line (start for the ceiling)
 // is at the window border. if yes, don't draw anything and return.
 // 2. create the trgb value from the ceiling colors from the map file.
@@ -57,7 +55,7 @@ void	draw_ceiling(t_ray *r, t_game *game, int x)
 	}
 }
 
-// now we need to draw the line.
+// draw the line.
 // 1. we get the texture to draw from.
 // 2. we set y as draw start and iterate until draw end, drawing the full line.
 // 3. step tells us how many texture pixels correspond to one screen pixel.
@@ -101,7 +99,6 @@ void	draw_line(t_ray *r, t_game *game, int x)
 // if LR arrows are pressed:
 // rotate the camera.
 // check if mouse is in the window and has moved, if yes - also rotate.
-// protect against using mouse and arrows at the same time? no problems found.
 void	move(t_game *game)
 {
 	if (game->keymap.w == true)

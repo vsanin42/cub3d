@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/06 19:09:54 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:51:03 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 // error if mismatch in element count.
 // error if area too small, unclosed, no/extra player position,
 // problem with texture path...
-// ???: is map_flag == 0 enough to check?
 int	valid_map(char *argv, t_game *game, int fd)
 {
 	char	*line;

@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:51:59 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/06 17:37:18 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:58:11 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,6 @@ void	set_final_vars(t_ray *r, t_game *game)
 		r->tex_x = TEX_WIDTH - r->tex_x - 1;
 }
 
-// i really hope this works. xd
 // 1. setting hit to 1 lets us exit the loop.
 // 2. then we figure out which exact side was hit.
 // this is done with side variable:

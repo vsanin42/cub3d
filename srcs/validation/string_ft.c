@@ -6,7 +6,7 @@
 /*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:22:31 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/04 17:44:31 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:51:49 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	check_texture_path(char *str)
 	return (1);
 }
 
-// replaced trim_spaces with ft_strtrim
 // first check inside while loop: if only whitespaces (empty texture path)
 // OR if malloc failed
 int	edit_paths(char **textures)
