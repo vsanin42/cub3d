@@ -1,6 +1,6 @@
 
 # cub3d
-by [@vsanin42](https://www.github.com/vsanin42) & [@olgalomova](https://github.com/olgalomova)
+by [@vsanin42](https://www.github.com/vsanin42) & [@olgalomova](https://github.com/olgalomova) featuring my lovely cat Chimi ❤️
 
 3D visualization from the inside of a 2D maze using the raycasting technology for 42 School, written in C.
 
