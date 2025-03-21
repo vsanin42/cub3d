@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 19:08:29 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/10 10:21:55 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/21 15:54:30 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ typedef struct s_game
 	int		flag_s;
 	int		flag_f;
 	int		flag_c;
+	int		flag_d;
 	t_pos	pos;
 	t_pos	dir;
 	t_pos	plane;
@@ -283,7 +284,7 @@ void		parse_color_component_floor(t_game *game,
 int			is_out_of_bounds(char **map, int x, int y, int rows);
 int			flood_fill(t_map_data *data, int x, int y);
 t_map_data	*init_map_data(char **map, int rows);
-void		set_start_pos(char c, int i, int j, t_game *game);
+int			set_start_pos(char c, int i, int j, t_game *game);
 int			check_player(char **grid, t_game *game);
 
 /* srcs/validation/map_check2.c */

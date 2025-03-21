@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:52:15 by olomova           #+#    #+#             */
-/*   Updated: 2025/03/19 12:51:03 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/21 15:56:19 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	valid_map(char *argv, t_game *game, int fd)
 		return (err("Error: Missing/extra textures, colors and/or map!"), 0);
 	if (!check_height(game->map->height) || !check_player(game->map->grid, game)
 		|| !check_walls(game->map->grid, game->map->height)
-		|| !edit_paths(game->textures))
+		|| !edit_paths(game->textures) || (game->flag_d && !game->textures[4]))
 		return (0);
 	return (1);
 }

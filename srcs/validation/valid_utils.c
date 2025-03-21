@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsanin <vsanin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vsanin <vsanin@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:22:39 by vsanin            #+#    #+#             */
-/*   Updated: 2025/03/19 12:52:03 by vsanin           ###   ########.fr       */
+/*   Updated: 2025/03/21 15:34:05 by vsanin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	check_height(int height)
 int	is_valid_char(char c)
 {
 	return (c == '0' || c == '1' || c == 'N' || c == 'S'
-		|| c == 'E' || c == 'W' || c == ' ' || c == 'D' || c == 'O');
+		|| c == 'E' || c == 'W' || c == ' ' || c == 'D');
 }
 
 int	skip_whitespace(const char *str)
